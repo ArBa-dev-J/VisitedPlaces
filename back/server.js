@@ -1,8 +1,8 @@
 import app from "./app.js";
 import 'dotenv/config';
-// import { testConnection, sql } from "./dbConnection.js";
+import { testConnection, sql } from "./dbConnection.js";
 
-// const port = process.env.PORT;
+const port = process.env.PORT;
 
 (async () => {
     try {
