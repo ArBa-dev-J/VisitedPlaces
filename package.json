@@ -1,0 +1,20 @@
+{
+  "name": "visitedplaces",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ArBa-dev-J/VisitedPlaces#readme",
+  "bugs": {
+    "url": "https://github.com/ArBa-dev-J/VisitedPlaces/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArBa-dev-J/VisitedPlaces.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "null",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
