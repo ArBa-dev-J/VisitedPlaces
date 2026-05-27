@@ -6,10 +6,10 @@ const port = process.env.PORT;
 
 (async () => {
     try {
-        // await testConnection();
+        await testConnection();
 
-        app.listen(3000, () => {
-            console.log(`Server is ready and using 3000 port`);
+        app.listen(port, () => {
+            console.log(`Server is ready and using ${port} port`);
         })
     } catch (error) {
         console.log(error.message);
