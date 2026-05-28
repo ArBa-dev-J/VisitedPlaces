@@ -1,15 +1,20 @@
 import express from "express";
 import cors from "cors";
+// routes imports
+import citiesRoutes from "./routes/citiesRoutes.js";
 
 
 const app = express();
 
 app.use(express.json());
-app.use(
-  cors({
-    // origin: CLIENT_URL,
-  })
-);
+// app.use(
+//   cors({
+//     // origin: CLIENT_URL,
+//   })
+// );
+
+// Routes
+app.use("/api/v1/cities", citiesRoutes);
 
 //for testing server status
 app.get("/health", (req, res) => {
