@@ -14,3 +14,14 @@ export const addNewCityM = async (newData) => {
     return newCity;
 }
 
+// get city
+
+export const doesCityExistM = async (newData) => {
+    const { name } = newData;
+
+    const exists = await sql`
+    SELECT name FROM cities
+    WHERE name = ${name};
+    `
+    return exists[0];
+}
