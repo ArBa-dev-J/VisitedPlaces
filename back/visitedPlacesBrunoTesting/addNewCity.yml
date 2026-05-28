@@ -10,7 +10,7 @@ http:
     type: json
     data: |
       {
-        "name": "Vilnius"
+        "name": "-800"
       }
   auth: inherit
 

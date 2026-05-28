@@ -1,9 +1,17 @@
+import Dashboard from "./components/pages/Dashboard";
+import { Routes, Route } from "react-router";
+
 
 function App() {
- 
+
   return (
     <>
-    <p>asda</p>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+
+
+        
+      </Routes>
     </>
   )
 }

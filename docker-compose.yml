@@ -68,7 +68,7 @@ volumes:
   pgadmin_data:
 
 #  Ports
-# 5000 (backend)
+# 3000 (backend)
 # 5173 (frontend)
 # 5050 (pgAdmin)
 
