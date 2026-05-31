@@ -7,6 +7,7 @@ function App() {
 
   return (
     <>
+    <main className="bg-sky-600">
       <Routes>
         {/* Dasboard route */}
         <Route path="/" element={<Dashboard />} />
@@ -16,6 +17,7 @@ function App() {
 
 
       </Routes>
+      </main>
     </>
   )
 }

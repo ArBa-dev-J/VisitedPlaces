@@ -28,17 +28,17 @@ function NewCityFormInputs() {
 
     return (
         <>
-            <section>
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
 
-                    <label>Add new city</label>
-                    <input type="text" {...register("name", { required: true })} className="border block" />
-                    {errors.name && <p>This field must be populated</p> || <p>{serverError}</p>}
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto bg-sky-900 w-[50%]">
 
-                    <input type="submit" value="Add new city to the list" />
+                <label>Add new city</label>
+                <input type="text" {...register("name", { required: true })} className="border block bg-sky-600 text-black text-center" />
+                {errors.name && <p className="text-red-500">This field must be populated</p> || <p  className="text-red-500">{serverError}</p>}
 
-                </form>
-            </section>
+                <input type="submit" value="Add new city to the list" className="border mt-2 rounded-[20px] p-2 " />
+
+            </form>
+
         </>
     );
 }
