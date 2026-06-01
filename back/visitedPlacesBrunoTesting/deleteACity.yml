@@ -1,0 +1,19 @@
+info:
+  name: deleteACity
+  type: http
+  seq: 3
+
+http:
+  method: DELETE
+  url: http://localhost:3000/api/v1/city/:id/deleteCity
+  params:
+    - name: id
+      value: ""
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

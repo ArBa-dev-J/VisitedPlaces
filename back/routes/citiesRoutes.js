@@ -1,5 +1,5 @@
 import express from "express"
-import { addNewCityC, getAllCitiesC } from "../controllers/citiesControllers.js";
+import { addNewCityC, getAllCitiesC, deleteCityC } from "../controllers/citiesControllers.js";
 import validate from "../validation/validation.js";
 import cityVal from "../validation/newCity.js";
 
@@ -10,6 +10,8 @@ const citiesRoutes = express.Router();
 
 citiesRoutes.post("/newCity", cityVal, validate, addNewCityC);
 citiesRoutes.get("/cityList", getAllCitiesC);
+// city id
+citiesRoutes.delete("/:id/deleteCity", deleteCityC)
 
 
 export default citiesRoutes;

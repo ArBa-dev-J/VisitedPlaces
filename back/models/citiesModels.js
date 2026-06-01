@@ -34,3 +34,22 @@ export const getAllCitiesM = async () => {
 
     return allCities;
 }
+
+//get city by id
+
+export const getCityByIdM = async (id) => {
+    const cityById = sql`
+    SELECT id FROM cities
+    WHERE id = ${id};
+    `;
+    return cityById;
+}
+
+//delete city
+
+export const deleteCityM = async (id) => {
+    return sql`
+    DELETE FROM cities
+    WHERE id = ${id}
+    `;
+}

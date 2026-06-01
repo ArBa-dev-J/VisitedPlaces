@@ -1,4 +1,4 @@
-import { addNewCityM, doesCityExistM, getAllCitiesM } from "../models/citiesModels.js";
+import { addNewCityM, doesCityExistM, getAllCitiesM, deleteCityM, getCityByIdM } from "../models/citiesModels.js";
 
 
 // insert new city
@@ -59,9 +59,9 @@ export const getAllCitiesC = async (req, res, next) => {
 
         const orderdArray = () => {
             return response.sort((a, b) => b.id - a.id);
-        } 
+        }
 
-        
+
         return res.status(200).json({
             status: "success",
             data: orderdArray()
@@ -73,3 +73,33 @@ export const getAllCitiesC = async (req, res, next) => {
         })
     }
 }
+
+// delete city 
+
+export const deleteCityC = async (req, res, next) => {
+    try {
+        // city id
+        const { id } = req.params;
+
+        const response = await getCityByIdM(id);
+
+        if (response == 0) return res.status(404).json({
+            status: "fail",
+            message: "City not found"
+        })
+
+        await deleteCityM(id);
+
+        return res.status(200).json({
+            statu: "success",
+            message: "data was successfully deleted",
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: `${error}`,
+        })
+    }
+}
+
