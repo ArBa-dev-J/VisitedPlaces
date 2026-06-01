@@ -16,9 +16,9 @@ export const addNewCityC = async (req, res, next) => {
 
         // converts city name's first letter to upper case
 
-         const firstUpperCase = newData.name.charAt(0).toLocaleUpperCase();
-         const remainingLetters = newData.name.slice(1);
-         const fullString = firstUpperCase + remainingLetters;
+        const firstUpperCase = newData.name.charAt(0).toLocaleUpperCase();
+        const remainingLetters = newData.name.slice(1);
+        const fullString = firstUpperCase + remainingLetters;
 
         // checks if city doesnt exist already
 
@@ -54,11 +54,18 @@ export const getAllCitiesC = async (req, res, next) => {
             status: "fail",
             message: "There are no cities in the list"
         });
-        else return res.status(200).json({
-            status: "success",
-            data: response
-        });
 
+        // change order to latest on top
+
+        const orderdArray = () => {
+            return response.sort((a, b) => b.id - a.id);
+        } 
+
+        
+        return res.status(200).json({
+            status: "success",
+            data: orderdArray()
+        });
     } catch (error) {
         res.status(500).json({
             status: "fail",
