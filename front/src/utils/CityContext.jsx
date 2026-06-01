@@ -3,10 +3,10 @@ import { createContext, useState } from "react";
 export const CityContext = createContext();
 
 export const CityContextProvider = ({ children }) => {
-  const [city, setCity] = useState([]);
+  const [cities, setCities] = useState([]);
 
   return (
-    <CityContext value={{ city, setCity }}>
+    <CityContext value={{ cities, setCities }}>
       {children}
     </CityContext>
   );

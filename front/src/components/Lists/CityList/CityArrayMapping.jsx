@@ -1,9 +1,10 @@
-function CityArrayMapping(){
+function CityArrayMapping({ cities }) {
+   
     return (
         <>
-        <div>
-            
-        </div>
+            <div>
+               <p className="text-[1.2rem] text-white">{cities.name}</p> 
+            </div>
         </>
     );
 }

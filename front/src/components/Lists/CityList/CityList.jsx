@@ -1,19 +1,22 @@
 import axios from "axios";
 import CityArrayMapping from "./CityArrayMapping";
-import { useEffect, useState, } from "react";
+import { CityContext } from "../../../utils/CityContext";
+import { useEffect, useState, useContext } from "react";
 
 function CityList() {
 
     const API_URL = import.meta.env.VITE_BACK;
 
     const [serverError, setServerError] = useState(null);
+    const { cities, setCities } = useContext(CityContext);
 
 
     // get all cities
     const fetchCities = async () => {
         try {
             const response = await axios.get(`${API_URL}/cities/cityList`);
-            console.log(response);
+
+            setCities(response.data.data);
         } catch (error) {
             setServerError(error);
         }
@@ -25,9 +28,11 @@ function CityList() {
 
     return (
         <>
-            <section className="mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px]">
+            <section className="flex flex-col items-start mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
-                <CityArrayMapping />
+                {cities.map((item) => (
+                    <CityArrayMapping key={item.id} cities={item}/>
+                ))}
             </section>
         </>
     );
