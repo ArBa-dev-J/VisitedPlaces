@@ -38,7 +38,7 @@ function NewCityFormInputs() {
                 {errors.name && <p className="text-red-500">This field must be populated</p> || <p  className="text-red-500">{serverError}</p>}
                 <p className="text-green-500 text-[1rem]">{success}</p>
 
-                <input type="submit" value="Add new city to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
+                <input type="submit" value="Add a new city to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
 
             </form>
 
