@@ -21,7 +21,7 @@ function NewCityFormInputs() {
         try {
             await axios.post(`${API_URL}/cities/newCity`, data)
 
-            setSuccess("The city was successfully uploaded");
+            setSuccess(`${data.name} was successfully added`);
             setServerError(null);
         } catch (error) {
             setServerError(error?.response.data.error?.[0].msg || error?.response.data.message);
