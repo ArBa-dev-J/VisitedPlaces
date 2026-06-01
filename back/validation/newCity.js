@@ -5,8 +5,8 @@ const cityVal = [
         .isString()
         .custom((body) => {
             const arr = Object.values(body);
-
-            if (arr.some((a) => !isNaN(a))) {
+            
+            if (arr.some(a => /\d+/.test(String(a)))) {
                 throw new Error("Cannot write numbers");
             }
 
