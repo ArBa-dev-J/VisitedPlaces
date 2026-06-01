@@ -14,16 +14,22 @@ export const addNewCityC = async (req, res, next) => {
             message: "Missing city name",
         })
 
+        // converts city name's first letter to upper case
+
+         const firstUpperCase = newData.name.charAt(0).toLocaleUpperCase();
+         const remainingLetters = newData.name.slice(1);
+         const fullString = firstUpperCase + remainingLetters;
+
         // checks if city doesnt exist already
 
-        const exists = await doesCityExistM(newData)
+        const exists = await doesCityExistM(fullString)
         if (exists) return res.status(409).json({
             status: "fail",
             message: "This city already exists",
-        })
+        });
 
         // post new city
-        const post = await addNewCityM(newData);
+        const post = await addNewCityM(fullString);
 
         res.status(201).json({
             status: "success",
