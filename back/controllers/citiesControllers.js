@@ -1,4 +1,4 @@
-import { addNewCityM, doesCityExistM } from "../models/citiesModels.js";
+import { addNewCityM, doesCityExistM, getAllCitiesM } from "../models/citiesModels.js";
 
 
 // insert new city
@@ -28,6 +28,29 @@ export const addNewCityC = async (req, res, next) => {
         res.status(201).json({
             status: "success",
             data: post,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: `${error}`,
+        })
+    }
+}
+
+// get all cities
+
+export const getAllCitiesC = async (req, res, next) => {
+    try {
+        const response = await getAllCitiesM();
+
+        if (response == 0) return res.status(404).json({
+            status: "fail",
+            message: "There are no cities in the list"
+        });
+        else return res.status(200).json({
+            status: "success",
+            data: response
         });
 
     } catch (error) {

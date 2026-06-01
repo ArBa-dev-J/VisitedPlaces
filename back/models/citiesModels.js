@@ -22,6 +22,17 @@ export const doesCityExistM = async (newData) => {
     const exists = await sql`
     SELECT name FROM cities
     WHERE name = ${name};
-    `
+    `;
+    
     return exists[0];
+}
+
+// get all cities
+
+export const getAllCitiesM = async () => {
+    const allCities = await sql`
+    SELECT * FROM cities;
+    `;
+
+    return allCities;
 }
