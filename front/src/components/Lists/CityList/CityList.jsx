@@ -24,11 +24,11 @@ function CityList() {
 
     useEffect(() => {
         fetchCities();
-    }, [])
+    }, [cities.name])
 
     return (
         <>
-            <section className="flex flex-col items-start mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px]">
+            <section className="mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
                 {cities.map((item) => (
                     <CityArrayMapping key={item.id} cities={item}/>
