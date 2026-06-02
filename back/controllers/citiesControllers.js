@@ -1,4 +1,4 @@
-import { addNewCityM, doesCityExistM, getAllCitiesM, deleteCityM, getCityByIdM } from "../models/citiesModels.js";
+import { addNewCityM, doesCityExistM, getAllCitiesM, deleteCityM, getCityByIdM, updateCityNameM } from "../models/citiesModels.js";
 
 
 // insert new city
@@ -106,3 +106,40 @@ export const deleteCityC = async (req, res, next) => {
     }
 }
 
+// update city name
+
+export const updateCityNameC = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const newName = req.body;
+
+        // check if the city exists 
+        const cityExists = await getCityByIdM(id);
+
+        if (cityExists == 0) return res.status(404).json({
+            status: "fail",
+            message: "City not found"
+        })
+
+        // simple data check if exists
+
+        if (!newName.name) return res.status(400).json({
+            status: "fail",
+            message: "Missing city name",
+        })
+
+
+        const nameUpdated = await updateCityNameM(newName, id);
+
+        return res.status(201).json({
+            status: "success",
+            data: nameUpdated,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: `${error}`,
+        })
+    }
+}

@@ -3,7 +3,7 @@ import { sql } from "../dbConnection.js";
 // add new city
 
 export const addNewCityM = async (fullString) => {
-    
+
     const newCity = await sql`
     INSERT INTO cities (name)
     VALUES (${fullString})
@@ -16,12 +16,12 @@ export const addNewCityM = async (fullString) => {
 // get city
 
 export const doesCityExistM = async (fullString) => {
-    
+
     const exists = await sql`
     SELECT name FROM cities
     WHERE name = ${fullString};
     `;
-    
+
     return exists[0];
 }
 
@@ -53,4 +53,19 @@ export const deleteCityM = async (id) => {
     DELETE FROM cities
     WHERE id = ${id}
     `;
+}
+
+// update city name
+
+export const updateCityNameM = async (newName, id) => {
+    const { name } = newName;
+
+    const cityList = await sql`
+    UPDATE cities
+    SET name = ${name}
+    WHERE id = ${Number(id)}
+    RETURNING *;
+    `;
+
+    return cityList[0];
 }
