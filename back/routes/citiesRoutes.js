@@ -14,7 +14,7 @@ citiesRoutes.get("/cityList", getAllCitiesC);
 // city id
 citiesRoutes.delete("/:id/deleteCity", deleteCityC)
 // city id
-citiesRoutes.patch("/:id/updateCity", cityVal, validate, updateCityNameC);
+citiesRoutes.patch("/:id/updateCity", cityVal, validate, capitalLetter, updateCityNameC);
 
 
 export default citiesRoutes;

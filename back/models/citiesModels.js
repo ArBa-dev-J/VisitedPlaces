@@ -58,11 +58,10 @@ export const deleteCityM = async (id) => {
 // update city name
 
 export const updateCityNameM = async (newName, id) => {
-    const { name } = newName;
 
     const cityList = await sql`
     UPDATE cities
-    SET name = ${name}
+    SET name = ${newName}
     WHERE id = ${Number(id)}
     RETURNING *;
     `;

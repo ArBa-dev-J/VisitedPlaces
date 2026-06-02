@@ -105,7 +105,7 @@ export const deleteCityC = async (req, res) => {
 export const updateCityNameC = async (req, res) => {
     try {
         const { id } = req.params;
-        const newName = req.body;
+        const newName = req.capitalizedName;
 
         // check if the city exists 
         const cityExists = await getCityByIdM(id);
@@ -117,7 +117,7 @@ export const updateCityNameC = async (req, res) => {
 
         // simple data check if exists
 
-        if (!newName.name) return res.status(400).json({
+        if (!newName) return res.status(400).json({
             status: "fail",
             message: "Missing city name",
         })
