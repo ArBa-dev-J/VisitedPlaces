@@ -2,7 +2,7 @@ import AskForDeletion from "./AskFOrDeletion";
 import x from "../../../assets/x.png"
 import { useState } from "react";
 
-function CityArrayMapping({ cities }) {
+function CityArrayMapping({ cities, fetchCities }) {
     const [show, setShow] = useState(false);
 
     const toShow = () => setShow(true);
@@ -17,7 +17,7 @@ function CityArrayMapping({ cities }) {
                 <div className="flex gap-5">
                     <button className="block">update</button>
                     <button onClick={() => toShow()} className="block cursor-pointer"><img src={x} alt="x" className="h-5" /></button>
-                    {show ? <AskForDeletion  notToShow={() => notToShow} city={cities}/> : null}
+                    {show ? <AskForDeletion  notToShow={() => notToShow} city={cities}  fetchCities={() => fetchCities()}/> : null}
                 </div>
             </div>
         </>

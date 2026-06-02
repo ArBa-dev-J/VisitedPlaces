@@ -24,7 +24,7 @@ function CityList() {
 
     useEffect(() => {
         fetchCities();
-    }, [cities?.name])
+    }, [cities?.id])
 
     return (
         <>
@@ -32,7 +32,7 @@ function CityList() {
                 <p className="text-red-500 text-center">{serverError}</p>
 
                 {cities.map((item) => (
-                    <CityArrayMapping key={item.id} cities={item}/>
+                    <CityArrayMapping key={item.id} cities={item} fetchCities={() => fetchCities()}/>
                 ))} 
                 
             </section> 
