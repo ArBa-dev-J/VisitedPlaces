@@ -11,11 +11,22 @@ function CityList() {
     const [serverError, setServerError] = useState(null);
     const { cities, setCities } = useContext(CityContext);
 
+    // search by name
+    const [name, setName] = useState();
+
+    const nameChange = (e) => {
+        setName(e.target.value);
+    };
 
     // get all cities
     const fetchCities = async () => {
         try {
-            const response = await axios.get(`${API_URL}/cities/cityList`);
+            const response = await axios.get(`${API_URL}/cities/cityList`, {
+                params: {
+                    name: name,
+                }
+            });
+
 
             setCities(response.data.data);
         } catch (error) {
@@ -25,14 +36,14 @@ function CityList() {
 
     useEffect(() => {
         fetchCities();
-    }, [cities?.id])
+    }, [cities?.id, name])
 
     return (
         <>
             <section className="mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
 
-                <CitySearch/> 
+                <CitySearch nameChange={nameChange} />
 
                 {cities.map((item) => (
                     <CityArrayMapping key={item.id} cities={item} fetchCities={() => fetchCities()} />
