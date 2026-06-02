@@ -11,7 +11,7 @@ function CityArrayMapping({ cities, fetchCities }) {
 
     return (
         <>
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-3">
                 <p className="text-[1.2rem] text-white">{cities.name}</p>
 
                 <div className="flex gap-5">
