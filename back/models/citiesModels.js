@@ -27,9 +27,10 @@ export const doesCityExistM = async (fullString) => {
 
 // get all cities
 
-export const getAllCitiesM = async () => {
+export const getAllCitiesM = async (name) => {
     const allCities = await sql`
-    SELECT * FROM cities;
+    SELECT * FROM cities
+    ${name ? sql`WHERE name ILIKE ${`%` + name + `%`}` : sql``}
     `;
 
     return allCities;

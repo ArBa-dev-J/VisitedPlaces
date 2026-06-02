@@ -48,7 +48,10 @@ export const addNewCityC = async (req, res, next) => {
 
 export const getAllCitiesC = async (req, res, next) => {
     try {
-        const response = await getAllCitiesM();
+        // ?name="cityName"
+        const { name } = req.query;
+
+        const response = await getAllCitiesM(name);
 
         if (response == 0) return res.status(404).json({
             status: "fail",
