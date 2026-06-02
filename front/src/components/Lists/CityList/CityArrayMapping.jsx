@@ -17,7 +17,7 @@ function CityArrayMapping({ cities }) {
                 <div className="flex gap-5">
                     <button className="block">update</button>
                     <button onClick={() => toShow()} className="block cursor-pointer"><img src={x} alt="x" className="h-5" /></button>
-                    {show ? <AskForDeletion  notToShow={() => notToShow} /> : null}
+                    {show ? <AskForDeletion  notToShow={() => notToShow} city={cities}/> : null}
                 </div>
             </div>
         </>
