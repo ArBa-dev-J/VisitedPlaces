@@ -3,33 +3,27 @@ import { addNewCityM, doesCityExistM, getAllCitiesM, deleteCityM, getCityByIdM, 
 
 // insert new city
 
-export const addNewCityC = async (req, res, next) => {
+export const addNewCityC = async (req, res, ) => {
     try {
-        const newData = req.body;
+       const name = req.capitalizedName;
 
         // simple data check if exists
 
-        if (!newData.name) return res.status(400).json({
+        if (!name) return res.status(400).json({
             status: "fail",
             message: "Missing city name",
         })
 
-        // converts city name's first letter to upper case
-
-        const firstUpperCase = newData.name.charAt(0).toLocaleUpperCase();
-        const remainingLetters = newData.name.slice(1);
-        const fullString = firstUpperCase + remainingLetters;
-
         // checks if city doesnt exist already
 
-        const exists = await doesCityExistM(fullString)
+        const exists = await doesCityExistM(name)
         if (exists) return res.status(409).json({
             status: "fail",
             message: "This city already exists",
         });
 
         // post new city
-        const post = await addNewCityM(fullString);
+        const post = await addNewCityM(name);
 
         res.status(201).json({
             status: "success",
@@ -46,7 +40,7 @@ export const addNewCityC = async (req, res, next) => {
 
 // get all cities
 
-export const getAllCitiesC = async (req, res, next) => {
+export const getAllCitiesC = async (req, res) => {
     try {
         // ?name="cityName"
         const { name } = req.query;
@@ -79,7 +73,7 @@ export const getAllCitiesC = async (req, res, next) => {
 
 // delete city 
 
-export const deleteCityC = async (req, res, next) => {
+export const deleteCityC = async (req, res) => {
     try {
         // city id
         const { id } = req.params;
@@ -108,7 +102,7 @@ export const deleteCityC = async (req, res, next) => {
 
 // update city name
 
-export const updateCityNameC = async (req, res, next) => {
+export const updateCityNameC = async (req, res) => {
     try {
         const { id } = req.params;
         const newName = req.body;

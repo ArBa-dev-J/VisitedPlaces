@@ -2,11 +2,11 @@ import { sql } from "../dbConnection.js";
 
 // add new city
 
-export const addNewCityM = async (fullString) => {
+export const addNewCityM = async (name) => {
 
     const newCity = await sql`
     INSERT INTO cities (name)
-    VALUES (${fullString})
+    VALUES (${name})
     RETURNING *;
     `
 
@@ -15,11 +15,11 @@ export const addNewCityM = async (fullString) => {
 
 // get city
 
-export const doesCityExistM = async (fullString) => {
+export const doesCityExistM = async (name) => {
 
     const exists = await sql`
     SELECT name FROM cities
-    WHERE name = ${fullString};
+    WHERE name = ${name};
     `;
 
     return exists[0];
