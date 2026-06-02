@@ -1,3 +1,5 @@
+import x from "../../../assets/x.png"
+
 function CityArrayMapping({ cities }) {
 
     return (
@@ -7,7 +9,7 @@ function CityArrayMapping({ cities }) {
 
                 <div className="flex gap-5">
                     <button className="block">update</button>
-                    <button className="block">Delete</button>
+                    <button className="block cursor-pointer"><img src={x} alt="x" className="h-5" /></button>
                 </div>
             </div>
         </>

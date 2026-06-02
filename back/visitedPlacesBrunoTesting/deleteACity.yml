@@ -5,11 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: http://localhost:3000/api/v1/city/:id/deleteCity
-  params:
-    - name: id
-      value: ""
-      type: path
+  url: http://localhost:3000/api/v1/cities/8/deleteCity
   auth: inherit
 
 settings:
