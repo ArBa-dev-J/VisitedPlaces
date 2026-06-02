@@ -8,7 +8,7 @@ function CityArrayMapping({ cities, fetchCities }) {
     const toShow = () => setShow(true);
     const notToShow = () => setShow(false);
 
-
+console.log(show);
     return (
         <>
             <div className="flex justify-between mt-3">

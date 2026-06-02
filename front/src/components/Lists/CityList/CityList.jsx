@@ -10,6 +10,8 @@ function CityList() {
 
     const [serverError, setServerError] = useState(null);
     const { cities, setCities } = useContext(CityContext);
+    // const [show, setShow] = useState(false);
+
 
     // search by name
     const [name, setName] = useState();
@@ -34,20 +36,34 @@ function CityList() {
         }
     }
 
+
     useEffect(() => {
         fetchCities();
-    }, [cities?.id, name])
+    }, [cities, name])
+
+
+    // hide search bat if there are no cities in the list
+    const hideSearchBar = () => {
+        let show;
+        if (cities.length > 0) {
+            return show = true;
+        } else return show = false;
+    }
+    // if (cities.length > 0) {
+    //     setShow(true);
+    // } else setShow(false);
+
 
     return (
         <>
             <section className="mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
 
-                <CitySearch nameChange={nameChange} />
+                {hideSearchBar() ? <CitySearch nameChange={nameChange} /> : null}
 
-                {cities.map((item) => (
+                {hideSearchBar() ? cities.map((item) => (
                     <CityArrayMapping key={item.id} cities={item} fetchCities={() => fetchCities()} />
-                ))}
+                )) : null}
 
             </section>
         </>

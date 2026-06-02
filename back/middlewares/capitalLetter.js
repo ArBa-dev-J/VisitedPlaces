@@ -11,7 +11,7 @@ const capitalLetter = (req, res, next) => {
 
         req.capitalizedName = fullString;
 
-         next();
+        next();
     } catch (error) {
         res.status(500).json({
             status: "fail",
