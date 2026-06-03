@@ -4,6 +4,9 @@ import x from "../../../assets/x.png"
 import axios from "axios";
 
 function UpdateCity({ notToShowUpdate, city, fetchCities }) {
+
+    const API_URL = import.meta.env.VITE_BACK;
+
     const [serverError, setServerError] = useState(null);
     const [success, setSuccess] = useState(null);
 
@@ -14,9 +17,18 @@ function UpdateCity({ notToShowUpdate, city, fetchCities }) {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        setSuccess(null);
+        setServerError(null);
 
+        try {
+            await axios.patch(`${API_URL}/cities/${city.id}/updateCity`, data);
+
+            setSuccess(`${city.name} was successfully updated to ${data.name}`);
+            setServerError(null);
+        } catch (error) {
+            setServerError(error?.response.data.error?.[0].msg || error?.response.data.message);
+        }
     }
 
     return (
@@ -26,12 +38,12 @@ function UpdateCity({ notToShowUpdate, city, fetchCities }) {
 
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px] ">
 
-                    <label className="text-white">Add a new city</label>
+                    <label className="text-white mb-5">Update old city name <span className="font-bold">{city.name}</span> to a new name</label>
                     <input type="text" {...register("name", { required: true })} className="border block bg-sky-600 text-black text-center" />
                     {errors.name && <p className="text-red-500">This field must be populated</p> || <p className="text-red-500">{serverError}</p>}
                     <p className="text-green-500 text-[1rem]">{success}</p>
 
-                    <input type="submit" value="Add a new city to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
+                    <input type="submit" value="Update the name" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
 
                 </form>
             </section>
