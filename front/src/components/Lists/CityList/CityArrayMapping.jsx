@@ -22,10 +22,13 @@ function CityArrayMapping({ cities, fetchCities }) {
                 <p className="text-[1.2rem] text-white">{cities.name}</p>
 
                 <div className="flex gap-5">
+
                     <button onClick={() => toShowUpdate()} className="block cursor-pointer"><img src={update} alt="update" className="h-7" /></button>
-                    {showUpdate ? <UpdateCity notToShow={() => setShowUpdate} city={cities} fetchCities={() => fetchCities()} /> : null}
+                    {showUpdate ? <UpdateCity  notToShowUpdate={() => notToShowUpdate} city={cities} fetchCities={() => fetchCities()} /> : null}
+
                     <button onClick={() => toShow()} className="block cursor-pointer"><img src={x} alt="x" className="h-5" /></button>
                     {show ? <AskForDeletion notToShow={() => notToShow} city={cities} fetchCities={() => fetchCities()} /> : null}
+                        
                 </div>
             </div>
         </>

@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
+import x from "../../../assets/x.png"
 import axios from "axios";
 
-function UpdateCity({ notToshow, city, fetchCities }) {
+function UpdateCity({ notToShowUpdate, city, fetchCities }) {
     const [serverError, setServerError] = useState(null);
     const [success, setSuccess] = useState(null);
 
@@ -21,6 +22,8 @@ function UpdateCity({ notToshow, city, fetchCities }) {
     return (
         <>
             <section className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-sky-900 p-50 rounded-[18px]">
+                <button onClick={notToShowUpdate()} className="relative left-150 bottom-40 cursor-pointer"><img className="h-5" src={x} alt="delete" /></button>
+
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px] ">
 
                     <label className="text-white">Add a new city</label>
