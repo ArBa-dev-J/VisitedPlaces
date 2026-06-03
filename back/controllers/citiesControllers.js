@@ -49,7 +49,7 @@ export const getAllCitiesC = async (req, res) => {
 
         if (response == 0) return res.status(404).json({
             status: "fail",
-            message: "There are no cities in the list"
+            message: "No cities found"
         });
 
         // change order to latest on top
