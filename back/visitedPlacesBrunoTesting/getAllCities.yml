@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
-  url: http://localhost:3000/api/v1/cities/cityList
+  url: http://localhost:3000/api/v1/cities/cityList?name=Belgium
+  params:
+    - name: name
+      value: Belgium
+      type: query
   auth: inherit
 
 settings:

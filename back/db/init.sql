@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS public.places (
     type VARCHAR(100) NOT NULL,
     description TEXT,
     image_url TEXT,
-    address TEXT NOT NULL,
+    address VARCHAR(100) NOT NULL,
     rating INTEGER NOT NULL CHECK (rating >= 0 AND rating <= 5),
-    is_free BOOLEAN NOT NULL DEFAULT false,
+    is_free BOOLEAN NOT NULL,
     city_id INTEGER NOT NULL,
 
     CONSTRAINT fk_city
