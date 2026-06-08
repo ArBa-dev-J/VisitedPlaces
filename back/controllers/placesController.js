@@ -24,7 +24,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
             status: "success",
             data: addANewPlace,
         });
-        
+
     } catch (error) {
         res.status(500).json({
             status: "fail",
