@@ -1,4 +1,5 @@
 import argon2 from "argon2";
+import { newVisitedPlaceM } from "../models/placesModel.js";
 
 // post a new visited place
 
@@ -12,6 +13,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
         })
 
         const urlHash = await argon2.hash(newPlace.image_url);
+        newPlace.image_url = urlHash;
 
         const addANewPlace = await newVisitedPlaceM(newPlace);
 

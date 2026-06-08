@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 // routes imports
 import citiesRoutes from "./routes/citiesRoutes.js";
+import placesRoutes from "./routes/placesRoutes.js";
 
 const CLIENT_URL = process.env.CLIENT_URL;
 
@@ -16,6 +17,7 @@ app.use(
 
 // Routes
 app.use("/api/v1/cities", citiesRoutes);
+app.use("/api/v1/places", placesRoutes);
 
 //for testing server status
 app.get("/health", (req, res) => {

@@ -7,8 +7,11 @@ export const newVisitedPlaceM = async (newPlace) => {
 
     const upload = await sql`
     INSERT INTO places (name, place_type, description, image_url, address, rating, is_free, city_id)
-    VALUES (${name , place_type, description, image_url, address, rating, is_free, city_id})
-    RETURNIG *;
+    VALUES (${name}, ${place_type}, ${description}, ${image_url}, ${address}, ${rating}, ${is_free}, ${city_id})
+    RETURNING *;
     `;
+ 
+   
+    
     return upload[0];
 }
