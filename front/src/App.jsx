@@ -8,7 +8,6 @@ function App() {
 
   return (
     <>
-    <main className="bg-sky-600">
       <Routes>
         {/* Dasboard route */}
         <Route path="/" element={<Dashboard />} />
@@ -17,11 +16,11 @@ function App() {
         <Route path="/newCity" element={<NewCityForm />} />
 
         {/* List routes */}
-        <Route path="/cityList" element={<CityListPage/>}/>
+        <Route path="/cityList" element={<CityListPage />} />
 
 
       </Routes>
-      </main>
+
     </>
   )
 }

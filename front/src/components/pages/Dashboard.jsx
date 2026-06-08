@@ -1,9 +1,11 @@
 import PageHeader from "../PageHeader";
 
 function Dashborad() {
-    return(
+    return (
         <>
-        <PageHeader/>
+            <main className="bg-sky-600">
+                <PageHeader />
+            </main>
         </>
     );
 }
