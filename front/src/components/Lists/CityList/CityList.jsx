@@ -40,7 +40,7 @@ function CityList() {
 
     useEffect(() => {
         fetchCities();
-    }, [cities, name])
+    }, [name])
 
 
     // hide search bat if there are no cities in the list

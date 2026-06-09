@@ -5,6 +5,7 @@ import axios from "axios";
 
 function NewCityFormInput() {
     const [serverError, setServerError] = useState(null);
+    const [fetchError, setFetchError] = useState(null);
     const [success, setSuccess] = useState(null);
 
     const { cities, setCities } = useContext(CityContext);
@@ -13,8 +14,6 @@ function NewCityFormInput() {
     const API_URL = import.meta.env.VITE_BACK;
 
     // get all cities directly from db
-
-
     const fetchCities = async () => {
         try {
             const response = await axios.get(`${API_URL}/cities/cityList`);
@@ -22,14 +21,14 @@ function NewCityFormInput() {
             setServerError(null);
             setCities(response.data.data);
         } catch (error) {
-            setServerError(error.response.data.message);
-
+            setFetchError(error.response.data.message);
         }
     }
 
     useEffect(() => {
         fetchCities();
     }, [])
+    //----------------------------------------------------
 
     const {
         register,
@@ -37,8 +36,12 @@ function NewCityFormInput() {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        try {
+            
+        } catch (error) {
+            
+        }
     }
 
     return (
@@ -91,7 +94,7 @@ function NewCityFormInput() {
                         <option key={city.id} value={city.id}>{city.name}</option>
                     ))}
                 </select>
-                {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{serverError}</p>}
+                {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{serverError || fetchError}</p>}
 
                 <input type="submit" value="Add a new city to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
             </form>
