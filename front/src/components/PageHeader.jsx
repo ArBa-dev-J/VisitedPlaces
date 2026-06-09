@@ -8,7 +8,7 @@ function PageHeader() {
 
                 <nav className='mt-20 flex justify-center  py-4'>
                     <div className='relative right-20'>
-                        <Link className='mr-2 p-2 relative right-15 bg-white hover:bg-gray-200 rounded-[20px] text-[1.2rem]'>
+                        <Link to="/newPlace" className='mr-2 p-2 relative right-15 bg-white hover:bg-gray-200 rounded-[20px] text-[1.2rem]'>
                             Add a new visited place
                         </Link>
 

@@ -38,7 +38,7 @@ const placeVal = [
 
     body("address")
         .isString()
-        .isLength({ min: 10, max: 900 })
+        .isLength({ min: 2, max: 900 })
         .withMessage("Address is too short or too long"),
 
     body("rating")

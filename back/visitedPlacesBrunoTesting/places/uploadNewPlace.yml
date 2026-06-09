@@ -6,6 +6,19 @@ info:
 http:
   method: POST
   url: http://localhost:3000/api/v1/places/newPlace
+  body:
+    type: json
+    data: |-
+      {
+        "name": "gedimino tiltas",
+        "place_type": "theme_park",
+        "description": "",
+        "image_url": "https://www.sportico.com/wp-content/uploads/2020/09/0911_IMG.jpg?w=1280&h=720&crop=1", 
+        "address": "street",
+        "rating": 5,
+        "is_free" : true,
+        "city_id": 1
+      }
   auth: inherit
 
 settings:
