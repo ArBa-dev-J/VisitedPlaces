@@ -7,10 +7,29 @@ function NewCityFormInput() {
     const [serverError, setServerError] = useState(null);
     const [success, setSuccess] = useState(null);
 
-    const { cities } = useContext(CityContext);
+    const { cities, setCities } = useContext(CityContext);
 
 
     const API_URL = import.meta.env.VITE_BACK;
+
+    // get all cities directly from db
+
+
+    const fetchCities = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/cities/cityList`);
+
+            setServerError(null);
+            setCities(response.data.data);
+        } catch (error) {
+            setServerError(error.response.data.message);
+
+        }
+    }
+
+    useEffect(() => {
+        fetchCities();
+    }, [])
 
     const {
         register,
@@ -47,7 +66,7 @@ function NewCityFormInput() {
                 {<p className="text-red-500">{serverError}</p>}
 
                 <label className="text-white">Post image url</label>
-                <input type="text" className="border" />
+                <input {...register("image_url")} type="text" className="border" />
 
                 <label className="text-white block">Write an address</label>
                 <input {...register("address", { required: true })} type="text" className="border" />
@@ -68,9 +87,9 @@ function NewCityFormInput() {
                 <label className="text-white">City select</label>
                 <select {...register("is_free", { required: true })} className="text-white">
                     <option value="">Select the option </option>
-                   {cities.map(city => (
-                    <option key={city.id} value={city.id}>{city.name}</option>
-                   ))}
+                    {cities.map(city => (
+                        <option key={city.id} value={city.id}>{city.name}</option>
+                    ))}
                 </select>
                 {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{serverError}</p>}
 
