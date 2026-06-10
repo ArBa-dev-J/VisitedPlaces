@@ -62,7 +62,7 @@ function NewCityFormInput() {
     // filter data errors by specific fields
 
     const getServerError = (fieldName) => {
-        return serverDataError.find(
+        return serverDataError?.find(
             (error) => error.path === fieldName
         )?.msg;
     };
