@@ -13,11 +13,11 @@ http:
         "name": "gedimino tiltas",
         "place_type": "theme_park",
         "description": "",
-        "image_url": "https://www.sportico.com/wp-content/uploads/2020/09/0911_IMG.jpg?w=1280&h=720&crop=1", 
+        "image_url": "asdsadsa",
         "address": "street",
-        "rating": 5,
+        "rating": "-5",
         "is_free" : true,
-        "city_id": 1
+        "city_id": 7
       }
   auth: inherit
 
