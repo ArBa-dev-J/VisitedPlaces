@@ -32,6 +32,7 @@ const placeVal = [
         .withMessage("Description is too long"),
 
     body("image_url")
+        .optional({ values: "falsy" })
         .isString()
         .isURL()
         .withMessage("Must be an url"),
@@ -45,16 +46,16 @@ const placeVal = [
         .isNumeric()
         // check number between 0 and 5
         .custom((number) => {
-           if (number >= 0 && number <= 5) return true;
-           else throw new Error("Rating cannot be lower than 0 and higher than 5");
+            if (number >= 0 && number <= 5) return true;
+            else throw new Error("Rating cannot be lower than 0 and higher than 5");
         })
         .withMessage(Error.message),
 
-        body("is_free")
+    body("is_free")
         .isBoolean()
         .withMessage("Must be a boolean"),
 
-        body("city_id")
+    body("city_id")
         .isNumeric()
         .withMessage("Must be a number")
 

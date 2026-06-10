@@ -4,13 +4,12 @@ import { CityContext } from "../../../utils/CityContext"
 import axios from "axios";
 
 function NewCityFormInput() {
-    const [serverDataError, setServerDataError] = useState("");
+    const [serverDataError, setServerDataError] = useState([]);
     const [serverError, setServerError] = useState("");
     const [fetchError, setFetchError] = useState(null);
     const [success, setSuccess] = useState(null);
 
     const { cities, setCities } = useContext(CityContext);
-
 
     const API_URL = import.meta.env.VITE_BACK;
 
@@ -38,16 +37,33 @@ function NewCityFormInput() {
     } = useForm();
 
     const onSubmit = async (data) => {
+
+
+        // convert place rating data type from string to number
+
+        data.place_rating = Number(data.place_rating);
+      
+
         try {
+            setSuccess(null);
             await axios.post(`${API_URL}/places/newPlace`, data);
 
             setServerError(null);
-            setSuccess(`${data.name} was successfully uplaoded`);
+            setSuccess(`${data.name} was successfully uploaded`);
         } catch (error) {
-            serverDataError(error?.response.data.error);
-            serverError(error?.response.data.message);
+            setServerDataError(error?.response.data.error);
+            setServerError(error?.response.data.message);
         }
     }
+
+
+    // filter data errors by specific fields
+
+    const getServerError = (fieldName) => {
+        return serverDataError.find(
+            (error) => error.path === fieldName
+        )?.msg;
+    };
 
     return (
         <>
@@ -55,7 +71,7 @@ function NewCityFormInput() {
 
                 <label className="text-white">Add a new place name you visited</label>
                 <input type="text" {...register("name", { required: true })} className="border block bg-sky-600 text-black text-center" />
-                {errors.name && <p className="text-red-500">This field must be populated</p> || <p className="text-red-500">{serverDataError?.[0]?.msg}</p>}
+                {errors.name && <p className="text-red-500">This field must be populated</p> || <p className="text-red-500">{getServerError("name")}</p>}
 
                 <label className="text-white">Choose a place type</label>
                 <select {...register("place_type", { required: true })} className="text-white">
@@ -67,23 +83,23 @@ function NewCityFormInput() {
                     <option value="theme_park">Theme park</option>
                     <option value="Museum">Museum</option>
                 </select>
-                {errors.place_type && <p className="text-red-500">Place type must be chosen</p> || <p className="text-red-500">{serverDataError?.[1]?.msg}</p>}
+                {errors.place_type && <p className="text-red-500">Place type must be chosen</p> || <p className="text-red-500">{getServerError("place_type")}</p>}
 
                 <label className="text-white block">Write a description</label>
                 <input {...register("description")} type="text" className="border" />
-                {<p className="text-red-500">{serverDataError?.[2]?.msg}</p>}
+                {<p className="text-red-500">{getServerError("description")}</p>}
 
                 <label className="text-white">Post image url</label>
                 <input {...register("image_url")} type="text" className="border" />
-                {<p className="text-red-500">{serverDataError?.[3]?.msg}</p>}
+                {<p className="text-red-500">{getServerError("image_url")}</p>}
 
                 <label className="text-white block">Write an address</label>
                 <input {...register("address", { required: true })} type="text" className="border" />
-                {errors.address && <p className="text-red-500">Address must be required</p> || <p className="text-red-500">{serverDataError?.[4]?.msg}</p>}
+                {errors.address && <p className="text-red-500">Address must be required</p> || <p className="text-red-500">{getServerError("address")}</p>}
 
                 <label className="text-white block">Place rating</label>
-                <input {...register("place_rating", { required: true })} type="number" className="border" />
-                {errors.place_rating && <p className="text-red-500">Must have a rating</p> || <p className="text-red-500">{serverDataError?.[5]?.msg}</p>}
+                <input {...register("rating", { required: true })} type="number" className="border" />
+                {errors.rating && <p className="text-red-500">Must have a rating</p> || <p className="text-red-500">{getServerError("rating")}</p>}
 
                 <label className="text-white">Is the place free</label>
                 <select {...register("is_free", { required: true })} className="text-white">
@@ -91,19 +107,20 @@ function NewCityFormInput() {
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
-                {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{serverDataError?.[6]?.msg}</p>}
+                {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("is_free")}</p>}
 
                 <label className="text-white">City select</label>
-                <select {...register("is_free", { required: true })} className="text-white">
+                <select {...register("city_id", { required: true })} className="text-white">
                     <option value="">Select the option </option>
                     {cities.map(city => (
-                        <option key={city.id} value={city.id}>{city.name}</option>
+                        <option key={city.id} value={Number(city.id)}>{city.name}</option>
                     ))}
                 </select>
-                {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{serverDataError?.[7]?.msg || fetchError}</p>}
+                {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("city_id") || fetchError}</p>}
 
                 <input type="submit" value="Add a new city to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
                 <p className="text-red-500 font-bold">{serverError}</p>
+                <p className="text-green-400 font-bold">{success}</p>
             </form>
         </>
     );
