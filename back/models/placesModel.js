@@ -26,3 +26,15 @@ export const findPlaceNameM = async (newPlace) => {
 
     return exists[0];
 }
+
+// get all places
+
+export const getAllPlacesM = async () => {
+    const allPlaces = await sql`
+    SELECT places.*, cities.name FROM places
+    JOIN cities
+    ON places.city_id = cities.id;
+    `;
+
+    return allPlaces;
+}

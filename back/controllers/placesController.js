@@ -1,6 +1,6 @@
-import argon2 from "argon2";
+
 import { getCityByIdM } from "../models/citiesModels.js";
-import { newVisitedPlaceM, findPlaceNameM } from "../models/placesModel.js";
+import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM } from "../models/placesModel.js";
 
 // post a new visited place
 
@@ -40,13 +40,6 @@ export const newVisitedPlaceC = async (req, res, next) => {
             message: "This city doesn't exist",
         });
 
-        // hash image url
-
-        const urlHash = await argon2.hash(newPlace.image_url);
-        newPlace.image_url = urlHash;
-
-        //--------------------------------------------
-
         const addANewPlace = await newVisitedPlaceM(newPlace);
 
         if (!addANewPlace) return res.status(424).json({
@@ -59,6 +52,42 @@ export const newVisitedPlaceC = async (req, res, next) => {
             data: addANewPlace,
         });
 
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: `${error}`,
+        })
+    }
+}
+
+// get all places
+
+export const getAllPlacesC = async (req, res, next) => {
+    try {
+        const response = await getAllPlacesM();
+
+        if (response == 0) return res.status(404).json({
+            status: "fail",
+            message: "No places found",
+        });
+
+
+        // unhash img url
+
+        const unHash = await argon2.verify(response.image_url, response.image_url);
+        response.image_url = unHash;
+
+
+        // change order to latest on top
+
+        const orderdArray = () => {
+            return response.sort((a, b) => b.id - a.id);
+        }
+
+        return res.status(200).json({
+            status: "success",
+            data: orderdArray()
+        });
     } catch (error) {
         res.status(500).json({
             status: "fail",

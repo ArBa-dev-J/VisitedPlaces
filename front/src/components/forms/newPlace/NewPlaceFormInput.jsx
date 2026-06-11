@@ -53,8 +53,8 @@ function NewCityFormInput() {
             setServerError(null);
             setSuccess(`${data.name} was successfully uploaded`);
         } catch (error) {
-            setServerDataError(error?.response.data.error);
-            setServerError(error?.response.data.message);
+            setServerDataError(error?.response?.data?.error);
+            setServerError(error?.response?.data?.message);
         }
     }
 

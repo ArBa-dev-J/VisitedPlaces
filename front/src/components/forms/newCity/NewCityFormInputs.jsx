@@ -24,7 +24,7 @@ function NewCityFormInputs() {
             setSuccess(`${data.name} was successfully added`);
             setServerError(null);
         } catch (error) {
-            setServerError(error?.response.data.error?.[0].msg || error?.response.data.message);
+            setServerError(error?.response?.data.error?.[0].msg || error?.response?.data.message);
         }
     }
 
