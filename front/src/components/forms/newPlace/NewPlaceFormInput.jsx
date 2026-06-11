@@ -88,7 +88,7 @@ function NewCityFormInput() {
                 {errors.place_type && <p className="text-red-500">Place type must be chosen</p> || <p className="text-red-500">{getServerError("place_type")}</p>}
 
                 <label className="text-white block">Write a description</label>
-                <input {...register("description")} type="text" className="text-center border rounded-[15px] bg-sky-600" />
+                <textarea {...register("description")} type="text" className="text-center w-[70%] border rounded-[15px] bg-sky-600"/> 
                 {<p className="text-red-500">{getServerError("description")}</p>}
 
                 <label className="text-white">Post image url</label>
