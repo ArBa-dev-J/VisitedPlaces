@@ -1,4 +1,3 @@
-
 import { getCityByIdM } from "../models/citiesModels.js";
 import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM } from "../models/placesModel.js";
 
@@ -70,13 +69,6 @@ export const getAllPlacesC = async (req, res, next) => {
             status: "fail",
             message: "No places found",
         });
-
-
-        // unhash img url
-
-        const unHash = await argon2.verify(response.image_url, response.image_url);
-        response.image_url = unHash;
-
 
         // change order to latest on top
 
