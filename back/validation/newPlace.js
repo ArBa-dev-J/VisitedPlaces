@@ -4,10 +4,8 @@ const placeVal = [
     body("name")
         .isString()
         .custom((body) => {
-            const arr = Object.values(body);
-
-            if (arr.some(a => /\d+/.test(String(a)))) {
-                throw new Error("Cannot write numbers");
+            if (/^\d+$/.test(body)) {
+                throw new Error("Name cannot consist only of numbers");
             }
 
             return true;
@@ -39,6 +37,14 @@ const placeVal = [
 
     body("address")
         .isString()
+        .custom((body) => {
+            if (/^\d+$/.test(body)) {
+                throw new Error("Address cannot consist only of numbers");
+            }
+
+            return true;
+        })
+        .withMessage(Error.message)
         .isLength({ min: 2, max: 900 })
         .withMessage("Address is too short or too long"),
 
