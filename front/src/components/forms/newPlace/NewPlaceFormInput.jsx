@@ -72,7 +72,7 @@ function NewCityFormInput() {
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto p-5 gap-1 bg-sky-900 rounded-[20px] w-[500px] ">
 
                 <label className="text-white">Add a new place name you visited</label>
-                <input type="text" {...register("name", { required: true })} className="border block bg-sky-600 text-black text-center" />
+                <input type="text" {...register("name", { required: true })} className="border block rounded-[15px] bg-sky-600 text-black text-center" />
                 {errors.name && <p className="text-red-500">This field must be populated</p> || <p className="text-red-500">{getServerError("name")}</p>}
 
                 <label className="text-white">Choose a place type</label>
@@ -88,19 +88,19 @@ function NewCityFormInput() {
                 {errors.place_type && <p className="text-red-500">Place type must be chosen</p> || <p className="text-red-500">{getServerError("place_type")}</p>}
 
                 <label className="text-white block">Write a description</label>
-                <input {...register("description")} type="text" className="border bg-sky-600" />
+                <input {...register("description")} type="text" className="border rounded-[15px] bg-sky-600" />
                 {<p className="text-red-500">{getServerError("description")}</p>}
 
                 <label className="text-white">Post image url</label>
-                <input {...register("image_url")} type="text" className="border bg-sky-600" />
+                <input {...register("image_url")} type="text" className="border rounded-[15px] bg-sky-600" />
                 {<p className="text-red-500">{getServerError("image_url")}</p>}
 
                 <label className="text-white block">Write an address</label>
-                <input {...register("address", { required: true })} type="text" className="border bg-sky-600" />
+                <input {...register("address", { required: true })} type="text" className="border rounded-[15px] bg-sky-600" />
                 {errors.address && <p className="text-red-500">Address must be required</p> || <p className="text-red-500">{getServerError("address")}</p>}
 
                 <label className="text-white block">Place rating</label>
-                <input {...register("rating", { required: true })} type="number" className="border bg-sky-600" />
+                <input {...register("rating", { required: true })} type="number" className="border rounded-[15px] bg-sky-600" />
                 {errors.rating && <p className="text-red-500">Must have a rating</p> || <p className="text-red-500">{getServerError("rating")}</p>}
 
                 <label className="text-white">Is the place free</label>

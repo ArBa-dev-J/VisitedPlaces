@@ -34,7 +34,7 @@ function NewCityFormInputs() {
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto p-5 gap-1 bg-sky-900 rounded-[20px] w-[500px] ">
 
                 <label className="text-white">Add a new city</label>
-                <input type="text" {...register("name", { required: true })} className="border block bg-sky-600 text-black text-center" />
+                <input type="text" {...register("name", { required: true })} className="border block bg-sky-600 rounded-[15px] text-black text-center" />
                 {errors.name && <p className="text-red-500">This field must be populated</p> || <p  className="text-red-500">{serverError}</p>}
                 <p className="text-green-500 text-[1rem]">{success}</p>
 
