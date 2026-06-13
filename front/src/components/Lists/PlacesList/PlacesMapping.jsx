@@ -7,15 +7,17 @@ function PlacesMapping({ place }) {
         return show ? setShow(null) : setShow(true);
     }
 
+   
     return (
         <>
-            <div className="flex flex-col items-center mx-auto mt-3 border border-white rounded-[25px] w-[90%]">
+            <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
                 <p className="text-[1.2rem] mt-2 mb-2 text-white">{place.place_name}</p>
 
                 <p className="text-white">{place.name}</p>
 
-                <p className="text-white">This place is: {place.place_type}</p>
+                <p className="mt-2 text-white">This place is: {place.place_type}</p>
 
+                {place.is_free ? <p className="mt-2 text-white">This place is free</p> : <p className="mt-2 text-white">This place is not free</p>}
 
                 {place.image_url ? <figure className="p-5">
                     <img className="size-[100%] border rounded-[20px] border-white" src={place.image_url} />
