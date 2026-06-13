@@ -31,7 +31,7 @@ export const findPlaceNameM = async (newPlace) => {
 
 export const getAllPlacesM = async () => {
     const allPlaces = await sql`
-    SELECT places.*, cities.name FROM places
+    SELECT places.*, places.name AS place_name, cities.name FROM places
     JOIN cities
     ON places.city_id = cities.id;
     `;
