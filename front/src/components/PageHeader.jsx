@@ -12,7 +12,7 @@ function PageHeader() {
                             Add a new visited place
                         </Link>
 
-                        <Link className='ml-2 p-2 relative right-15 bg-white hover:bg-gray-200 rounded-[20px] text-[1.2rem]'>
+                        <Link to="/placesList" className='ml-2 p-2 relative right-15 bg-white hover:bg-gray-200 rounded-[20px] text-[1.2rem]'>
                             Visited place list
                         </Link>
                     </div>

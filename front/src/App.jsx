@@ -2,7 +2,7 @@ import MainPage from "./components/pages/MainPage";
 import NewCityForm from "./components/forms/newCity/NewCityForm";
 import NewPlaceForm from "./components/forms/newPlace/NewPlaceForm";
 import CityListPage from "./components/Lists/CityList/cityListPage";
-import PlacesListPage from "./components/Lists/CityList/PlacesList/PlacesListPage";
+import PlacesListPage from "./components/Lists/PlacesList/PlacesListPage"
 import { Routes, Route } from "react-router";
 
 
