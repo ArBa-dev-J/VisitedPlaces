@@ -10,11 +10,11 @@ http:
     type: json
     data: |-
       {
-        "name": "gedimino tiltas",
+        "name": "5",
         "place_type": "theme_park",
         "description": "",
-        "image_url": "asdsadsa",
-        "address": "street",
+        "image_url": "",
+        "address": "lo5",
         "rating": "-5",
         "is_free" : true,
         "city_id": 7

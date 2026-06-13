@@ -120,7 +120,7 @@ function NewCityFormInput() {
                 </select>
                 {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("city_id") || fetchError}</p>}
 
-                <input type="submit" value="Add a new city to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
+                <input type="submit" value="Add a new place to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
                 <p className="text-red-500 font-bold">{serverError}</p>
                 <p className="text-green-400 font-bold">{success}</p>
             </form>

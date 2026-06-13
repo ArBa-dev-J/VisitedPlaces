@@ -1,6 +1,6 @@
 import PageHeader from "../PageHeader";
 
-function Dashborad() {
+function MainPage() {
     return (
         <>
             <main className="bg-sky-600">
@@ -10,4 +10,4 @@ function Dashborad() {
     );
 }
 
-export default Dashborad;
+export default MainPage;
