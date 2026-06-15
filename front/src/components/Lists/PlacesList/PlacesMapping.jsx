@@ -7,6 +7,7 @@ function PlacesMapping({ place }) {
         return show ? setShow(null) : setShow(true);
     }
 
+ 
    
     return (
         <>
@@ -17,7 +18,7 @@ function PlacesMapping({ place }) {
 
                 <p className="mt-2 text-white">This place is: {place.place_type}</p>
 
-                {place.is_free ? <p className="mt-2 text-white">This place is free</p> : <p className="mt-2 text-white">This place is not free</p>}
+                {!place.is_free  ? <p className="mt-2 text-white">This place is free</p> : <p className="mt-2 text-white">This place is not free</p>}
 
                 {place.image_url ? <figure className="p-5">
                     <img className="size-[100%] border rounded-[20px] border-white" src={place.image_url} />

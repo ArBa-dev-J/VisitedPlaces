@@ -33,6 +33,7 @@ function NewCityFormInput() {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -50,6 +51,7 @@ function NewCityFormInput() {
             setServerError("");
             await axios.post(`${API_URL}/places/newPlace`, data);
 
+            reset();
             setServerError(null);
             setSuccess(`${data.name} was successfully uploaded`);
         } catch (error) {
