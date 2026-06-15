@@ -43,17 +43,17 @@ function NewCityFormInput() {
         // convert place rating data type from string to number
 
         data.place_rating = Number(data.place_rating);
-      
+
 
         try {
             setSuccess(null);
             setServerDataError([]);
             setServerError("");
-            await axios.post(`${API_URL}/places/newPlace`, data);
+            const response = await axios.post(`${API_URL}/places/newPlace`, data);
 
-            reset();
             setServerError(null);
             setSuccess(`${data.name} was successfully uploaded`);
+            if (response) reset();
         } catch (error) {
             setServerDataError(error?.response?.data?.error);
             setServerError(error?.response?.data?.message);
@@ -85,12 +85,12 @@ function NewCityFormInput() {
                     <option value="park">Park</option>
                     <option value="amusement_park">Amusement park</option>
                     <option value="theme_park">Theme park</option>
-                    <option value="Museum">Museum</option>
+                    <option value="museum">Museum</option>
                 </select>
                 {errors.place_type && <p className="text-red-500">Place type must be chosen</p> || <p className="text-red-500">{getServerError("place_type")}</p>}
 
                 <label className="text-white block">Write a description</label>
-                <textarea {...register("description")} type="text" className="text-center w-[70%] border rounded-[15px] bg-sky-600"/> 
+                <textarea {...register("description")} type="text" className="text-center w-[70%] border rounded-[15px] bg-sky-600" />
                 {<p className="text-red-500">{getServerError("description")}</p>}
 
                 <label className="text-white">Post image url</label>
@@ -108,8 +108,8 @@ function NewCityFormInput() {
                 <label className="text-white">Is the place free</label>
                 <select {...register("is_free", { required: true })} className="text-white">
                     <option value="">Select the option </option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
                 </select>
                 {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("is_free")}</p>}
 

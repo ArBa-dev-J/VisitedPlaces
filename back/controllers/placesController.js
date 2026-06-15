@@ -39,6 +39,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
             message: "This city doesn't exist",
         });
 
+
         const addANewPlace = await newVisitedPlaceM(newPlace);
 
         if (!addANewPlace) return res.status(424).json({

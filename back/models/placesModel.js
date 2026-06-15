@@ -5,9 +5,11 @@ import { sql } from "../dbConnection.js";
 export const newVisitedPlaceM = async (newPlace) => {
     const { name, place_type, description, image_url, address, rating, is_free, city_id } = newPlace;
 
+    const isFreeBool = is_free == "true";
+
     const upload = await sql`
     INSERT INTO places (name, place_type, description, image_url, address, rating, is_free, city_id)
-    VALUES (${name}, ${place_type}, ${description}, ${image_url}, ${address}, ${rating}, ${is_free}, ${city_id})
+    VALUES (${name}, ${place_type}, ${description}, ${image_url}, ${address}, ${rating}, ${isFreeBool}, ${city_id})
     RETURNING *;
     `;
 
