@@ -63,7 +63,9 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
 export const getAllPlacesC = async (req, res, next) => {
     try {
-        const response = await getAllPlacesM();
+        const { name } = req.query;
+
+        const response = await getAllPlacesM(name);
 
         if (response == 0) return res.status(404).json({
             status: "fail",

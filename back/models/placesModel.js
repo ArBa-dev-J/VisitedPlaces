@@ -29,11 +29,12 @@ export const findPlaceNameM = async (newPlace) => {
 
 // get all places
 
-export const getAllPlacesM = async () => {
+export const getAllPlacesM = async (name) => {
     const allPlaces = await sql`
     SELECT places.*, places.name AS place_name, cities.name FROM places
     JOIN cities
-    ON places.city_id = cities.id;
+    ON places.city_id = cities.id
+    ${name ? sql`WHERE places.name ILIKE ${`%` + name + `%`}` : sql``}
     `;
 
     return allPlaces;
