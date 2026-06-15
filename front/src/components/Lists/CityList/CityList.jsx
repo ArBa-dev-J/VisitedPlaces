@@ -32,7 +32,7 @@ function CityList() {
             setServerError(null);
             setCities(response.data.data);
         } catch (error) {
-            setServerError(error.response.data.message);
+            setServerError(error.response.data.message || error.response.data.error[0].msg);
             
         }
     }
