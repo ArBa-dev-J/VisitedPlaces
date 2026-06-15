@@ -66,8 +66,12 @@ export const getAllPlacesC = async (req, res, next) => {
     try {
         const { place_name } = req.query;
         const { city } = req.query;
+        const { rating } = req.query;
+        const { is_free } = req.query;
+        const { type } = req.query;
 
-        const response = await getAllPlacesM(place_name, city);
+
+        const response = await getAllPlacesM(place_name, city, rating, is_free, type);
 
         if (response == 0) return res.status(404).json({
             status: "fail",

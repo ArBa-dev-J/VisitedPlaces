@@ -31,7 +31,7 @@ export const findPlaceNameM = async (newPlace) => {
 
 // get all places
 
-export const getAllPlacesM = async (place_name, city) => {
+export const getAllPlacesM = async (place_name, city, rating, is_free, type) => {
     const allPlaces = await sql`
     SELECT places.*, places.name AS place_name, cities.name FROM places
     JOIN cities
@@ -41,6 +41,7 @@ export const getAllPlacesM = async (place_name, city) => {
 
     ${place_name ? sql`WHERE places.name ILIKE ${`%` + place_name + `%`}` : sql``}
     ${city ? sql`${place_name ? sql`AND cities.name ILIKE  ${`%` + city + `%`}` : sql`WHERE cities.name ILIKE  ${`%` + city + `%`}`}` : sql``}
+    
     `;
 
     return allPlaces;
