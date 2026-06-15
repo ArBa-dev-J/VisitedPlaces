@@ -3,6 +3,7 @@ import { query } from "express-validator";
 const paramVal = [
     query("place_name")
         .optional()
+        .isString()
         .custom((body) => {
             if (/^\d+$/.test(body)) {
                 throw new Error("Name cannot consist only of numbers");
