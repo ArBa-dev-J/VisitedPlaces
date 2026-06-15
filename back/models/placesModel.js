@@ -32,16 +32,45 @@ export const findPlaceNameM = async (newPlace) => {
 // get all places
 
 export const getAllPlacesM = async (place_name, city, rating, is_free, type) => {
+
+    const conditions = [];
+
+    if (place_name) {
+        conditions.push(sql`places.name ILIKE ${'%' + place_name + '%'}`);
+    }
+
+    if (city) {
+        conditions.push(sql`cities.name ILIKE ${'%' + city + '%'}`);
+    }
+
+    if (rating) {
+        conditions.push(sql`places.rating = ${rating}`);
+    }
+
+    if (is_free !== undefined) {
+        conditions.push(sql`places.is_free = ${is_free}`);
+    }
+
+    if (type) {
+        conditions.push(sql`places.place_type = ${type}`);
+    }
+
+    let whereClause = sql``;
+
+    if (conditions.length > 0) {
+        whereClause = sql`WHERE ${conditions[0]}`;
+
+        for (let i = 1; i < conditions.length; i++) {
+            whereClause = sql`${whereClause} AND ${conditions[i]}`;
+        }
+    }
+
     const allPlaces = await sql`
     SELECT places.*, places.name AS place_name, cities.name FROM places
     JOIN cities
     ON places.city_id = cities.id
+    ${whereClause}
 
-    -- FILTERING LOGIC
-
-    ${place_name ? sql`WHERE places.name ILIKE ${`%` + place_name + `%`}` : sql``}
-    ${city ? sql`${place_name ? sql`AND cities.name ILIKE  ${`%` + city + `%`}` : sql`WHERE cities.name ILIKE  ${`%` + city + `%`}`}` : sql``}
-    
     `;
 
     return allPlaces;
