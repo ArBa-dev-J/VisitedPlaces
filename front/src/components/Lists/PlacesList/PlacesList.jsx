@@ -11,11 +11,13 @@ import { useState, useEffect } from "react";
 function PlacesList() {
     const [serverError, setServerError] = useState(null);
     const [fetchedPlaces, setFetchedPlaces] = useState([]);
+
     const [showPlaceName, setShowPlaceName] = useState(true);
     const [showCityName, setShowCityName] = useState();
     const [showPlaceRating, setShowPlaceRating] = useState();
     const [showIsFree, setShowIsFree] = useState();
     const [showPlaceType, setShowPlaceType] = useState();
+
     const API_URL = import.meta.env.VITE_BACK;
 
 
@@ -23,7 +25,7 @@ function PlacesList() {
     // set search bars to show or hide
     const toShowOrToHide = (parameter) => {
         console.log(parameter);
-        
+
         switch (parameter) {
             case "placeName":
                 setShowPlaceName(true);
@@ -123,10 +125,12 @@ function PlacesList() {
             <section className="mx-auto p-5 bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
 
-                <div className="flex justify-center items-center">
+                <div className="flex justify-between items-center">
                     {showPlaceName ? <PlacesSearch nameChange={nameChange} /> : null}
                     {showCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
-
+                    {showPlaceRating ? <PlacesSearchByPrice /> : null}
+                    {showIsFree ? <PlacesSearchByRating /> : null}
+                    {showPlaceType ? <PlacesSearchByType /> : null}
 
                     <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
                 </div>
