@@ -11,12 +11,66 @@ import { useState, useEffect } from "react";
 function PlacesList() {
     const [serverError, setServerError] = useState(null);
     const [fetchedPlaces, setFetchedPlaces] = useState([]);
-    const [showPlaceName, setShowPlaceName] = useState();
-    const [showPCityName, setShowCityName] = useState();
+    const [showPlaceName, setShowPlaceName] = useState(true);
+    const [showCityName, setShowCityName] = useState();
     const [showPlaceRating, setShowPlaceRating] = useState();
     const [showIsFree, setShowIsFree] = useState();
     const [showPlaceType, setShowPlaceType] = useState();
     const API_URL = import.meta.env.VITE_BACK;
+
+
+
+    // set search bars to show or hide
+    const toShowOrToHide = (parameter) => {
+        console.log(parameter);
+        
+        switch (parameter) {
+            case "placeName":
+                setShowPlaceName(true);
+                setShowCityName(false);
+                setShowPlaceRating(false);
+                setShowIsFree(false);
+                setShowPlaceType(false);
+                return;
+            case "cityName":
+                setShowPlaceName(false);
+                setShowCityName(true);
+                setShowPlaceRating(false);
+                setShowIsFree(false);
+                setShowPlaceType(false);
+                return;
+            case "placeRating":
+                setShowPlaceName(false);
+                setShowCityName(false);
+                setShowPlaceRating(true);
+                setShowIsFree(false);
+                setShowPlaceType(false);
+                return;
+            case "isFree":
+                setShowPlaceName(false);
+                setShowCityName(false);
+                setShowPlaceRating(false);
+                setShowIsFree(true);
+                setShowPlaceType(false);
+                return;
+            case "placeType":
+                setShowPlaceName(false);
+                setShowCityName(false);
+                setShowPlaceRating(false);
+                setShowIsFree(false);
+                setShowPlaceType(true);
+                return;
+            default:
+                setShowPlaceName(true);
+                setShowCityName(false);
+                setShowPlaceRating(false);
+                setShowIsFree(false);
+                setShowPlaceType(false);
+                return;
+
+        }
+    }
+
 
     // search by name
     const [placeName, setPlaceName] = useState();
@@ -71,9 +125,10 @@ function PlacesList() {
 
                 <div className="flex justify-center items-center">
                     {showPlaceName ? <PlacesSearch nameChange={nameChange} /> : null}
-                    {showPCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
+                    {showCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
 
-                    <PlacesSearchChange />
+
+                    <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
                 </div>
 
                 {fetchedPlaces.map((place) => (
