@@ -84,8 +84,6 @@ function PlacesList() {
     // search by city name
 
     const [cityName, setCityName] = useState();
-console.log(cityName);
-
 
     const cityNameChange = (value) => {
         setCityName(value);

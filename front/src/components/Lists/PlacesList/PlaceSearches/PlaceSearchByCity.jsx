@@ -3,6 +3,7 @@ import axios from "axios"
 
 function PlacesSearchByCity({ cityNameChange }) {
     const [serverError, setServerError] = useState(null);
+    const [selectedCity, setSelectedCity] = useState(null);
     const [cities, setCities] = useState([]);
 
     const API_URL = import.meta.env.VITE_BACK;
@@ -27,14 +28,50 @@ function PlacesSearchByCity({ cityNameChange }) {
         fetchCities();
     }, [])
 
+    // Load saved city on mount
+    useEffect(() => {
+        const savedCity = localStorage.getItem("selectedCity");
+
+        if (savedCity) {
+            setSelectedCity(savedCity);
+            cityNameChange(savedCity);
+        }
+    }, []);
+
+    const handleCityChange = (e) => {
+        const city = e.target.value;
+
+        setSelectedCity(city);
+        cityNameChange(city || null);
+
+        if (city) {
+            localStorage.setItem("selectedCity", city);
+        } else {
+            localStorage.removeItem("selectedCity");
+        }
+    };
+
     return (
         <>
             <section>
-                <p className="text-white text-center block pb-2">Search by city</p>
-                <select className="bg-sky-600 rounded-[25px] p-2">
-                    <option onClick={() => cityNameChange(null)}>Select the city </option>
-                    {cities.map(city => (
-                        <option onClick={() => cityNameChange(city.name)} key={city.id}>{city.name}</option>
+                <p className="text-white text-center block pb-2">
+                    Search by city
+                </p>
+
+                <select
+                    value={selectedCity}
+                    onChange={handleCityChange}
+                    className="bg-sky-600 rounded-[25px] p-2"
+                >
+                    <option value="">Select the city</option>
+
+                    {cities.map((city) => (
+                        <option
+                            key={city.id}
+                            value={city.name}
+                        >
+                            {city.name}
+                        </option>
                     ))}
                 </select>
             </section>
