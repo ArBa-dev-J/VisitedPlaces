@@ -9,6 +9,7 @@ function PlacesMapping({ place }) {
 
 
 
+
     return (
         <>
             <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
@@ -19,6 +20,8 @@ function PlacesMapping({ place }) {
                 <p className="mt-2 text-white">This place is: {place.place_type}</p>
 
                 {place.is_free ? <p className="mt-2 text-white">This place is free</p> : <p className="mt-2 text-white">This place is not free</p>}
+
+                <p className="mt-2 text-white">This place's rating is: {place.rating}</p>
 
                 {place.image_url ? <figure className="p-5">
                     <img className="size-[100%] border rounded-[20px] border-white" src={place.image_url} />

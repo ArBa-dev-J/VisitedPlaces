@@ -1,10 +1,32 @@
-function PlacesSearchByRating({nameChange}) {
+import { useEffect, useState } from "react";
+
+function PlacesSearchByRating({ ratingChange }) {
+    const [searchRating, setSearchRating] = useState();
+
+    // Load saved text when component mounts
+    useEffect(() => {
+        const savedRating = localStorage.getItem("searchRating");
+
+        if (savedRating) {
+            setSearchRating(savedRating);
+        }
+    }, []);
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+
+        setSearchRating(value);
+        localStorage.setItem("searchRating", value);
+
+        ratingChange(e);
+    };
+
     return (
         <>
             <section>
                 <div>
-                    <label className="text-center block text-white font-bold">Search for a place</label>
-                    <input onChange={nameChange} type="text" className="border rounded-[15px] text-center bg-sky-600 mt-3" />
+                    <p className="text-white text-center pb-2">Place rating</p>
+                    <input onChange={handleChange} value={searchRating} type="number" className="text-center border rounded-[15px] bg-sky-600" />
                 </div>
             </section>
         </>

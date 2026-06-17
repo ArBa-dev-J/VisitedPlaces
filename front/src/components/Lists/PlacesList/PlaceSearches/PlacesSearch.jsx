@@ -24,7 +24,7 @@ function PlacesSearchByPrice({ nameChange }) {
     return (
         <section>
             <div>
-                <label className="text-center block text-white font-bold">
+                <label className="text-center block text-white">
                     Search for a place
                 </label>
 

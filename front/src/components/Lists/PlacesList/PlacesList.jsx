@@ -10,8 +10,8 @@ import { useState, useEffect } from "react";
 
 function PlacesList() {
     const [serverError, setServerError] = useState(null);
-    const [fetchedPlaces, setFetchedPlaces] = useState([]);
 
+    const [fetchedPlaces, setFetchedPlaces] = useState([]);
     const [showPlaceName, setShowPlaceName] = useState(true);
     const [showCityName, setShowCityName] = useState();
     const [showPlaceRating, setShowPlaceRating] = useState();
@@ -24,7 +24,7 @@ function PlacesList() {
 
     // set search bars to show or hide
     const toShowOrToHide = (parameter) => {
-    
+
         switch (parameter) {
             case "placeName":
                 setShowPlaceName(true);
@@ -89,6 +89,22 @@ function PlacesList() {
         setCityName(value);
     };
 
+    // search by rating
+
+    const [rating, setRating] = useState();
+
+
+
+
+   const ratingChange = (e) => {
+    const value = e.target.value;
+
+    if (value === "") {
+        setRating(null);
+    } else {
+        setRating(Number(value));
+    }
+};
     // fetch all places
     const fetchAllPlaces = async () => {
 
@@ -97,7 +113,7 @@ function PlacesList() {
                 params: {
                     place_name: placeName,
                     city: cityName,
-                    // rating: rating,
+                    rating: rating,
                     // is_free: isFree,
                     // type: type,
                 }
@@ -116,7 +132,7 @@ function PlacesList() {
     //--------------------------------
     useEffect(() => {
         fetchAllPlaces();
-    }, [placeName, cityName])
+    }, [placeName, cityName, rating])
 
     return (
         <>
@@ -126,8 +142,8 @@ function PlacesList() {
                 <div className="flex justify-between items-baseline-last">
                     {showPlaceName ? <PlacesSearch nameChange={nameChange} /> : null}
                     {showCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
-                    {showPlaceRating ? <PlacesSearchByPrice /> : null}
-                    {showIsFree ? <PlacesSearchByRating /> : null}
+                    {showPlaceRating ? <PlacesSearchByRating ratingChange={ratingChange} /> : null}
+                    {showIsFree ? <PlacesSearchByPrice /> : null}
                     {showPlaceType ? <PlacesSearchByType /> : null}
 
                     <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
