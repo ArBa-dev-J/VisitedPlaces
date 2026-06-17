@@ -30,8 +30,9 @@ function PlacesSearchByCity({ cityNameChange }) {
     return (
         <>
             <section>
+                <p className="text-white text-center block pb-2">Search by city</p>
                 <select className="bg-sky-600 rounded-[25px] p-2">
-                    <option  onClick={() => cityNameChange(null)}>Select the city </option>
+                    <option onClick={() => cityNameChange(null)}>Select the city </option>
                     {cities.map(city => (
                         <option onClick={() => cityNameChange(city.name)} key={city.id}>{city.name}</option>
                     ))}

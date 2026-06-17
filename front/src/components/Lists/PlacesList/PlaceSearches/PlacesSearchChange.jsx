@@ -2,7 +2,7 @@ function PlacesSearchChange({ toShowOrToHide }) {
     return (
         <>
             <section>
-                <p className="text-white text-center">Place filter</p>
+                <p className="text-white text-center pb-2">Place filter</p>
 
                 <select className="bg-sky-600 rounded-[25px] p-2">
                     <option>Choose search filter</option>
