@@ -24,8 +24,7 @@ function PlacesList() {
 
     // set search bars to show or hide
     const toShowOrToHide = (parameter) => {
-        console.log(parameter);
-
+    
         switch (parameter) {
             case "placeName":
                 setShowPlaceName(true);
@@ -85,10 +84,11 @@ function PlacesList() {
     // search by city name
 
     const [cityName, setCityName] = useState();
+console.log(cityName);
 
 
-    const cityNameChange = (e) => {
-        setcCityName(e.target.value);
+    const cityNameChange = (value) => {
+        setCityName(value);
     };
 
     // fetch all places
@@ -125,7 +125,7 @@ function PlacesList() {
             <section className="mx-auto p-5 bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
 
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-baseline-last">
                     {showPlaceName ? <PlacesSearch nameChange={nameChange} /> : null}
                     {showCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
                     {showPlaceRating ? <PlacesSearchByPrice /> : null}

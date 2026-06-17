@@ -1,11 +1,41 @@
-function PlacesSearchByCity({nameChange}) {
+import { useState, useEffect } from "react";
+import axios from "axios"
+
+function PlacesSearchByCity({ cityNameChange }) {
+    const [serverError, setServerError] = useState(null);
+    const [cities, setCities] = useState([]);
+
+    const API_URL = import.meta.env.VITE_BACK;
+
+    // get all cities
+    const fetchCities = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/cities/cityList`);
+
+
+            setServerError(null);
+            setCities(response.data.data);
+        } catch (error) {
+            console.log(error);
+
+            setServerError(error.response.data.message || error.response.data.error[0].msg);
+
+        }
+    }
+
+    useEffect(() => {
+        fetchCities();
+    }, [])
+
     return (
         <>
             <section>
-                <div>
-                    <label className="text-center block text-white font-bold">Search for a place by city name</label>
-                    <input onChange={nameChange} type="text" className="border rounded-[15px] text-center bg-sky-600 mt-3" />
-                </div>
+                <select className="bg-sky-600 rounded-[25px] p-2">
+                    <option  onClick={() => cityNameChange(null)}>Select the city </option>
+                    {cities.map(city => (
+                        <option onClick={() => cityNameChange(city.name)} key={city.id}>{city.name}</option>
+                    ))}
+                </select>
             </section>
         </>
     );
