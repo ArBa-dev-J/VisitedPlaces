@@ -1,7 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function PlacesSearchByPrice({ setPlacePrice }) {
     const [price, setPrice] = useState(null);
+
+    // Load saved value on refresh
+    useEffect(() => {
+        const savedPrice = localStorage.getItem("placePrice");
+
+        if (savedPrice === "true") {
+            setPrice(true);
+            setPlacePrice(true);
+        } else if (savedPrice === "false") {
+            setPrice(false);
+            setPlacePrice(false);
+        } else {
+            setPrice(null);
+            setPlacePrice(null);
+        }
+    }, []);
 
     const handleChange = (e) => {
         let value;
@@ -16,6 +32,12 @@ function PlacesSearchByPrice({ setPlacePrice }) {
 
         setPrice(value);
         setPlacePrice(value);
+
+        if (value === null) {
+            localStorage.removeItem("placePrice");
+        } else {
+            localStorage.setItem("placePrice", String(value));
+        }
     };
 
     return (
