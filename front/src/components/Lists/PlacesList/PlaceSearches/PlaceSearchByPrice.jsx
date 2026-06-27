@@ -1,13 +1,41 @@
-function PlacesSearchByPrice({nameChange}) {
+import { useState } from "react";
+
+function PlacesSearchByPrice({ setPlacePrice }) {
+    const [price, setPrice] = useState(null);
+
+    const handleChange = (e) => {
+        let value;
+
+        if (e.target.value === "true") {
+            value = true;
+        } else if (e.target.value === "false") {
+            value = false;
+        } else {
+            value = null;
+        }
+
+        setPrice(value);
+        setPlacePrice(value);
+    };
+
     return (
-        <>
-            <section>
-                <div>
-                    <label className="text-center block text-white font-bold">Search for a place</label>
-                    <input onChange={nameChange} type="text" className="border rounded-[15px] text-center bg-sky-600 mt-3" />
-                </div>
-            </section>
-        </>
+        <section>
+            <div>
+                <label className="text-center block text-white">
+                    Search by free or not free
+                </label>
+
+                <select
+                    value={price === null ? "" : String(price)}
+                    onChange={handleChange}
+                    className="bg-sky-600 rounded-[25px] p-2 mt-2"
+                >
+                    <option value="">Choose place</option>
+                    <option value="true">Place is free</option>
+                    <option value="false">Place is not free</option>
+                </select>
+            </div>
+        </section>
     );
 }
 

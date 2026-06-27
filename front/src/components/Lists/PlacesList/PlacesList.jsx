@@ -93,18 +93,28 @@ function PlacesList() {
 
     const [rating, setRating] = useState();
 
+    const ratingChange = (e) => {
+        const value = e.target.value;
 
+        if (value === "") {
+            setRating(null);
+        } else {
+            setRating(Number(value));
+        }
+    };
 
+    // search by price
 
-   const ratingChange = (e) => {
-    const value = e.target.value;
+    const [isFree, setIsFree] = useState(null);
+console.log(isFree);
 
-    if (value === "") {
-        setRating(null);
-    } else {
-        setRating(Number(value));
+    const setPlacePrice = (value) => {
+        if (value === true) {
+            setIsFree(true);
+        } else if (value === false) {
+            setIsFree(false);
+        } else setIsFree(null);
     }
-};
     // fetch all places
     const fetchAllPlaces = async () => {
 
@@ -114,7 +124,7 @@ function PlacesList() {
                     place_name: placeName,
                     city: cityName,
                     rating: rating,
-                    // is_free: isFree,
+                    is_free: isFree,
                     // type: type,
                 }
             });
@@ -132,7 +142,7 @@ function PlacesList() {
     //--------------------------------
     useEffect(() => {
         fetchAllPlaces();
-    }, [placeName, cityName, rating])
+    }, [placeName, cityName, rating, isFree])
 
     return (
         <>
@@ -143,7 +153,7 @@ function PlacesList() {
                     {showPlaceName ? <PlacesSearch nameChange={nameChange} /> : null}
                     {showCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
                     {showPlaceRating ? <PlacesSearchByRating ratingChange={ratingChange} /> : null}
-                    {showIsFree ? <PlacesSearchByPrice /> : null}
+                    {showIsFree ? <PlacesSearchByPrice setPlacePrice={setPlacePrice} /> : null}
                     {showPlaceType ? <PlacesSearchByType /> : null}
 
                     <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
