@@ -106,7 +106,7 @@ function PlacesList() {
     // search by price
 
     const [isFree, setIsFree] = useState(null);
-console.log(isFree);
+
 
     const setPlacePrice = (value) => {
         if (value === true) {
@@ -115,6 +115,15 @@ console.log(isFree);
             setIsFree(false);
         } else setIsFree(null);
     }
+
+    // search by type
+
+    const [type, setType] = useState();
+
+    const setTypeF = (value) => {
+        setType(value);
+    }
+
     // fetch all places
     const fetchAllPlaces = async () => {
 
@@ -125,7 +134,7 @@ console.log(isFree);
                     city: cityName,
                     rating: rating,
                     is_free: isFree,
-                    // type: type,
+                    type: type,
                 }
             });
 
@@ -142,7 +151,7 @@ console.log(isFree);
     //--------------------------------
     useEffect(() => {
         fetchAllPlaces();
-    }, [placeName, cityName, rating, isFree])
+    }, [placeName, cityName, rating, isFree, type])
 
     return (
         <>
@@ -154,7 +163,7 @@ console.log(isFree);
                     {showCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
                     {showPlaceRating ? <PlacesSearchByRating ratingChange={ratingChange} /> : null}
                     {showIsFree ? <PlacesSearchByPrice setPlacePrice={setPlacePrice} /> : null}
-                    {showPlaceType ? <PlacesSearchByType /> : null}
+                    {showPlaceType ? <PlacesSearchByType setTypeF={setTypeF} /> : null}
 
                     <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
                 </div>

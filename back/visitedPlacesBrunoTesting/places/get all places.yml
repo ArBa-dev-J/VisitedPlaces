@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
-  url: http://localhost:3000/api/v1/places/placesList
+  url: http://localhost:3000/api/v1/places/placesList?type=castle
+  params:
+    - name: type
+      value: castle
+      type: query
   auth: inherit
 
 settings:
