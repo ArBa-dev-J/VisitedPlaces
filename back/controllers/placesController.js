@@ -1,3 +1,4 @@
+import fs, { unlink } from "fs"
 import { getCityByIdM } from "../models/citiesModels.js";
 import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM } from "../models/placesModel.js";
 
@@ -13,7 +14,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
             ...newPlaceData,
             name: req.capitalizedName,
             filename: req?.file?.filename || "",
-            // path: req?.file?.path || ""
+            path: req?.file?.path || ""
         }
 
         if (!(newPlace.name || newPlace.place_type || newPlace.address || newPlace.rating || newPlace.is_free || newPlace.city_id)) return res.status(400).json({
@@ -24,11 +25,19 @@ export const newVisitedPlaceC = async (req, res, next) => {
         // searches if place exists by name
 
         const existsP = await findPlaceNameM(newPlace);
-        if (existsP) return res.status(409).json({
-            status: "fail",
-            message: "This place already exists",
-        })
 
+        if (existsP) {
+            if (req.file) {
+                fs.unlink(req.file.path, (err) => {
+                    if (err) console.error(err);
+                });
+            }
+
+            return res.status(409).json({
+                status: "fail",
+                message: "This place already exists",
+            });
+        }
 
         // checks if city exist
 
