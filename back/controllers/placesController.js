@@ -12,6 +12,8 @@ export const newVisitedPlaceC = async (req, res, next) => {
         const newPlace = {
             ...newPlaceData,
             name: req.capitalizedName,
+            filename: req?.file?.filename || "",
+            // path: req?.file?.path || ""
         }
 
         if (!(newPlace.name || newPlace.place_type || newPlace.address || newPlace.rating || newPlace.is_free || newPlace.city_id)) return res.status(400).json({

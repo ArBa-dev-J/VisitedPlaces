@@ -7,18 +7,7 @@ http:
   method: POST
   url: http://localhost:3000/api/v1/places/newPlace
   body:
-    type: json
-    data: |-
-      {
-        "name": "5",
-        "place_type": "theme_park",
-        "description": "",
-        "image_url": "",
-        "address": "lo5",
-        "rating": "-5",
-        "is_free" : true,
-        "city_id": 7
-      }
+    type: multipart-form
   auth: inherit
 
 settings:

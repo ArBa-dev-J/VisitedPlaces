@@ -29,11 +29,11 @@ const placeVal = [
         .isLength({ max: 900 })
         .withMessage("Description is too long"),
 
-    body("image_url")
-        .optional({ values: "falsy" })
-        .isString()
-        .isURL()
-        .withMessage("Must be an url"),
+    // body("image_url")
+    //     .optional({ values: "falsy" })
+    //     .isString()
+    //     .isURL()
+    //     .withMessage("Must be an url"),
 
     body("address")
         .isString()
