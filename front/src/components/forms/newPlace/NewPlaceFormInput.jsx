@@ -82,7 +82,7 @@ function NewCityFormInput() {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto p-5 gap-1 bg-sky-900 rounded-[20px] w-[500px] ">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto p-5 gap-1 bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px] ">
 
                 <label className="text-white">Add a new place name you visited</label>
                 <input type="text" {...register("name", { required: true })} className="border block rounded-[15px] bg-sky-600 text-black text-center" />
