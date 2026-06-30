@@ -3,11 +3,14 @@ import { useState, useEffect, useContext } from "react";
 import { CityContext } from "../../../utils/CityContext"
 import axios from "axios";
 
+
 function NewCityFormInput() {
     const [serverDataError, setServerDataError] = useState([]);
     const [serverError, setServerError] = useState("");
     const [fetchError, setFetchError] = useState(null);
     const [success, setSuccess] = useState(null);
+
+
 
     const { cities, setCities } = useContext(CityContext);
 
@@ -39,17 +42,25 @@ function NewCityFormInput() {
 
     const onSubmit = async (data) => {
 
+        const formData = new FormData();
 
-        // convert place rating data type from string to number
+        formData.append("name", data.name);
+        formData.append("place_type", data.place_type);
+        formData.append("description", data.description);
+        formData.append("address", data.address);
+        formData.append("rating", Number(data.rating));
+        formData.append("is_free", data.is_free);
+        formData.append("city_id", Number(data.city_id));
 
-        data.place_rating = Number(data.place_rating);
+        // File input returns a FileList
+        formData.append("image", data.image[0]);
 
 
         try {
             setSuccess(null);
             setServerDataError([]);
             setServerError("");
-            const response = await axios.post(`${API_URL}/places/newPlace`, data);
+            const response = await axios.post(`${API_URL}/places/newPlace`, formData);
 
             setServerError(null);
             setSuccess(`${data.name} was successfully uploaded`);
@@ -93,9 +104,9 @@ function NewCityFormInput() {
                 <textarea {...register("description")} type="text" className="text-center w-[70%] border rounded-[15px] bg-sky-600" />
                 {<p className="text-red-500">{getServerError("description")}</p>}
 
-                <label className="text-white">Post image url</label>
-                <input {...register("image_url")} type="text" className="text-center border rounded-[15px] bg-sky-600" />
-                {<p className="text-red-500">{getServerError("image_url")}</p>}
+                <label className="text-white">Post image file</label>
+                <input {...register("image")} type="file" className="text-center border rounded-[15px] bg-sky-600 p-2" />
+                {<p className="text-red-500">{getServerError("image")}</p>}
 
                 <label className="text-white block">Write an address</label>
                 <input {...register("address", { required: true })} type="text" className="text-center border rounded-[15px] bg-sky-600" />
@@ -123,8 +134,8 @@ function NewCityFormInput() {
                 {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("city_id") || fetchError}</p>}
 
                 <input type="submit" value="Add a new place to the list" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
-                <p className="text-red-500 font-bold">{serverError}</p>
-                <p className="text-green-400 font-bold">{success}</p>
+                <p className="text-red-500 font-bold text-center">{serverError}</p>
+                <p className="text-green-400 font-bold text-center">{success}</p>
             </form>
         </>
     );

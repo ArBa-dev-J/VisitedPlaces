@@ -9,14 +9,12 @@ http:
   body:
     type: multipart-form
     data:
+      - name: image
+        type: text
+        value: ""
       - name: name
         type: text
-        value: test100500
-      - name: image
-        type: file
-        value:
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (4).png
-        contentType: image/png
+        value: test
       - name: place_type
         type: text
         value: castle
