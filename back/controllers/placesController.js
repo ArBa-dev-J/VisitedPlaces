@@ -2,6 +2,7 @@ import fs, { unlink } from "fs"
 import { getCityByIdM } from "../models/citiesModels.js";
 import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM } from "../models/placesModel.js";
 
+
 // post a new visited place
 
 export const newVisitedPlaceC = async (req, res, next) => {
@@ -13,9 +14,9 @@ export const newVisitedPlaceC = async (req, res, next) => {
         const newPlace = {
             ...newPlaceData,
             name: req.capitalizedName,
-            filename: req?.file?.filename || "",
-            path: req?.file?.path || ""
+            filename: req?.file?.path || ""
         }
+
 
         if (!(newPlace.name || newPlace.place_type || newPlace.address || newPlace.rating || newPlace.is_free || newPlace.city_id)) return res.status(400).json({
             status: "fail",

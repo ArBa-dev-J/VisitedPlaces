@@ -5,14 +5,15 @@ import capitalLetter from "../middlewares/capitalLetter.js";
 import paramVal from "../validation/placeSearchParamVal.js";
 import upload from "../middlewares/imageUpload.js";
 import fileSize from "../middlewares/fileSize.js";
-import { newVisitedPlaceC, getAllPlacesC } from "../controllers/placesController.js"; 
+import fileFilterError from "../middlewares/fileFilterError.js";
+import { newVisitedPlaceC, getAllPlacesC } from "../controllers/placesController.js";
 
 const placesRoutes = express.Router();
 
 // places routes
 
 
-placesRoutes.post("/newPlace", upload.single("image"), fileSize, placeVal, validate, capitalLetter, newVisitedPlaceC);
+placesRoutes.post("/newPlace", upload.single("image"), fileFilterError, fileSize, placeVal, validate, capitalLetter, newVisitedPlaceC);
 placesRoutes.get("/placesList", paramVal, validate, getAllPlacesC);
 
 export default placesRoutes;
