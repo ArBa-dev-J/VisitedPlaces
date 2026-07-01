@@ -5,7 +5,7 @@ function fileSize(req, res, next) {
 
 
     try {
-        if (req.file.size >= maxSize) {
+        if (req?.file?.size >= maxSize) {
 
             fs.unlink(req.file.path, (err) => {
                 if (err) console.error(err);
