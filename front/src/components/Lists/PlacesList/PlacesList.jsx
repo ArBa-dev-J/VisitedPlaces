@@ -148,6 +148,15 @@ function PlacesList() {
     }
 
 
+    // hide search bat if there are no cities in the list
+    const hideSearchBar = () => {
+        const places = fetchedPlaces.length;
+        let show;
+        if (places > 0) {
+            return show = true;
+        } else return show = false;
+    }
+
     //--------------------------------
     useEffect(() => {
         fetchAllPlaces();
@@ -158,7 +167,7 @@ function PlacesList() {
             <section className="mx-auto p-5 bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
 
-                <div className="flex justify-between items-baseline-last">
+                {hideSearchBar() ? <div className="flex justify-between items-baseline-last">
                     {showPlaceName ? <PlacesSearch nameChange={nameChange} /> : null}
                     {showCityName ? <PlacesSearchByCity cityNameChange={cityNameChange} /> : null}
                     {showPlaceRating ? <PlacesSearchByRating ratingChange={ratingChange} /> : null}
@@ -166,7 +175,7 @@ function PlacesList() {
                     {showPlaceType ? <PlacesSearchByType setTypeF={setTypeF} /> : null}
 
                     <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
-                </div>
+                </div> : null}
 
                 {fetchedPlaces.map((place) => (
                     <PlacesMapping key={place.id} place={place} />
