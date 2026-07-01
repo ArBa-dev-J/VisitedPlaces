@@ -19,8 +19,11 @@ app.use(
 app.use("/api/v1/cities", citiesRoutes);
 app.use("/api/v1/places", placesRoutes);
 
+// for rendering images in the front 
+app.use("/api/v1/images", express.static("images"));
+
 //for testing server status
-app.get("/health", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ status: "ok" });
 });
 

@@ -1,13 +1,14 @@
 import { useState } from "react";
 
 function PlacesMapping({ place }) {
+
+    const API_URL = import.meta.env.VITE_BACK;
+
     const [show, setShow] = useState(null);
 
     const toShow = () => {
         return show ? setShow(null) : setShow(true);
     }
-
-
 
 
     return (
@@ -24,7 +25,7 @@ function PlacesMapping({ place }) {
                 <p className="mt-2 text-white">This place's rating is: {place.rating}</p>
 
                 {place.image_url ? <figure className="p-5">
-                    <img className="size-[100%] border rounded-[20px] border-white" src={place.image_url} />
+                    <img className="size-[100%] border rounded-[20px] border-white" src={`${API_URL}/${place.image_url}`} />
                 </figure> : <p className="text-red-500 p-5">Image does not exist</p>}
 
                 {place.description ? <button onClick={() => toShow()} className="mb-5 cursor-pointer p-1 rounded-[20px] hover:bg-gray-200 bg-white">Read Description</button> : <p className="mt-2 mb-2 text-red-500 ">There is no description</p>}

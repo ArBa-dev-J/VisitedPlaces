@@ -3,6 +3,8 @@ import { getCityByIdM } from "../models/citiesModels.js";
 import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM } from "../models/placesModel.js";
 
 
+
+
 // post a new visited place
 
 export const newVisitedPlaceC = async (req, res, next) => {
@@ -91,7 +93,6 @@ export const getAllPlacesC = async (req, res, next) => {
         });
 
         // change order to latest on top
-
         const orderdArray = () => {
             return response.sort((a, b) => b.id - a.id);
         }

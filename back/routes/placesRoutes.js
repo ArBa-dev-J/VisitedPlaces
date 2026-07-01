@@ -14,6 +14,6 @@ const placesRoutes = express.Router();
 
 
 placesRoutes.post("/newPlace", upload.single("image"), fileFilterError, fileSize, placeVal, validate, capitalLetter, newVisitedPlaceC);
-placesRoutes.get("/placesList", paramVal, validate, getAllPlacesC);
+placesRoutes.get("/placesList", paramVal, validate, express.static("images"), getAllPlacesC);
 
 export default placesRoutes;
