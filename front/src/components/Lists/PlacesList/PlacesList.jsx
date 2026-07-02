@@ -20,8 +20,6 @@ function PlacesList() {
 
     const API_URL = import.meta.env.VITE_BACK;
 
-
-
     // set search bars to show or hide
     const toShowOrToHide = (parameter) => {
 
@@ -178,7 +176,7 @@ function PlacesList() {
                 </div> : null}
 
                 {fetchedPlaces.map((place) => (
-                    <PlacesMapping key={place.id} place={place} />
+                    <PlacesMapping setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} fetchAllPlaces={fetchAllPlaces} />
                 ))}
             </section>
         </>

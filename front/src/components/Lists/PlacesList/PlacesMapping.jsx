@@ -1,27 +1,38 @@
 import { useState } from "react";
 import x from "../../../assets/x.png"
+import PlaceAskForDelete from "./PlaceAskForDelete";
 
-function PlacesMapping({ place }) {
+
+function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
 
     const API_URL = import.meta.env.VITE_BACK;
 
     const [show, setShow] = useState(null);
+    const [showDelete, setShowDelete] = useState();
 
     const toShow = () => {
         return show ? setShow(null) : setShow(true);
     }
 
+    const toShowDelete = () => {
+        return showDelete ? setShowDelete(false) : setShowDelete(true);
+    }
 
-
-
+    
     return (
         <>
             <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
-                <div className="flex relative items-center md:left-14 2xl:gap-20 2xl:left-29 md:gap-5">
+
+                <div className="flex gap-10 relative left-15">
                     <p className="text-[1.2rem] mt-2 mb-2 text-white">{place.place_name}</p>
-                    <button className="cursor-pointer"><img className="h-5" src={x} alt="x" /></button>
-                    <button className="cursor-pointer">Update</button>
+                    <div className="flex gap-3">
+                        <button onClick={() => toShowDelete()} className="cursor-pointer"><img className="h-5" src={x} alt="x" /></button>
+                        <button className="cursor-pointer">Update</button>
+                    </div>
                 </div>
+
+                {showDelete ? <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces}/> : null}
+
                 <p className="text-white">{place.name}</p>
 
                 <p className="mt-2 text-white">This place is: {place.place_type}</p>
