@@ -1,6 +1,8 @@
 import fs, { unlink } from "fs"
 import { getCityByIdM } from "../models/citiesModels.js";
-import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM } from "../models/placesModel.js";
+import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM, findPlaceByIdM, deleteUsersPatientM } from "../models/placesModel.js";
+
+
 
 
 
@@ -101,6 +103,38 @@ export const getAllPlacesC = async (req, res, next) => {
             status: "success",
             data: orderdArray()
         });
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: `${error}`,
+        })
+    }
+}
+
+//delete a a specific place
+
+export const deleteSpecificPlaceC = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+
+        const place = await findPlaceByIdM(id);
+
+        if (!place) {
+            return res.status(404).json({
+                status: "fail",
+                message: "The place was not found"
+            });
+        }
+
+        await deleteUsersPatientM(id);
+
+        res.status(200).json({
+            status: "success",
+            message: "The place was successfullu deleted"
+        });
+
+
     } catch (error) {
         res.status(500).json({
             status: "fail",

@@ -5,8 +5,6 @@ import { sql } from "../dbConnection.js";
 export const newVisitedPlaceM = async (newPlace) => {
     const { name, place_type, description, filename, address, rating, is_free, city_id } = newPlace;
 
-console.log(newPlace);
-
     const isFreeBool = is_free == "true";
 
     const upload = await sql`
@@ -31,6 +29,18 @@ export const findPlaceNameM = async (newPlace) => {
     return exists[0];
 }
 
+// get place by id 
+
+export const findPlaceByIdM = async (id) => {
+    const exists = await sql`
+    SELECT name FROM places
+    WHERE id = ${id};
+    `;
+
+
+    return exists[0];
+}
+
 // get all places
 
 export const getAllPlacesM = async (place_name, city, rating, is_free, type) => {
@@ -49,7 +59,7 @@ export const getAllPlacesM = async (place_name, city, rating, is_free, type) => 
         conditions.push(sql`places.rating = ${rating}`);
     }
 
-    if (is_free) {  
+    if (is_free) {
         conditions.push(sql`places.is_free = ${is_free == "true"}`);
     }
 
@@ -77,3 +87,12 @@ export const getAllPlacesM = async (place_name, city, rating, is_free, type) => 
 
     return allPlaces;
 }
+
+// delete place by id 
+
+export const deleteUsersPatientM = async (id) => {
+    return sql`
+     DELETE FROM places 
+    WHERE id = ${id}
+`;
+};
