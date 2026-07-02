@@ -120,6 +120,7 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
 
         const place = await findPlaceByIdM(id);
 
+
         if (!place) {
             return res.status(404).json({
                 status: "fail",
@@ -128,6 +129,11 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
         }
 
         await deleteUsersPatientM(id);
+
+        fs.unlink(place.image_url, (err) => {
+            if (err) console.error(err);
+        });
+
 
         res.status(200).json({
             status: "success",

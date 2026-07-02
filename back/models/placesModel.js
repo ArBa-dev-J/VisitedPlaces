@@ -33,7 +33,7 @@ export const findPlaceNameM = async (newPlace) => {
 
 export const findPlaceByIdM = async (id) => {
     const exists = await sql`
-    SELECT name FROM places
+    SELECT name, image_url FROM places
     WHERE id = ${id};
     `;
 
