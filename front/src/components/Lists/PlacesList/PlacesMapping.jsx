@@ -1,4 +1,5 @@
 import { useState } from "react";
+import x from "../../../assets/x.png"
 
 function PlacesMapping({ place }) {
 
@@ -11,11 +12,16 @@ function PlacesMapping({ place }) {
     }
 
 
+
+
     return (
         <>
             <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
-                <p className="text-[1.2rem] mt-2 mb-2 text-white">{place.place_name}</p>
-
+                <div className="flex relative items-center md:left-14 2xl:gap-20 2xl:left-29 md:gap-5">
+                    <p className="text-[1.2rem] mt-2 mb-2 text-white">{place.place_name}</p>
+                    <button className="cursor-pointer"><img className="h-5" src={x} alt="x" /></button>
+                    <button className="cursor-pointer">Update</button>
+                </div>
                 <p className="text-white">{place.name}</p>
 
                 <p className="mt-2 text-white">This place is: {place.place_type}</p>
@@ -23,6 +29,8 @@ function PlacesMapping({ place }) {
                 {place.is_free ? <p className="mt-2 text-white">This place is free</p> : <p className="mt-2 text-white">This place is not free</p>}
 
                 <p className="mt-2 text-white">This place's rating is: {place.rating}</p>
+
+                <p className="mt-2 text-white">This place address is: {place.address}</p>
 
                 {place.image_url ? <figure className="p-5">
                     <img className="size-[100%] border rounded-[20px] border-white" src={`${API_URL}/${place.image_url}`} />
