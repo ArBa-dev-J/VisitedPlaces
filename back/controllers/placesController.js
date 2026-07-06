@@ -163,6 +163,18 @@ export const updatePlacesDataC = (req, res, next) => {
             message: "not enough info"
         })
 
+        // searches if place exists by name
+
+        const existsP = await findPlaceNameM(newPlace);
+
+        if (existsP) {
+            return res.status(409).json({
+                status: "fail",
+                message: "This place already exists",
+            });
+        }
+        
+        // check if the place
         const updatedPlace = await updatePlacesDataM(newPlace, id);
 
         if (!updatedPlace) return res.status(404).json({
