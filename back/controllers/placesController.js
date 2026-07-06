@@ -1,11 +1,6 @@
 import fs, { unlink } from "fs"
 import { getCityByIdM } from "../models/citiesModels.js";
-import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM, findPlaceByIdM, deleteUsersPatientM } from "../models/placesModel.js";
-
-
-
-
-
+import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM, findPlaceByIdM, deleteUsersPatientM, updatePlacesDataM } from "../models/placesModel.js";
 
 // post a new visited place
 
@@ -22,7 +17,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
         }
 
 
-        if (!(newPlace.name || newPlace.place_type || newPlace.address || newPlace.rating || newPlace.is_free || newPlace.city_id)) return res.status(400).json({
+        if (!newPlace.name || !newPlace.place_type || !newPlace.address || !newPlace.rating || !newPlace.is_free || !newPlace.city_id) return res.status(400).json({
             status: "fail",
             message: "not enough info"
         })
@@ -140,6 +135,45 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
             message: "The place was successfullu deleted"
         });
 
+
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: `${error}`,
+        })
+    }
+}
+
+// places new data patch
+
+export const updatePlacesDataC = (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const newPlaceDataN = delete newPlaceData.name;
+
+        const newPlace = {
+            ...newPlaceData,
+            name: req.capitalizedName,
+            filename: req?.file?.path || ""
+        }
+
+        if (!newPlace.name || !newPlace.place_type || !newPlace.address || !newPlace.rating || !newPlace.is_free || !newPlace.city_id) return res.status(400).json({
+            status: "fail",
+            message: "not enough info"
+        })
+
+        const updatedPlace = await updatePlacesDataM(newPlace, id);
+
+        if (!updatedPlace) return res.status(404).json({
+            status: "fail",
+            message: "Invalid place id",
+        })
+
+        res.status(201).json({
+            status: "success",
+            data: updatedPlace,
+        });
 
     } catch (error) {
         res.status(500).json({

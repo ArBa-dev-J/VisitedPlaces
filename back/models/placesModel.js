@@ -96,3 +96,15 @@ export const deleteUsersPatientM = async (id) => {
     WHERE id = ${id}
 `;
 };
+
+// new data patch for places
+
+export const updatePlacesDataM = async (newPlace, id) => {
+    const updatePlaceData = await sql`
+ UPDATE places
+ SET ${sql(newPlace)}
+ WHERE id = ${id}
+ RETURNING *
+ `
+    return updatePlaceData[0];
+}
