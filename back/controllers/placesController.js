@@ -146,9 +146,11 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
 
 // places new data patch
 
-export const updatePlacesDataC = (req, res, next) => {
+export const updatePlacesDataC = async (req, res, next) => {
     try {
-        const { id } = req.params;
+        const placeId = req.params;
+
+        const newPlaceData = req.body;
 
         const newPlaceDataN = delete newPlaceData.name;
 
@@ -163,7 +165,7 @@ export const updatePlacesDataC = (req, res, next) => {
             message: "not enough info"
         })
 
-        // searches if place exists by name
+        // searches from  place list if it exists by name
 
         const existsP = await findPlaceNameM(newPlace);
 
@@ -173,9 +175,21 @@ export const updatePlacesDataC = (req, res, next) => {
                 message: "This place already exists",
             });
         }
-        
-        // check if the place
-        const updatedPlace = await updatePlacesDataM(newPlace, id);
+
+
+        // checks if city exist
+
+        const id = newPlace.city_id;
+
+        const exists = await getCityByIdM(id)
+
+        if (exists == 0) return res.status(404).json({
+            status: "fail",
+            message: "This city doesn't exist",
+        });
+
+        // check if the place which is being updated exists
+        const updatedPlace = await updatePlacesDataM(newPlace, placeId);
 
         if (!updatedPlace) return res.status(404).json({
             status: "fail",

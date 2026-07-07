@@ -1,3 +1,4 @@
+import { log } from "console";
 import { sql } from "../dbConnection.js";
 
 // post a new visited place
@@ -99,12 +100,23 @@ export const deleteUsersPatientM = async (id) => {
 
 // new data patch for places
 
-export const updatePlacesDataM = async (newPlace, id) => {
-    const updatePlaceData = await sql`
- UPDATE places
- SET ${sql(newPlace)}
- WHERE id = ${id}
- RETURNING *
- `
+export const updatePlacesDataM = async (newPlace, placeId) => {
+    const bool = newPlace.is_free;
+    const path = newPlace.filename;
+    const { image, filename, ...rest } = newPlace;
+   
+    const newPlaceFinal = {
+        ...rest,
+        is_free: bool == "true",
+        image_url: path
+    };
+
+
+        const updatePlaceData = await sql`
+      UPDATE places
+      SET ${sql(newPlaceFinal)}
+      WHERE id = ${Number(placeId.id)}
+      RETURNING *
+     `
     return updatePlaceData[0];
 }
