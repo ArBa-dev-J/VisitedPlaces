@@ -1,6 +1,7 @@
 import fs, { unlink } from "fs"
 import { getCityByIdM } from "../models/citiesModels.js";
-import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM, findPlaceByIdM, deleteUsersPatientM, updatePlacesDataM } from "../models/placesModel.js";
+import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM, findPlaceByIdM, deleteUsersPatientM, updatePlacesDataM, findPlaceNameExceptIdM } from "../models/placesModel.js";
+
 
 // post a new visited place
 
@@ -167,7 +168,7 @@ export const updatePlacesDataC = async (req, res, next) => {
 
         // searches from  place list if it exists by name
 
-        const existsP = await findPlaceNameM(newPlace);
+        const existsP = await findPlaceNameExceptIdM(newPlace, placeId);
 
         if (existsP) {
             return res.status(409).json({
@@ -177,7 +178,7 @@ export const updatePlacesDataC = async (req, res, next) => {
         }
 
 
-        // checks if city exist
+        // sends an error if update fails
 
         const id = newPlace.city_id;
 

@@ -30,6 +30,19 @@ export const findPlaceNameM = async (newPlace) => {
     return exists[0];
 }
 
+// function for updates that excludes the current place's ID
+
+export const findPlaceNameExceptIdM = async (newPlace, placeId) => {
+    const exists = await sql`
+        SELECT id
+        FROM places
+        WHERE name = ${newPlace.name}
+        AND id != ${placeId.id};
+    `;
+
+    return exists[0];
+};
+
 // get place by id 
 
 export const findPlaceByIdM = async (id) => {
@@ -104,7 +117,7 @@ export const updatePlacesDataM = async (newPlace, placeId) => {
     const bool = newPlace.is_free;
     const path = newPlace.filename;
     const { image, filename, ...rest } = newPlace;
-   
+
     const newPlaceFinal = {
         ...rest,
         is_free: bool == "true",
@@ -112,7 +125,7 @@ export const updatePlacesDataM = async (newPlace, placeId) => {
     };
 
 
-        const updatePlaceData = await sql`
+    const updatePlaceData = await sql`
       UPDATE places
       SET ${sql(newPlaceFinal)}
       WHERE id = ${Number(placeId.id)}
