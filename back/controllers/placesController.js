@@ -14,7 +14,8 @@ export const newVisitedPlaceC = async (req, res, next) => {
         const newPlace = {
             ...newPlaceData,
             name: req.capitalizedName,
-            filename: req?.file?.path || ""
+            filename: req?.file?.path || "",
+            fileHash: req.hashedImage || "",
         }
 
 
