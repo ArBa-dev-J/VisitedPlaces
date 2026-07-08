@@ -46,10 +46,18 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
         const exists = await getCityByIdM(id)
 
-        if (exists == 0) return res.status(404).json({
-            status: "fail",
-            message: "This city doesn't exist",
-        });
+        if (exists == 0) {
+            if (req.file) {
+                fs.unlink(req.file.path, (err) => {
+                    if (err) console.error(err);
+                });
+            }
+
+            return res.status(404).json({
+                status: "fail",
+                message: "This city doesn't exist",
+            })
+        };
 
 
         const addANewPlace = await newVisitedPlaceM(newPlace);
