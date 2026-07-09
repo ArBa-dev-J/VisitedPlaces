@@ -199,30 +199,18 @@ export const updatePlacesDataC = async (req, res, next) => {
         message: "not enough info",
       });
 
-  
-
-    // places all models here so that imagr deletion would work if any of theses there to fail
-    const existsP = await findPlaceNameExceptIdM(newPlace, placeId);
+    // places all models here so that image deletion would work if any of theses there to fail
     const place = await findPlaceByIdM(placeId);
-    const updatedPlace = await updatePlacesDataM(newPlace, placeId);
-    
     const id = newPlace.city_id;
     const exists = await getCityByIdM(id);
-
-    if (existsP) {
-      return res.status(409).json({
-        status: "fail",
-        message: "This place already exists",
-      });
-    }
+    const imageFetchedHash = await findImageHashM(newPlace);
 
     // image conditional deletion
     if (
-      (await findImageHashM(newPlace)) ||
+      imageFetchedHash?.file_hash ||
       place?.fileHash === "" ||
-      existsP ||
       !place ||
-      !updatedPlace
+      exists.length === 0
     ) {
       fs.unlink(place?.image_url || req?.file?.path, (err) => {
         if (err) console.error(err);
@@ -231,20 +219,29 @@ export const updatePlacesDataC = async (req, res, next) => {
 
     // sends an error if city doesnt exist
 
-
     if (exists == 0)
       return res.status(404).json({
         status: "fail",
         message: "This city doesn't exist",
       });
 
+    // sends an error if place doesnt exist
+
+    if (!place)
+    return res.status(424).json({
+      status: "fail",
+      message: "This place does not exist",
+    });
+
     // sends an error if update fails
     // check if the place which is being updated exists
 
+    const updatedPlace = await updatePlacesDataM(newPlace, placeId);
+
     if (!updatedPlace)
-      return res.status(404).json({
+      return res.status(424).json({
         status: "fail",
-        message: "Invalid place id",
+        message: "Failed to update",
       });
 
     res.status(201).json({
