@@ -10,8 +10,10 @@ http:
     type: multipart-form
     data:
       - name: image
-        type: text
-        value: ""
+        type: file
+        value:
+          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (5).png
+        contentType: image/png
       - name: name
         type: text
         value: test

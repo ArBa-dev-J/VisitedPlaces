@@ -1,220 +1,255 @@
-import fs, { unlink } from "fs"
+import fs, { unlink } from "fs";
 import { getCityByIdM } from "../models/citiesModels.js";
-import { newVisitedPlaceM, findPlaceNameM, getAllPlacesM, findPlaceByIdM, deleteUsersPatientM, updatePlacesDataM, findPlaceNameExceptIdM } from "../models/placesModel.js";
-
+import {
+  newVisitedPlaceM,
+  findPlaceNameM,
+  getAllPlacesM,
+  findPlaceByIdM,
+  deleteUsersPatientM,
+  updatePlacesDataM,
+  findPlaceNameExceptIdM,
+  findImageHashM,
+} from "../models/placesModel.js";
 
 // post a new visited place
 
 export const newVisitedPlaceC = async (req, res, next) => {
-    try {
-        const newPlaceData = req.body;
+  try {
+    const newPlaceData = req.body;
 
-        const newPlaceDataN = delete newPlaceData.name;
+    const newPlaceDataN = delete newPlaceData.name;
 
-        const newPlace = {
-            ...newPlaceData,
-            name: req.capitalizedName,
-            filename: req?.file?.path || "",
-            fileHash: req.hashedImage || "",
-        }
+    const newPlace = {
+      ...newPlaceData,
+      name: req.capitalizedName,
+      filename: req?.file?.path || "",
+      fileHash: req.hashedImage || "",
+    };
 
+    if (
+      !newPlace.name ||
+      !newPlace.place_type ||
+      !newPlace.address ||
+      !newPlace.rating ||
+      !newPlace.is_free ||
+      !newPlace.city_id
+    )
+      return res.status(400).json({
+        status: "fail",
+        message: "not enough info",
+      });
 
-        if (!newPlace.name || !newPlace.place_type || !newPlace.address || !newPlace.rating || !newPlace.is_free || !newPlace.city_id) return res.status(400).json({
-            status: "fail",
-            message: "not enough info"
-        })
+    // searches if place exists by name
 
-        // searches if place exists by name
+    const existsP = await findPlaceNameM(newPlace);
 
-        const existsP = await findPlaceNameM(newPlace);
-
-        if (existsP) {
-            if (req.file) {
-                fs.unlink(req.file.path, (err) => {
-                    if (err) console.error(err);
-                });
-            }
-
-            return res.status(409).json({
-                status: "fail",
-                message: "This place already exists",
-            });
-        }
-
-        // checks if city exist
-
-        const id = newPlace.city_id;
-
-        const exists = await getCityByIdM(id)
-
-        if (exists == 0) {
-            if (req.file) {
-                fs.unlink(req.file.path, (err) => {
-                    if (err) console.error(err);
-                });
-            }
-
-            return res.status(404).json({
-                status: "fail",
-                message: "This city doesn't exist",
-            })
-        };
-
-
-        const addANewPlace = await newVisitedPlaceM(newPlace);
-
-        if (!addANewPlace) return res.status(424).json({
-            status: "fail",
-            message: "New place was not posted"
+    if (existsP) {
+      if (req.file) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) console.error(err);
         });
+      }
 
-        return res.status(201).json({
-            status: "success",
-            data: addANewPlace,
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            status: "fail",
-            message: `${error}`,
-        })
+      return res.status(409).json({
+        status: "fail",
+        message: "This place already exists",
+      });
     }
-}
+
+    // checks if city exist
+
+    const id = newPlace.city_id;
+
+    const exists = await getCityByIdM(id);
+
+    if (exists == 0) {
+      if (req.file) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) console.error(err);
+        });
+      }
+
+      return res.status(404).json({
+        status: "fail",
+        message: "This city doesn't exist",
+      });
+    }
+
+    const addANewPlace = await newVisitedPlaceM(newPlace);
+
+    if (!addANewPlace)
+      return res.status(424).json({
+        status: "fail",
+        message: "New place was not posted",
+      });
+
+    return res.status(201).json({
+      status: "success",
+      data: addANewPlace,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: `${error}`,
+    });
+  }
+};
 
 // get all places
 
 export const getAllPlacesC = async (req, res, next) => {
-    try {
-        const { place_name } = req.query;
-        const { city } = req.query;
-        const { rating } = req.query;
-        const { is_free } = req.query;
-        const { type } = req.query;
+  try {
+    const { place_name } = req.query;
+    const { city } = req.query;
+    const { rating } = req.query;
+    const { is_free } = req.query;
+    const { type } = req.query;
 
+    const response = await getAllPlacesM(
+      place_name,
+      city,
+      rating,
+      is_free,
+      type,
+    );
 
-        const response = await getAllPlacesM(place_name, city, rating, is_free, type);
+    if (response == 0)
+      return res.status(404).json({
+        status: "fail",
+        message: "No places found",
+      });
 
-        if (response == 0) return res.status(404).json({
-            status: "fail",
-            message: "No places found",
-        });
+    // change order to latest on top
+    const orderdArray = () => {
+      return response.sort((a, b) => b.id - a.id);
+    };
 
-        // change order to latest on top
-        const orderdArray = () => {
-            return response.sort((a, b) => b.id - a.id);
-        }
-
-        return res.status(200).json({
-            status: "success",
-            data: orderdArray()
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: "fail",
-            message: `${error}`,
-        })
-    }
-}
+    return res.status(200).json({
+      status: "success",
+      data: orderdArray(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: `${error}`,
+    });
+  }
+};
 
 //delete a a specific place
 
 export const deleteSpecificPlaceC = async (req, res, next) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
+    const place = await findPlaceByIdM(id);
 
-        const place = await findPlaceByIdM(id);
-
-
-        if (!place) {
-            return res.status(404).json({
-                status: "fail",
-                message: "The place was not found"
-            });
-        }
-
-        await deleteUsersPatientM(id);
-
-        fs.unlink(place.image_url, (err) => {
-            if (err) console.error(err);
-        });
-
-
-        res.status(200).json({
-            status: "success",
-            message: "The place was successfullu deleted"
-        });
-
-
-    } catch (error) {
-        res.status(500).json({
-            status: "fail",
-            message: `${error}`,
-        })
+    if (!place) {
+      return res.status(404).json({
+        status: "fail",
+        message: "The place was not found",
+      });
     }
-}
+
+    await deleteUsersPatientM(id);
+
+    fs.unlink(place.image_url, (err) => {
+      if (err) console.error(err);
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "The place was successfullu deleted",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: `${error}`,
+    });
+  }
+};
 
 // places new data patch
 
 export const updatePlacesDataC = async (req, res, next) => {
-    try {
-        const placeId = req.params;
+  try {
+    const placeId = req.params;
 
-        const newPlaceData = req.body;
+    const newPlaceData = req.body;
 
-        const newPlaceDataN = delete newPlaceData.name;
+    const newPlaceDataN = delete newPlaceData.name;
 
-        const newPlace = {
-            ...newPlaceData,
-            name: req.capitalizedName,
-            filename: req?.file?.path || ""
-        }
+    const newPlace = {
+      ...newPlaceData,
+      name: req.capitalizedName,
+      filename: req?.file?.path || "",
+      fileHash: req?.hashedImage || "",
+    };
 
-        if (!newPlace.name || !newPlace.place_type || !newPlace.address || !newPlace.rating || !newPlace.is_free || !newPlace.city_id) return res.status(400).json({
-            status: "fail",
-            message: "not enough info"
-        })
+    if (
+      !newPlace.name ||
+      !newPlace.place_type ||
+      !newPlace.address ||
+      !newPlace.rating ||
+      !newPlace.is_free ||
+      !newPlace.city_id
+    )
+      return res.status(400).json({
+        status: "fail",
+        message: "not enough info",
+      });
 
-        // searches from  place list if it exists by name
+    // searches from  place list if the palce name exist
 
-        const existsP = await findPlaceNameExceptIdM(newPlace, placeId);
-
-        if (existsP) {
-            return res.status(409).json({
-                status: "fail",
-                message: "This place already exists",
-            });
-        }
-
-
-        // sends an error if update fails
-
-        const id = newPlace.city_id;
-
-        const exists = await getCityByIdM(id)
-
-        if (exists == 0) return res.status(404).json({
-            status: "fail",
-            message: "This city doesn't exist",
-        });
-
-        // check if the place which is being updated exists
-        const updatedPlace = await updatePlacesDataM(newPlace, placeId);
-
-        if (!updatedPlace) return res.status(404).json({
-            status: "fail",
-            message: "Invalid place id",
-        })
-
-        res.status(201).json({
-            status: "success",
-            data: updatedPlace,
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            status: "fail",
-            message: `${error}`,
-        })
+    const existsP = await findPlaceNameExceptIdM(newPlace, placeId);
+    
+    if (existsP) {
+      return res.status(409).json({
+        status: "fail",
+        message: "This place already exists",
+      });
     }
-}
+
+    // get current place data
+
+     const place = await findPlaceByIdM(placeId);
+
+    if (findImageHashM(newPlace) || fileHash === "") {
+      fs.unlink(place.image_url || req?.file?.path, (err) => {
+        if (err) console.error(err);
+      });
+    }
+
+    // sends an error if city doesnt exist
+
+    const id = newPlace.city_id;
+
+    const exists = await getCityByIdM(id);
+
+    if (exists == 0)
+      return res.status(404).json({
+        status: "fail",
+        message: "This city doesn't exist",
+      });
+
+    // sends an error if update fails
+    // check if the place which is being updated exists
+    const updatedPlace = await updatePlacesDataM(newPlace, placeId);
+
+    if (!updatedPlace)
+      return res.status(404).json({
+        status: "fail",
+        message: "Invalid place id",
+      });
+
+    res.status(201).json({
+      status: "success",
+      data: updatedPlace,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: `${error}`,
+    });
+  }
+};

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS public.places (
     place_type type NOT NULL,
     description TEXT,
     image_url TEXT,
-    fileHash TEXT,
+    file_hash TEXT,
     address VARCHAR(100) NOT NULL,
     rating INTEGER NOT NULL CHECK (rating >= 0 AND rating <= 5),
     is_free BOOLEAN NOT NULL,
