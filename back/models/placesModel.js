@@ -67,7 +67,7 @@ export const findPlaceNameExceptIdM = async (newPlace, placeId) => {
 export const findPlaceByIdM = async (id) => {
   const exists = await sql`
     SELECT name, image_url FROM places
-    WHERE id = ${id || id?.id};
+    WHERE id = ${Number(id.id) || Number(id)};
     `;
 
   return exists[0];
