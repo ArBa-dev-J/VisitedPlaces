@@ -205,16 +205,21 @@ export const updatePlacesDataC = async (req, res, next) => {
     const exists = await getCityByIdM(id);
     const imageFetchedHash = await findImageHashM(newPlace);
 
+
     // image conditional deletion
+    const filePath = place?.image_url || req?.file?.path;
+
     if (
       imageFetchedHash?.file_hash ||
-      place?.fileHash === "" ||
+      place?.image_url ||
       !place ||
       exists.length === 0
     ) {
-      fs.unlink(place?.image_url || req?.file?.path, (err) => {
-        if (err) console.error(err);
-      });
+      if (filePath) {
+        fs.unlink(filePath, (err) => {
+          if (err) console.error(err);
+        });
+      }
     }
 
     // sends an error if city doesnt exist
@@ -228,10 +233,10 @@ export const updatePlacesDataC = async (req, res, next) => {
     // sends an error if place doesnt exist
 
     if (!place)
-    return res.status(424).json({
-      status: "fail",
-      message: "This place does not exist",
-    });
+      return res.status(424).json({
+        status: "fail",
+        message: "This place does not exist",
+      });
 
     // sends an error if update fails
     // check if the place which is being updated exists
