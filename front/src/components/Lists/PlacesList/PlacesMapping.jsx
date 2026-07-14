@@ -40,7 +40,7 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
 
 
 
-                {showUpdateForm ? <UpdatePlaceForm toShowUpdateForm={toShowUpdateForm} /> : null}
+                {showUpdateForm ? <UpdatePlaceForm place={place} key={place.id} toShowUpdateForm={toShowUpdateForm} /> : null}
                 {showDelete ? <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces} /> : null}
 
                 <p className="text-white">{place.name}</p>

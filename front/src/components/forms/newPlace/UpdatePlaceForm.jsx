@@ -1,24 +1,57 @@
 import x from "../../../assets/x.png"
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { CityContext } from "../../../utils/CityContext";
 import axios from "axios";
 
 
-function UpdatePlaceForm({ toShowUpdateForm }) {
+function UpdatePlaceForm({ toShowUpdateForm, place }) {
     const [serverDataError, setServerDataError] = useState([]);
     const [serverError, setServerError] = useState("");
     const [fetchError, setFetchError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const { cities, setCities } = useContext(CityContext);
 
     const API_URL = import.meta.env.VITE_BACK;
 
+    // get all cities directly from db
+    const fetchCities = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/cities/cityList`);
+
+            setServerError(null);
+            setCities(response.data.data);
+        } catch (error) {
+            setFetchError(error.response.data.message);
+        }
+    }
+
+    useEffect(() => {
+        fetchCities();
+    }, [])
+    //----------------------------------------------------
 
     const {
         register,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
     } = useForm();
+
+    useEffect(() => {
+        (
+            setValue("name", place.place_name),
+            setValue("place_type", place.place_type),
+            setValue("description", place.place_type),
+            setValue("file", place.image_url),
+            setValue("address", place.address),
+            setValue("rating", place.rating),
+            setValue("is_free", place.is_free),
+            setValue("city_id", place.city_id)
+
+        );
+    }, []);
 
     const onSubmit = (data) => {
         console.log(data);
@@ -113,12 +146,12 @@ function UpdatePlaceForm({ toShowUpdateForm }) {
                     {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("is_free")}</p>}
 
                     <label className="text-white">City select</label>
-                    {/* <select {...register("city_id", { required: true })} className="text-white">
+                    <select {...register("city_id", { required: true })} className="text-white">
                         <option value="">Select the option </option>
                         {cities.map(city => (
                             <option key={city.id} value={Number(city.id)}>{city.name}</option>
                         ))}
-                    </select> */}
+                    </select>
                     {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("city_id") || fetchError}</p>}
 
                     <input type="submit" value="Update the place" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
