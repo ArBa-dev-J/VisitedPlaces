@@ -1,6 +1,8 @@
 import { useState } from "react";
-import x from "../../../assets/x.png"
+import x from "../../../assets/x.png";
+import update from "../../../assets/update.png";
 import PlaceAskForDelete from "./PlaceAskForDelete";
+import UpdatePlaceForm from "../../forms/newPlace/UpdatePlaceForm";
 
 
 function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
@@ -9,16 +11,21 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
 
     const [show, setShow] = useState(null);
     const [showDelete, setShowDelete] = useState();
+    const [showUpdateForm, setShowUpdateForm] = useState();
 
     const toShow = () => {
         return show ? setShow(null) : setShow(true);
     }
 
     const toShowDelete = () => {
-        return showDelete ? setShowDelete(false) : setShowDelete(true);
+        return showDelete ? setShowDelete(false) : setShowDelete(true), setShowUpdateForm(false);
     }
 
-    
+    const toShoUpdateForm = () => {
+        return showDelete ? setShowUpdateForm(false) : setShowUpdateForm(true), setShowDelete(false);
+    }
+
+
     return (
         <>
             <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
@@ -27,11 +34,12 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
                     <p className="text-[1.2rem] mt-2 mb-2 text-white">{place.place_name}</p>
                     <div className="flex gap-3">
                         <button onClick={() => toShowDelete()} className="cursor-pointer"><img className="h-5" src={x} alt="x" /></button>
-                        <button className="cursor-pointer">Update</button>
+                        <button onClick={() => toShoUpdateForm()} className="cursor-pointer"><img className="h-8" src={update} alt="update" /></button>
                     </div>
                 </div>
 
-                {showDelete ? <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces}/> : null}
+                {showDelete ? <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces} /> : null}
+                {showUpdateForm ? <UpdatePlaceForm /> : null}
 
                 <p className="text-white">{place.name}</p>
 

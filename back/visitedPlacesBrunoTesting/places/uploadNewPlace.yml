@@ -12,20 +12,20 @@ http:
       - name: image
         type: file
         value:
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (5).png
+          - C:\Users\Arminas\Pictures\Screenshots\Screenshot 2026-06-23 000107.png
         contentType: image/png
       - name: name
         type: text
-        value: test
+        value: test10
       - name: place_type
         type: text
         value: castle
       - name: description
         type: text
-        value: ""
+        value: Testing
       - name: address
         type: text
-        value: dsadsa
+        value: testing
       - name: rating
         type: text
         value: "5"
