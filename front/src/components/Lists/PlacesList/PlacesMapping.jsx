@@ -21,8 +21,8 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
         return showDelete ? setShowDelete(false) : setShowDelete(true), setShowUpdateForm(false);
     }
 
-    const toShoUpdateForm = () => {
-        return showDelete ? setShowUpdateForm(false) : setShowUpdateForm(true), setShowDelete(false);
+    const toShowUpdateForm = () => {
+        return showUpdateForm ? setShowUpdateForm(false) : setShowUpdateForm(true), setShowDelete(false);
     }
 
 
@@ -34,12 +34,12 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
                     <p className="text-[1.2rem] mt-2 mb-2 text-white">{place.place_name}</p>
                     <div className="flex gap-3">
                         <button onClick={() => toShowDelete()} className="cursor-pointer"><img className="h-5" src={x} alt="x" /></button>
-                        <button onClick={() => toShoUpdateForm()} className="cursor-pointer"><img className="h-8" src={update} alt="update" /></button>
+                        <button onClick={() => toShowUpdateForm()} className="cursor-pointer"><img className="h-8" src={update} alt="update" /></button>
                     </div>
                 </div>
 
                 {showDelete ? <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces} /> : null}
-                {showUpdateForm ? <UpdatePlaceForm /> : null}
+                {showUpdateForm ? <UpdatePlaceForm toShowUpdateForm={toShowUpdateForm} /> : null}
 
                 <p className="text-white">{place.name}</p>
 

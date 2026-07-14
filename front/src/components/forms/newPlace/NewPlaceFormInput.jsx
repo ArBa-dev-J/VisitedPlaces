@@ -11,7 +11,6 @@ function NewCityFormInput() {
     const [success, setSuccess] = useState(null);
 
 
-
     const { cities, setCities } = useContext(CityContext);
 
     const API_URL = import.meta.env.VITE_BACK;
