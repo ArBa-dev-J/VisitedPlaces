@@ -44,14 +44,15 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
             setValue("name", place.place_name),
             setValue("place_type", place.place_type),
             setValue("description", place.place_type),
-            setValue("file", place.image_url),
+            setValue("image", place.image_url),
             setValue("address", place.address),
             setValue("rating", place.rating),
             setValue("is_free", place.is_free),
             setValue("city_id", place.city_id)
-
         );
     }, []);
+
+    // console.log(`${API_URL}/${place.image_url}`);
 
     const onSubmit = (data) => {
         console.log(data);
@@ -125,9 +126,14 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
                     <textarea {...register("description")} type="text" className="text-center w-[70%] border rounded-[15px] bg-sky-600" />
                     {<p className="text-red-500">{getServerError("description")}</p>}
 
-                    <label className="text-white">Post image file</label>
+
+                    <label className="text-white relative top-3 ">Post image file</label>
+                    {place.image_url ? <figure className="p-5">
+                        <img className="size-[100%] border rounded-[20px] border-white" src={`${API_URL}/${place.image_url}`} />
+                    </figure> : <p className="text-red-500 p-5">Image does not exist</p>}
                     <input {...register("image")} type="file" className="text-center border rounded-[15px] bg-sky-600 p-2" />
                     {<p className="text-red-500">{getServerError("image")}</p>}
+
 
                     <label className="text-white block">Write an address</label>
                     <input {...register("address", { required: true })} type="text" className="text-center border rounded-[15px] bg-sky-600" />
