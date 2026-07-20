@@ -66,7 +66,7 @@ export const findPlaceNameExceptIdM = async (newPlace, placeId) => {
 
 export const findPlaceByIdM = async (id) => {
   const exists = await sql`
-    SELECT name, image_url FROM places
+    SELECT name, image_url, file_hash FROM places
     WHERE id = ${Number(id.id) || Number(id)};
     `;
 
@@ -136,21 +136,31 @@ export const deleteUsersPatientM = async (id) => {
 
 // new data patch for places
 
-export const updatePlacesDataM = async (newPlace, placeId) => {
+export const updatePlacesDataM = async (newPlace, keepData, placeId) => {
   const bool = newPlace.is_free;
   const path = newPlace.filename;
+  const fileHashFromObj = newPlace.fileHash;
   const { image, filename, fileHash, ...rest } = newPlace;
+
+
 
   const newPlaceFinal = {
     ...rest,
     is_free: bool == "true",
     image_url: path,
-    file_hash: newPlace.fileHash
+    file_hash: fileHashFromObj,
+  };
+
+  // mini function to switch between json data
+  const jsonDataSwitch = (keepData, newPlaceFinal) => {
+    if (keepData){
+      return keepData
+    } else return newPlaceFinal;
   };
 
   const updatePlaceData = await sql`
       UPDATE places
-      SET ${sql(newPlaceFinal)}
+      SET ${sql(jsonDataSwitch(keepData, newPlaceFinal))}
       WHERE id = ${Number(placeId.id)}
       RETURNING *
      `;

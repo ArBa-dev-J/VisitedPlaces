@@ -5,18 +5,16 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:3000/api/v1/places/updatePlace/4
+  url: http://localhost:3000/api/v1/places/updatePlace/1
   body:
     type: multipart-form
     data:
       - name: image
-        type: file
-        value:
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (7).png
-        contentType: image/png
+        type: text
+        value: ""
       - name: name
         type: text
-        value: rk
+        value: testImage
       - name: place_type
         type: text
         value: theme_park
@@ -34,7 +32,7 @@ http:
         value: "false"
       - name: city_id
         type: text
-        value: "2"
+        value: "1"
   auth: inherit
 
 settings:

@@ -16,7 +16,7 @@ http:
         contentType: image/png
       - name: name
         type: text
-        value: test10
+        value: test
       - name: place_type
         type: text
         value: castle
