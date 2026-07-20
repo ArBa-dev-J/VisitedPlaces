@@ -10,11 +10,13 @@ http:
     type: multipart-form
     data:
       - name: image
-        type: text
-        value: ""
+        type: file
+        value:
+          - C:\Users\Arminas\Pictures\Screenshots\Screenshot 2026-06-23 000107.png
+        contentType: image/png
       - name: name
         type: text
-        value: testImage
+        value: estrada
       - name: place_type
         type: text
         value: theme_park

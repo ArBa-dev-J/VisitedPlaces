@@ -207,18 +207,19 @@ export const updatePlacesDataC = async (req, res, next) => {
 
     // image conditional deletion
     const filePath = place?.image_url || req?.file?.path;
-    
+
     if (newPlace["image"] !== "") {
       if (
-        imageFetchedHash?.file_hash ||
-        place?.image_url ||
-        newPlace.image === "delete" ||
-        !place ||
-        Number(exists.length) !== 0
+        place &&
+        exists.length > 0 &&
+        place.image_url &&
+        newPlace.image === "delete" 
       ) {
         if (filePath) {
           fs.unlink(filePath, (err) => {
-            if (err) console.error(err);
+            if (err) {
+              console.error(err);
+            }
           });
         }
       }
@@ -226,7 +227,7 @@ export const updatePlacesDataC = async (req, res, next) => {
 
     // keep current image json data if image is not being changed or deleted
     const keepData = (objData) => {
-      if (newPlace["image"] === "" ) {
+      if (newPlace["image"] === "") {
         const { image, filename, image_url, fileHash, ...rest } = objData;
         const obj = {
           ...rest,
@@ -236,7 +237,6 @@ export const updatePlacesDataC = async (req, res, next) => {
         return obj;
       }
     };
-
 
     // sends an error if city doesnt exist
 
@@ -257,7 +257,11 @@ export const updatePlacesDataC = async (req, res, next) => {
     // sends an error if update fails
     // check if the place which is being updated exists
 
-    const updatedPlace = await updatePlacesDataM(newPlace, keepData(newPlace), placeId);
+    const updatedPlace = await updatePlacesDataM(
+      newPlace,
+      keepData(newPlace),
+      placeId,
+    );
 
     if (!updatedPlace)
       return res.status(424).json({
