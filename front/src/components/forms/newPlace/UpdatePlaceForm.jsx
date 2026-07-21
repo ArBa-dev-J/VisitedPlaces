@@ -30,6 +30,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
         fetchCities();
     }, [])
     //----------------------------------------------------
+  
 
     const {
         register,
@@ -44,13 +45,14 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
             setValue("name", place.place_name),
             setValue("place_type", place.place_type),
             setValue("description", place.place_type),
-            setValue("image", place.image_url),
+            setValue("image", ""),
             setValue("address", place.address),
             setValue("rating", place.rating),
-            setValue("is_free", place.is_free),
-            setValue("city_id", place.city_id)
-        );
-    }, []);
+            setValue("is_free", String(place.is_free)),
+            setValue("city_id", Number(place.city_id))
+        )
+    });
+
 
     // console.log(`${API_URL}/${place.image_url}`);
 
@@ -127,12 +129,16 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
                     {<p className="text-red-500">{getServerError("description")}</p>}
 
 
-                    <label className="text-white relative top-3 ">Post image file</label>
+                    <label className="text-white relative top-3 ">Update image file</label>
                     {place.image_url ? <figure className="p-5">
-                        <img className="size-[100%] border rounded-[20px] border-white" src={`${API_URL}/${place.image_url}`} />
+                        <img className="size-[99%]  border rounded-[20px] border-white" src={`${API_URL}/${place.image_url}`} />
+
                     </figure> : <p className="text-red-500 p-5">Image does not exist</p>}
-                    <input {...register("image")} type="file" className="text-center border rounded-[15px] bg-sky-600 p-2" />
-                    {<p className="text-red-500">{getServerError("image")}</p>}
+                    <div>
+                        <input {...register("image")} type="file" className="text-center border rounded-[15px] bg-sky-600 p-2" />
+                        <button type="button" onClick={() => setValue("image", "delete")} className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 ">Delete the image</button>
+                        {<p className="text-red-500">{getServerError("image")}</p>}
+                    </div>
 
 
                     <label className="text-white block">Write an address</label>
@@ -146,8 +152,8 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
                     <label className="text-white">Is the place free</label>
                     <select {...register("is_free", { required: true })} className="text-white">
                         <option value="">Select the option </option>
-                        <option value={true}>Yes</option>
-                        <option value={false}>No</option>
+                        <option value={"true"}>Yes</option>
+                        <option value={"false"}>No</option>
                     </select>
                     {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("is_free")}</p>}
 
@@ -155,7 +161,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
                     <select {...register("city_id", { required: true })} className="text-white">
                         <option value="">Select the option </option>
                         {cities.map(city => (
-                            <option key={city.id} value={Number(city.id)}>{city.name}</option>
+                            <option key={city.id} value={city.id}>{city.name}</option>
                         ))}
                     </select>
                     {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("city_id") || fetchError}</p>}
