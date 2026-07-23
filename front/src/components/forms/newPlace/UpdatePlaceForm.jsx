@@ -30,7 +30,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
         fetchCities();
     }, [])
     //----------------------------------------------------
-  
+
 
     const {
         register,
@@ -44,7 +44,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
         (
             setValue("name", place.place_name),
             setValue("place_type", place.place_type),
-            setValue("description", place.place_type),
+            setValue("description", place.description),
             setValue("image", ""),
             setValue("address", place.address),
             setValue("rating", place.rating),

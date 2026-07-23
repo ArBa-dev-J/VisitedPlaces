@@ -39,9 +39,8 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
                 </div>
 
 
-
-                {showUpdateForm ? <UpdatePlaceForm place={place} key={place.id} toShowUpdateForm={toShowUpdateForm} /> : null}
-                {showDelete ? <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces} /> : null}
+                {showUpdateForm ? <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"> <UpdatePlaceForm place={place} key={place.id} toShowUpdateForm={toShowUpdateForm} /> </div> : null}
+                {showDelete ? <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"> <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces} />  </div>: null}
 
                 <p className="text-white">{place.name}</p>
 
