@@ -136,7 +136,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
                     </figure> : <p className="text-red-500 p-5">Image does not exist</p>}
                     <div>
                         <input {...register("image")} type="file" className="text-center border rounded-[15px] bg-sky-600 p-2" />
-                        <button type="button" onClick={() => setValue("image", "delete")} className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 ">Delete the image</button>
+                        {place.image_url ? <button type="button" onClick={() => setValue("image", "delete")} className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 ">Delete the image</button> : null}
                         {<p className="text-red-500">{getServerError("image")}</p>}
                     </div>
 
