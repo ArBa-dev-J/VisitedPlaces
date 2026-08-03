@@ -109,14 +109,14 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
 
     return (
         <>
-            <section className="pt-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-sky-900 p-50 rounded-[18px]">
+            <section className="pt-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-sky-900 p-50 rounded-[18px] 2xl:w-[27%]">
 
                 <div className="flex justify-around">
                     <h2 className="text-center pt-10 pb-10 text-[1.4rem]">Update visited place</h2>
                     <button onClick={() => toShowUpdateForm()} className="cursor-pointer"><img className="h-5" src={x} alt="delete" /></button>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto gap-1 bg-sky-900 rounded-[20px] w-[500px] ">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center mx-auto gap-1 bg-sky-900 rounded-[20px] w-[500px]">
 
                     <label className="text-white">Add a new place name you visited</label>
                     <input type="text" {...register("name", { required: true })} className="border block rounded-[15px] bg-sky-600 text-black text-center" />
