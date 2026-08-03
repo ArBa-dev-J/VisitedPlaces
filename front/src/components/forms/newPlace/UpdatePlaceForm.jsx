@@ -9,6 +9,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
     const [serverDataError, setServerDataError] = useState([]);
     const [serverError, setServerError] = useState("");
     const [fetchError, setFetchError] = useState(null);
+    const [deleteImg, setDeleteImg] = useState(null);
     const [success, setSuccess] = useState(null);
     const { cities, setCities } = useContext(CityContext);
 
@@ -51,7 +52,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
             setValue("is_free", String(place.is_free)),
             setValue("city_id", Number(place.city_id))
         )
-    });
+    }, []);
 
 
     // console.log(`${API_URL}/${place.image_url}`);
@@ -97,6 +98,17 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
         )?.msg;
     };
 
+    // shows if the delete img function is active
+
+    const deleteImgFunc = () => {
+        setValue("image", "delete");
+        deleteImg ? null : setDeleteImg(true);
+    }
+
+    const hideDeleteText = () => {
+        setDeleteImg(false);
+    }
+
     return (
         <>
             <section className="pt-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-sky-900 p-50 rounded-[18px]">
@@ -132,11 +144,11 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
                     <label className="text-white relative top-3 ">Update image file</label>
                     {place.image_url ? <figure className="p-5">
                         <img className="size-[99%]  border rounded-[20px] border-white" src={`${API_URL}/${place.image_url}`} />
-
+                        {deleteImg ? <p className="text-red-500 pt-2 text-center">This image is set to be deleted</p> : null}
                     </figure> : <p className="text-red-500 p-5">Image does not exist</p>}
                     <div>
-                        <input {...register("image")} type="file" className="text-center border rounded-[15px] bg-sky-600 p-2" />
-                        {place.image_url ? <button type="button" onClick={() => setValue("image", "delete")} className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 ">Delete the image</button> : null}
+                        <input onClick={() => hideDeleteText()} {...register("image")} type="file" className="text-center border rounded-[15px] bg-sky-600 p-2" />
+                        {place.image_url ? <button type="button" onClick={() => deleteImgFunc()} className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 ">Delete the image</button> : null}
                         {<p className="text-red-500">{getServerError("image")}</p>}
                     </div>
 
@@ -164,7 +176,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
                             <option key={city.id} value={city.id}>{city.name}</option>
                         ))}
                     </select>
-                    {errors.is_free && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("city_id") || fetchError}</p>}
+                    {errors.city_id && <p className="text-red-500">Must choose one of the option</p> || <p className="text-red-500">{getServerError("city_id") || fetchError}</p>}
 
                     <input type="submit" value="Update the place" className="border mt-2 rounded-[20px] p-2 cursor-pointer  bg-white hover:bg-gray-200 " />
                     <p className="text-red-500 font-bold text-center">{serverError}</p>
