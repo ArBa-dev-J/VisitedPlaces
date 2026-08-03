@@ -5,7 +5,7 @@ import { CityContext } from "../../../utils/CityContext";
 import axios from "axios";
 
 
-function UpdatePlaceForm({ toShowUpdateForm, place }) {
+function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
     const [serverDataError, setServerDataError] = useState([]);
     const [serverError, setServerError] = useState("");
     const [fetchError, setFetchError] = useState(null);
@@ -36,7 +36,6 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
     const {
         register,
         handleSubmit,
-        reset,
         setValue,
         formState: { errors },
     } = useForm();
@@ -57,36 +56,34 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
 
     // console.log(`${API_URL}/${place.image_url}`);
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        const formData = new FormData();
 
-        // const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("place_type", data.place_type);
+        formData.append("description", data.description);
+        formData.append("address", data.address);
+        formData.append("rating", Number(data.rating));
+        formData.append("is_free", data.is_free);
+        formData.append("city_id", Number(data.city_id));
 
-        // formData.append("name", data.name);
-        // formData.append("place_type", data.place_type);
-        // formData.append("description", data.description);
-        // formData.append("address", data.address);
-        // formData.append("rating", Number(data.rating));
-        // formData.append("is_free", data.is_free);
-        // formData.append("city_id", Number(data.city_id));
-
-        // // File input returns a FileList
-        // formData.append("image", data.image[0]);
+        // File input returns a FileList
+        formData.append("image", data?.image[0] || "");
 
 
-        // try {
-        //     setSuccess(null);
-        //     setServerDataError([]);
-        //     setServerError("");
-        //     const response = await axios.post(`${API_URL}/places/newPlace`, formData);
+        try {
+            setSuccess(null);
+            setServerDataError([]);
+            setServerError("");
+            const response = await axios.patch(`${API_URL}/places/updatePlace/${place.id}`, formData);
 
-        //     setServerError(null);
-        //     setSuccess(`${data.name} was successfully uploaded`);
-        //     if (response) reset();
-        // } catch (error) {
-        //     setServerDataError(error?.response?.data?.error);
-        //     setServerError(error?.response?.data?.message);
-        // }
+            setServerError(null);
+            fetchAllPlaces();
+            setSuccess(`${data.name} was successfully uploaded`);
+        } catch (error) {
+            setServerDataError(error?.response?.data?.error);
+            setServerError(error?.response?.data?.message);
+        }
     }
 
 
@@ -106,6 +103,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place }) {
     }
 
     const hideDeleteText = () => {
+        setValue("image", "");
         setDeleteImg(false);
     }
 
