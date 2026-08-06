@@ -9,7 +9,10 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
     const [serverDataError, setServerDataError] = useState([]);
     const [serverError, setServerError] = useState("");
     const [fetchError, setFetchError] = useState(null);
+
     const [deleteImg, setDeleteImg] = useState(null);
+    const [deleteImgData, setDeleteImgData] = useState("");
+
     const [success, setSuccess] = useState(null);
     const { cities, setCities } = useContext(CityContext);
 
@@ -37,6 +40,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
         register,
         handleSubmit,
         setValue,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -57,6 +61,8 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
     // console.log(`${API_URL}/${place.image_url}`);
 
     const onSubmit = async (data) => {
+        console.log(data);
+
         const formData = new FormData();
 
         formData.append("name", data.name);
@@ -68,7 +74,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
         formData.append("city_id", Number(data.city_id));
 
         // File input returns a FileList
-        formData.append("image", data?.image[0] || "");
+        formData.append("image", data?.image[0] || "" || deleteImgData);
 
 
         try {
@@ -79,6 +85,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
 
             setServerError(null);
             fetchAllPlaces();
+            if(response) reset();
             setSuccess(`${data.name} was successfully uploaded`);
         } catch (error) {
             setServerDataError(error?.response?.data?.error);
@@ -98,12 +105,12 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
     // shows if the delete img function is active
 
     const deleteImgFunc = () => {
-        setValue("image", "delete");
+        setDeleteImgData("delete");
         deleteImg ? null : setDeleteImg(true);
     }
 
     const hideDeleteText = () => {
-        setValue("image", "");
+        setDeleteImgData("");
         setDeleteImg(false);
     }
 
