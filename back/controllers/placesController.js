@@ -212,7 +212,7 @@ export const updatePlacesDataC = async (req, res, next) => {
       if (
         place &&
         exists.length > 0 &&
-        place.image_url &&
+        place.file_hash ||
         newPlace.image === "delete" 
       ) {
         if (filePath) {
