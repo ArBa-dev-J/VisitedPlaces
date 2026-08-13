@@ -15,7 +15,7 @@ function PlacesList() {
     // for place pagination
     const [currentPage, setCurrentPage] = useState(0);
 
-    const pageSize = 10;
+    const pageSize = 5;
 
     const [fetchedPlaces, setFetchedPlaces] = useState([]);
     const [showPlaceName, setShowPlaceName] = useState(true);
@@ -196,8 +196,8 @@ function PlacesList() {
                     <PlacesMapping setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} fetchAllPlaces={fetchAllPlaces} />
                 ))}
 
-                
-                  <ReactPaginate.default
+                <div className="pt-5">
+                    <ReactPaginate.default
                         previousLabel={"Previous"}
                         nextLabel={"Next"}
                         breakLabel={"..."}
@@ -223,7 +223,7 @@ function PlacesList() {
                         }
                         disabledClassName={"pointer-events-none opacity-50"}
                     />
-                
+                </div>
             </section>
         </>
     );
