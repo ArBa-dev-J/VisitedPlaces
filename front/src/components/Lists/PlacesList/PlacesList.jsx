@@ -7,9 +7,15 @@ import PlacesSearchByPrice from "./PlaceSearches/PlaceSearchByPrice";
 import PlacesSearchByRating from "./PlaceSearches/PlaceSearchByRating";
 import PlacesSearchByType from "./PlaceSearches/PlaceSearchByType";
 import { useState, useEffect } from "react";
+import ReactPaginate from "react-paginate";
 
 function PlacesList() {
     const [serverError, setServerError] = useState(null);
+
+    // for place pagination
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const pageSize = 10;
 
     const [fetchedPlaces, setFetchedPlaces] = useState([]);
     const [showPlaceName, setShowPlaceName] = useState(true);
@@ -160,6 +166,17 @@ function PlacesList() {
         fetchAllPlaces();
     }, [placeName, cityName, rating, isFree, type])
 
+    //logic for pagination
+
+    const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
+    };
+
+    const offset = currentPage * pageSize;
+
+    const paginatedItems = fetchedPlaces.slice(offset, offset + pageSize);
+    console.log(ReactPaginate);
+
     return (
         <>
             <section className="mx-auto p-5 bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px]">
@@ -175,9 +192,38 @@ function PlacesList() {
                     <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
                 </div> : null}
 
-                {fetchedPlaces.map((place) => (
+                {paginatedItems.map((place) => (
                     <PlacesMapping setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} fetchAllPlaces={fetchAllPlaces} />
                 ))}
+
+                
+                  <ReactPaginate.default
+                        previousLabel={"Previous"}
+                        nextLabel={"Next"}
+                        breakLabel={"..."}
+                        breakClassName={"break-me"}
+                        pageCount={Math.ceil(fetchedPlaces.length / pageSize)}
+                        marginPagesDisplayed={5}
+                        pageRangeDisplayed={2}
+                        onPageChange={handlePageChange}
+                        containerClassName={
+                            "flex justify-center gap-3 items-center font-poppins text-xs"
+                        }
+                        activeClassName={
+                            "bg-transparent border-b-4 border-gray-800 text-white rounded-lg font-medium py-2"
+                        }
+                        pageLinkClassName={
+                            "bg-transparent text-gray-800 border border-gray-800 rounded-lg font-medium px-3 py-2"
+                        }
+                        previousLinkClassName={
+                            "bg-gray-800 text-white lg:px-4 px-3 text-xs lg:text-base py-2 rounded-lg font-medium"
+                        }
+                        nextLinkClassName={
+                            "bg-gray-800 text-white lg:px-4 px-3 text-xs lg:text-base py-2 rounded-lg font-medium"
+                        }
+                        disabledClassName={"pointer-events-none opacity-50"}
+                    />
+                
             </section>
         </>
     );
