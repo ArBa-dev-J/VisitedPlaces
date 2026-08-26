@@ -1,12 +1,13 @@
 import PlacesMapping from "./PlacesMapping";
 import axios from "axios";
+import Loading from "../../../utils/Loading";
 import PlacesSearchChange from "./PlaceSearches/PlacesSearchChange";
 import PlacesSearch from "./PlaceSearches/PlacesSearch"
 import PlacesSearchByCity from "./PlaceSearches/PlaceSearchByCity";
 import PlacesSearchByPrice from "./PlaceSearches/PlaceSearchByPrice";
 import PlacesSearchByRating from "./PlaceSearches/PlaceSearchByRating";
 import PlacesSearchByType from "./PlaceSearches/PlaceSearchByType";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import ReactPaginate from "react-paginate";
 
 function PlacesList() {
@@ -16,6 +17,10 @@ function PlacesList() {
     const [currentPage, setCurrentPage] = useState(0);
 
     const pageSize = 5;
+
+    // loading state
+
+    const [loading, setLoading] = useState(true);
 
     const [fetchedPlaces, setFetchedPlaces] = useState([]);
     const [showPlaceName, setShowPlaceName] = useState(true);
@@ -130,6 +135,7 @@ function PlacesList() {
 
     // fetch all places
     const fetchAllPlaces = async () => {
+        setLoading(true);
 
         try {
             const response = await axios.get(`${API_URL}/places/placesList`, {
@@ -143,11 +149,13 @@ function PlacesList() {
             });
 
 
+            if (response) setLoading(false);
             setServerError(null);
             setFetchedPlaces(response.data.data);
         } catch (error) {
             // console.log(error);
             setServerError(error.response.data.message || error.response.data.error[0].msg);
+            setLoading(false);
         }
     }
 
@@ -175,7 +183,7 @@ function PlacesList() {
     const offset = currentPage * pageSize;
 
     const paginatedItems = fetchedPlaces.slice(offset, offset + pageSize);
-    console.log(ReactPaginate);
+
 
     return (
         <>
@@ -192,11 +200,11 @@ function PlacesList() {
                     <PlacesSearchChange toShowOrToHide={toShowOrToHide} />
                 </div> : null}
 
-                {paginatedItems.map((place) => (
+                {loading ? <div className="flex justify-center"><Loading/></div> : paginatedItems.map((place) => (
                     <PlacesMapping setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} fetchAllPlaces={fetchAllPlaces} />
                 ))}
 
-               {hideSearchBar() ?  <div className="pt-5">
+                {hideSearchBar() ? <div className="pt-5">
                     <ReactPaginate.default
                         previousLabel={"Previous"}
                         nextLabel={"Next"}
@@ -223,7 +231,7 @@ function PlacesList() {
                         }
                         disabledClassName={"pointer-events-none opacity-50"}
                     />
-                </div>: null}
+                </div> : null}
             </section>
         </>
     );
