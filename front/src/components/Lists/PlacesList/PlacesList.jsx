@@ -196,7 +196,7 @@ function PlacesList() {
                     <PlacesMapping setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} fetchAllPlaces={fetchAllPlaces} />
                 ))}
 
-                <div className="pt-5">
+               {hideSearchBar() ?  <div className="pt-5">
                     <ReactPaginate.default
                         previousLabel={"Previous"}
                         nextLabel={"Next"}
@@ -223,7 +223,7 @@ function PlacesList() {
                         }
                         disabledClassName={"pointer-events-none opacity-50"}
                     />
-                </div>
+                </div>: null}
             </section>
         </>
     );
