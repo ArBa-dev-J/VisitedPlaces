@@ -1,4 +1,6 @@
-import MainPage from "./components/pages/MainPage";
+import { Suspense, lazy } from 'react';
+import Loading from './utils/Loading';
+const MainPage = lazy(() => import("./components/pages/MainPage"));
 import NewCityForm from "./components/forms/newCity/NewCityForm";
 import NewPlaceForm from "./components/forms/newPlace/NewPlaceForm";
 import CityListPage from "./components/Lists/CityList/cityListPage";
@@ -12,7 +14,7 @@ function App() {
     <>
       <Routes>
         {/* Dasboard route */}
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<Suspense fallback={<Loading />}><MainPage /></Suspense>} />
 
         {/* Form routes */}
         <Route path="/newCity" element={<NewCityForm />} />
