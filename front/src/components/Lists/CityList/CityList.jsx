@@ -1,4 +1,5 @@
 import axios from "axios";
+import Loading from "../../../utils/Loading";
 import CityArrayMapping from "./CityArrayMapping";
 import CitySearch from "./CitySearch"
 import { CityContext } from "../../../utils/CityContext";
@@ -12,6 +13,9 @@ function CityList() {
     const { cities, setCities } = useContext(CityContext);
     // const [show, setShow] = useState(false);
 
+    // loading state
+
+    const [loading, setLoading] = useState(true);
 
     // search by name
     const [name, setName] = useState();
@@ -22,6 +26,8 @@ function CityList() {
 
     // get all cities
     const fetchCities = async () => {
+        setLoading(true);
+
         try {
             const response = await axios.get(`${API_URL}/cities/cityList`, {
                 params: {
@@ -29,11 +35,12 @@ function CityList() {
                 }
             });
 
+            if (response) setLoading(false);
             setServerError(null);
             setCities(response.data.data);
         } catch (error) {
             setServerError(error.response.data.message || error.response.data.error[0].msg);
-            
+            setLoading(false);
         }
     }
 
@@ -62,8 +69,8 @@ function CityList() {
 
                 {hideSearchBar() ? <CitySearch nameChange={nameChange} /> : null}
 
-                {hideSearchBar() ? cities.map((item) => (
-                    <CityArrayMapping key={item.id} cities={item} fetchCities={() => fetchCities()} />
+                {hideSearchBar() ?   loading ? <div className="flex justify-center"><Loading/></div> : cities.map((item) => (
+                   <CityArrayMapping key={item.id} cities={item} fetchCities={() => fetchCities()} />
                 )) : null}
 
             </section>
