@@ -64,7 +64,7 @@ function CityList() {
 
     return (
         <>
-            <section className="mx-auto p-5 bg-sky-900 rounded-[20px] w-[500px]">
+            <section className="mx-auto p-5 bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px]">
                 <p className="text-red-500 text-center">{serverError}</p>
 
                 {hideSearchBar() ? <CitySearch nameChange={nameChange} /> : null}
