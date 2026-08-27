@@ -1,7 +1,9 @@
 import { Suspense, lazy } from "react";
 import Loading from "./utils/Loading";
 const MainPage = lazy(() => import("./components/pages/MainPage"));
-import NewCityForm from "./components/forms/newCity/NewCityForm";
+const NewCityForm = lazy(
+  () => import("./components/forms/newCity/NewCityForm"),
+);
 import NewPlaceForm from "./components/forms/newPlace/NewPlaceForm";
 import CityListPage from "./components/Lists/CityList/cityListPage";
 import PlacesListPage from "./components/Lists/PlacesList/PlacesListPage";
@@ -28,7 +30,20 @@ function App() {
         />
 
         {/* Form routes */}
-        <Route path="/newCity" element={<NewCityForm />} />
+        <Route
+          path="/newCity"
+          element={
+            <Suspense
+              fallback={
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <Loading />
+                </div>
+              }
+            >
+              <NewCityForm />
+            </Suspense>
+          }
+        />
         <Route path="/newPlace" element={<NewPlaceForm />} />
 
         {/* List routes */}
