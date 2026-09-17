@@ -1,5 +1,7 @@
 import PageHeader from "../../PageHeader";
 import NewPlaceFormInput from "./NewPlaceFormInput"
+import Footer from "../../Footer"
+
 function NewPlaceForm() {
     return (
         <>
@@ -10,6 +12,8 @@ function NewPlaceForm() {
                     <h2 className="text-center pt-10 pb-10 text-[1.4rem]">Add a new visited place to the list</h2>
 
                     <NewPlaceFormInput />
+
+                    <Footer/>
                 </section>
             </main>
         </>

@@ -1,4 +1,5 @@
 import PageHeader from "../../PageHeader";
+import Footer from "../../Footer"
 import NewCityFormInputs from "./NewCityFormInputs";
 
 function NewCityForm() {
@@ -11,6 +12,8 @@ function NewCityForm() {
                     <h2 className="text-center pt-10 pb-10 text-[1.4rem]">Add a new city to the list</h2>
 
                     <NewCityFormInputs />
+
+                    <Footer/>
                 </section>
             </main>
         </>

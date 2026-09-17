@@ -1,5 +1,6 @@
 import PageHeader from "../../PageHeader";
 import CityList from "./CityList";
+import Footer from "../../Footer";
 
 function CityListPage() {
     return (
@@ -11,6 +12,8 @@ function CityListPage() {
                     <h2 className="text-center pt-10 pb-10 text-[1.4rem]">City List</h2>
 
                     <CityList />
+
+                    <Footer/>
                 </section>
             </main>
         </>

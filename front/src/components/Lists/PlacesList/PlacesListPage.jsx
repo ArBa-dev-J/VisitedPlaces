@@ -1,5 +1,6 @@
 import PageHeader from "../../PageHeader";
 import PlacesList from "./PlacesList"
+import Footer from "../../Footer";
 
 function PlacesListPage() {
     return (
@@ -11,6 +12,8 @@ function PlacesListPage() {
                     <h2 className="text-center pt-10 pb-10 text-[1.4rem]">Places List</h2>
 
                     <PlacesList />
+
+                    <Footer/>
                 </section>
             </main>
         </>
