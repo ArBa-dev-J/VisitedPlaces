@@ -8,6 +8,7 @@ import {
   deleteUsersPatientM,
   updatePlacesDataM,
   findPlaceNameExceptIdM,
+  addNewImageM,
   findImageHashM,
 } from "../models/placesModel.js";
 
@@ -62,7 +63,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
     const exists = await getCityByIdM(id);
 
-    if (exists == 0) {
+    if (exists ==+ 0) {
       if (req.file) {
         fs.unlink(req.file.path, (err) => {
           if (err) console.error(err);
@@ -75,8 +76,10 @@ export const newVisitedPlaceC = async (req, res, next) => {
       });
     }
 
-    const addANewPlace = await newVisitedPlaceM(newPlace);
 
+    const addANewPlace = await newVisitedPlaceM(newPlace);
+    const newImage = await addNewImageM(addANewPlace, newPlace);
+    
     if (!addANewPlace)
       return res.status(424).json({
         status: "fail",
@@ -86,6 +89,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
     return res.status(201).json({
       status: "success",
       data: addANewPlace,
+      imageData: newImage
     });
   } catch (error) {
     res.status(500).json({

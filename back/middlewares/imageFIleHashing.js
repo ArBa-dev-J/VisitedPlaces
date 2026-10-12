@@ -4,9 +4,9 @@ import sha256 from "sha256";
 
 const imageHashing = async (req, res, next) => {
   try {
-    let file;
-    if (req?.file?.path) {
-      file = await fs.readFile(req?.file?.path);
+    let file; 
+    if (req?.files?.path) {
+      file = await fs.readFile(req?.files?.path);
     }
 
     file ? req.hashedImage = await sha256(file) : null;

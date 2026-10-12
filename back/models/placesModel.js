@@ -1,25 +1,30 @@
 import { sql } from "../dbConnection.js";
 
+// add new images
+export const addNewImageM = async (addNewPlace, newPlace) => {
+  const { id: id } = addNewPlace;
+
+  const { filename, fileHash } = newPlace;
+
+  const imageUpload = await sql`
+  INSERT INTO IMAGES(place_id,  image_url, file_hash)
+  VALUES (${id}, ${filename}, ${fileHash})
+  RETURNING *
+  `;
+  return imageUpload;
+};
+
 // post a new visited place
 
 export const newVisitedPlaceM = async (newPlace) => {
-  const {
-    name,
-    place_type,
-    description,
-    filename,
-    fileHash,
-    address,
-    rating,
-    is_free,
-    city_id,
-  } = newPlace;
+  const { name, place_type, description, address, rating, is_free, city_id } =
+    newPlace;
 
   const isFreeBool = is_free == "true";
 
   const upload = await sql`
-    INSERT INTO places (name, place_type, description, image_url, file_hash, address, rating, is_free, city_id)
-    VALUES (${name}, ${place_type}, ${description}, ${filename}, ${fileHash}, ${address}, ${Number(rating)}, ${isFreeBool}, ${Number(city_id)})
+    INSERT INTO places (name, place_type, description, address, rating, is_free, city_id)
+    VALUES (${name}, ${place_type}, ${description}, ${address}, ${Number(rating)}, ${isFreeBool}, ${Number(city_id)})
     RETURNING *;
     `;
 
