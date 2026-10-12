@@ -1,4 +1,3 @@
-import { log } from "console";
 import { sql } from "../dbConnection.js";
 
 // post a new visited place
@@ -142,8 +141,6 @@ export const updatePlacesDataM = async (newPlace, keepData, placeId) => {
   const fileHashFromObj = newPlace.fileHash;
   const { image, filename, fileHash, ...rest } = newPlace;
 
-
-
   const newPlaceFinal = {
     ...rest,
     is_free: bool == "true",
@@ -153,8 +150,8 @@ export const updatePlacesDataM = async (newPlace, keepData, placeId) => {
 
   // mini function to switch between json data
   const jsonDataSwitch = (keepData, newPlaceFinal) => {
-    if (keepData){
-      return keepData
+    if (keepData) {
+      return keepData;
     } else return newPlaceFinal;
   };
 

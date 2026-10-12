@@ -20,7 +20,7 @@ const placesRoutes = express.Router();
 
 placesRoutes.post(
   "/newPlace",
-  upload.single("image"),
+  upload.array("image"),
   fileFilterError,
   fileSize,
   imageHashing,
