@@ -18,15 +18,14 @@ export const newVisitedPlaceC = async (req, res, next) => {
   try {
     const newPlaceData = req.body;
 
-    delete newPlaceData.name
+    delete newPlaceData.name;
 
     const newPlace = {
       ...newPlaceData,
       name: req.capitalizedName,
-      filename: req.filename|| "",
+      filename: req.filename || "",
       fileHash: req.hashedImage || "",
     };
-
 
     if (
       !newPlace.name ||
@@ -77,10 +76,9 @@ export const newVisitedPlaceC = async (req, res, next) => {
       });
     }
 
-
     const addANewPlace = await newVisitedPlaceM(newPlace);
     const newImage = await addNewImageM(addANewPlace, newPlace);
-    
+
     if (!addANewPlace)
       return res.status(424).json({
         status: "fail",
@@ -90,7 +88,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
     return res.status(201).json({
       status: "success",
       data: addANewPlace,
-      imageData: newImage
+      imageData: newImage,
     });
   } catch (error) {
     res.status(500).json({
@@ -215,10 +213,8 @@ export const updatePlacesDataC = async (req, res, next) => {
 
     if (newPlace["image"] !== "") {
       if (
-        place &&
-        exists.length > 0 &&
-        place.file_hash ||
-        newPlace.image === "delete" 
+        (place && exists.length > 0 && place.file_hash) ||
+        newPlace.image === "delete"
       ) {
         if (filePath) {
           fs.unlink(filePath, (err) => {
