@@ -18,14 +18,15 @@ export const newVisitedPlaceC = async (req, res, next) => {
   try {
     const newPlaceData = req.body;
 
-    const newPlaceDataN = delete newPlaceData.name;
+    delete newPlaceData.name
 
     const newPlace = {
       ...newPlaceData,
       name: req.capitalizedName,
-      filename: req?.file?.path || "",
+      filename: req.filename|| "",
       fileHash: req.hashedImage || "",
     };
+
 
     if (
       !newPlace.name ||
@@ -63,7 +64,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
     const exists = await getCityByIdM(id);
 
-    if (exists ==+ 0) {
+    if (exists === 0) {
       if (req.file) {
         fs.unlink(req.file.path, (err) => {
           if (err) console.error(err);

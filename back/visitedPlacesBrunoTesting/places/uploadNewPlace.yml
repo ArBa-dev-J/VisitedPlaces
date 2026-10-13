@@ -12,8 +12,8 @@ http:
       - name: image
         type: file
         value:
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot 2026-06-23 000107.png
-        contentType: image/png
+          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (6).png
+          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (23).png
       - name: name
         type: text
         value: test
