@@ -5,13 +5,17 @@ export const addNewImageM = async (addNewPlace, newPlace) => {
   const { id: id } = addNewPlace;
 
   const { filename, fileHash } = newPlace;
-
-  const imageUpload = await sql`
-  INSERT INTO IMAGES(place_id,  image_url, file_hash)
-  VALUES (${id}, ${filename}, ${fileHash})
-  RETURNING *
-  `;
-  return imageUpload;
+  const imageUploads = await Promise.all(
+    filename.map(
+      (file, index) =>
+        sql`
+        INSERT INTO IMAGES (place_id, image_url, file_hash)
+        VALUES (${id}, ${file}, ${fileHash[index]})
+        RETURNING *
+      `,
+    ),
+  );
+  return imageUploads;
 };
 
 // post a new visited place

@@ -74,7 +74,6 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
     const exists = await getCityByIdM(id);
 
-
     if (exists.length === 0) {
       if (req.files.length > 0) {
         for (let i = 0; i < req.files.length; i++) {
@@ -92,6 +91,7 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
     const addANewPlace = await newVisitedPlaceM(newPlace);
     const newImage = await addNewImageM(addANewPlace, newPlace);
+
 
     if (!addANewPlace)
       return res.status(424).json({

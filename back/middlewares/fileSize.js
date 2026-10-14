@@ -1,13 +1,13 @@
 import fs, { unlink } from "fs";
 
-async function fileSize(req, res, next) {
+function fileSize(req, res, next) {
   const maxSize = 30 * 1024 * 1024; // 30 MB
   const objLength = req.files.length;
 
   try {
     for (let i = 0; i < objLength; i++) {
       if (req.files[i].size >= maxSize) {
-        fs.unlink(req.files[i].path, (err) => {
+      fs.unlink(req.files[i].path, (err) => {
           if (err) console.error(err);
 
           return res.status(400).json({
