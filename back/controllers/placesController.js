@@ -74,7 +74,8 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
     const exists = await getCityByIdM(id);
 
-    if (exists === 0) {
+
+    if (exists.length === 0) {
       if (req.files.length > 0) {
         for (let i = 0; i < req.files.length; i++) {
           fs.unlink(req.files[i].path, (err) => {
