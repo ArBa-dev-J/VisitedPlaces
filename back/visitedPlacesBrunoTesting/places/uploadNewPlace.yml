@@ -13,10 +13,10 @@ http:
         type: file
         value:
           - C:\Users\Arminas\Pictures\Screenshots\Screenshot (6).png
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (23).png
+          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (7).png
       - name: name
         type: text
-        value: test
+        value: Test
       - name: place_type
         type: text
         value: castle
@@ -44,3 +44,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

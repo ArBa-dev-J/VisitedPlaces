@@ -34,21 +34,32 @@ export const newVisitedPlaceC = async (req, res, next) => {
       !newPlace.rating ||
       !newPlace.is_free ||
       !newPlace.city_id
-    )
+    ) {
+      if (req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          fs.unlink(req.files[i].path, (err) => {
+            if (err) console.error(err);
+          });
+        }
+      }
+
       return res.status(400).json({
         status: "fail",
         message: "not enough info",
       });
+    }
 
     // searches if place exists by name
 
     const existsP = await findPlaceNameM(newPlace);
 
     if (existsP) {
-      if (req.file) {
-        fs.unlink(req.file.path, (err) => {
-          if (err) console.error(err);
-        });
+      if (req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          fs.unlink(req.files[i].path, (err) => {
+            if (err) console.error(err);
+          });
+        }
       }
 
       return res.status(409).json({
@@ -64,10 +75,12 @@ export const newVisitedPlaceC = async (req, res, next) => {
     const exists = await getCityByIdM(id);
 
     if (exists === 0) {
-      if (req.file) {
-        fs.unlink(req.file.path, (err) => {
-          if (err) console.error(err);
-        });
+      if (req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          fs.unlink(req.files[i].path, (err) => {
+            if (err) console.error(err);
+          });
+        }
       }
 
       return res.status(404).json({
