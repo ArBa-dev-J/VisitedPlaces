@@ -55,23 +55,28 @@ function NewCityFormInput() {
     formData.append("city_id", Number(data.city_id));
 
     // File input returns a FileList
-    formData.append("image", data.images);
+    files.forEach((file) => {
+      formData.append("image", file);
+    });
 
     console.log(formData);
 
-    // try {
-    //     setSuccess(null);
-    //     setServerDataError([]);
-    //     setServerError("");
-    //     const response = await axios.post(`${API_URL}/places/newPlace`, formData);
+    try {
+      setSuccess(null);
+      setServerDataError([]);
+      setServerError("");
+      const response = await axios.post(`${API_URL}/places/newPlace`, formData);
 
-    //     setServerError(null);
-    //     setSuccess(`${data.name} was successfully uploaded`);
-    //     if (response) reset();
-    // } catch (error) {
-    //     setServerDataError(error?.response?.data?.error);
-    //     setServerError(error?.response?.data?.message);
-    // }
+      setServerError(null);
+      setSuccess(`${data.name} was successfully uploaded`);
+      if (response) {
+        reset();
+        setFiles(null);
+      }
+    } catch (error) {
+      setServerDataError(error?.response?.data?.error);
+      setServerError(error?.response?.data?.message);
+    }
   };
 
   // filter data errors by specific fields
@@ -129,8 +134,8 @@ function NewCityFormInput() {
           onChange={handleChange}
           className="text-center border rounded-[15px] bg-sky-600 p-2"
         />
-        {files.length > 0 ? (
-          <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px]">
+        {files?.length > 0 ? (
+          <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px] gap-2">
             {files.map((file, index) => (
               <img
                 key={`${file.name}-${index}`}

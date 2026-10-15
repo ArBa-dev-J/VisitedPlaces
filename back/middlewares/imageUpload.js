@@ -29,7 +29,7 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    files: 5,
+    files: 6,
   },
 });
 
