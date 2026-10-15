@@ -129,16 +129,18 @@ function NewCityFormInput() {
           onChange={handleChange}
           className="text-center border rounded-[15px] bg-sky-600 p-2"
         />
-        <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px]">
-          {files.map((file, index) => (
-            <img
-              key={`${file.name}-${index}`}
-              src={URL.createObjectURL(file)}
-              alt={file.name}
-              className="w-[120px]"
-            />
-          ))}
-        </div>
+        {files.length > 0 ? (
+          <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px]">
+            {files.map((file, index) => (
+              <img
+                key={`${file.name}-${index}`}
+                src={URL.createObjectURL(file)}
+                alt={file.name}
+                className="w-[120px]"
+              />
+            ))}
+          </div>
+        ) : null}
         {<p className="text-red-500">{getServerError("image")}</p>}
 
         <label className="text-white block">Write an address</label>
