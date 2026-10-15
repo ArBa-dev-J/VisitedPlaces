@@ -164,7 +164,7 @@ function NewCityFormInput() {
         <label className="text-white">Is the place free</label>
         <select
           {...register("is_free", { required: true })}
-          className="text-white"
+          className="text-black rounded-[15px] bg-sky-600 p-2"
         >
           <option value="">Select the option </option>
           <option value={true}>Yes</option>
@@ -177,7 +177,7 @@ function NewCityFormInput() {
         <label className="text-white">City select</label>
         <select
           {...register("city_id", { required: true })}
-          className="text-white"
+          className="text-black rounded-[15px] bg-sky-600 p-2"
         >
           <option value="">Select the option </option>
           {cities.map((city) => (
