@@ -13,10 +13,10 @@ http:
         type: file
         value:
           - C:\Users\Arminas\Pictures\Screenshots\Screenshot (6).png
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (7).png
+          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (2).png
       - name: name
         type: text
-        value: Test
+        value: kasss
       - name: place_type
         type: text
         value: castle
