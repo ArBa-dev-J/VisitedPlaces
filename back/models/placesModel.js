@@ -123,11 +123,26 @@ export const getAllPlacesM = async (
   }
 
   const allPlaces = await sql`
-    SELECT places.*, places.name AS place_name, cities.name FROM places
+    SELECT
+    places.*,
+    cities.name AS city_name,
+    COALESCE(
+        JSON_AGG(
+            JSON_BUILD_OBJECT(
+                'image_id', images.image_id,
+                'image_url', images.image_url,
+                'file_hash', images.file_hash
+            )
+        ) FILTER (WHERE images.image_id IS NOT NULL),
+        '[]'
+    ) AS images
+    FROM places
     JOIN cities
     ON places.city_id = cities.id
+    LEFT JOIN images
+    ON places.id = images.place_id
     ${whereClause}
-
+    GROUP BY places.id, cities.name;
     `;
 
   return allPlaces;
