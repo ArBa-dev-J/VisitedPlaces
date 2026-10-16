@@ -6,26 +6,25 @@ function PlacesSearchChange({
   isFree,
   type,
 }) {
-  
   const activeSearchName = () => {
-    if (placeName) return "green";
+    if (placeName) return "#0C4A6E";
   };
 
   const activeSearchCity = () => {
-    if (cityName) return "green";
+    if (cityName) return "#0C4A6E";
   };
 
   const activeSearchRating = () => {
     if (rating === null) return null;
-    if (rating >= 0) return "green";
+    if (rating >= 0) return "#0C4A6E";
   };
 
   const activeSearchIsFree = () => {
-    if (isFree === false || isFree === true) return "green";
+    if (isFree === false || isFree === true) return "#0C4A6E";
   };
 
   const activeSearchType = () => {
-    if (type) return "green";
+    if (type) return "#0C4A6E";
   };
 
   return (
@@ -37,31 +36,46 @@ function PlacesSearchChange({
           <option>Choose search filter</option>
           <option
             onClick={() => toShowOrToHide("placeName")}
-            style={{ backgroundColor: activeSearchName() }}
+            style={{
+              backgroundColor: activeSearchName(),
+              color: activeSearchName() === "#0C4A6E" ? "white" : null,
+            }}
           >
             Search by place name
           </option>
           <option
             onClick={() => toShowOrToHide("cityName")}
-            style={{ backgroundColor: activeSearchCity() }}
+            style={{
+              backgroundColor: activeSearchCity(),
+              color: activeSearchCity() === "#0C4A6E" ? "white" : null,
+            }}
           >
             Search by city name
           </option>
           <option
             onClick={() => toShowOrToHide("placeRating")}
-            style={{ backgroundColor: activeSearchRating() }}
+            style={{
+              backgroundColor: activeSearchRating(),
+              color: activeSearchRating() === "#0C4A6E" ? "white" : null,
+            }}
           >
             Search by place rating
           </option>
           <option
             onClick={() => toShowOrToHide("isFree")}
-            style={{ backgroundColor: activeSearchIsFree() }}
+            style={{
+              backgroundColor: activeSearchIsFree(),
+              color: activeSearchIsFree() === "#0C4A6E" ? "white" : null,
+            }}
           >
             Search by place price
           </option>
           <option
             onClick={() => toShowOrToHide("placeType")}
-            style={{ backgroundColor: activeSearchType() }}
+            style={{
+              backgroundColor: activeSearchType(),
+              color: activeSearchType() === "#0C4A6E" ? "white" : null,
+            }}
           >
             Search by place type
           </option>
