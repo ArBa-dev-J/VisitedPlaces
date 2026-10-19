@@ -6,6 +6,11 @@ info:
 http:
   method: GET
   url: http://localhost:3000/api/v1/places/placesList
+  params:
+    - name: place_name
+      value: KAS
+      type: query
+      disabled: true
   auth: inherit
 
 settings:
@@ -13,3 +18,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

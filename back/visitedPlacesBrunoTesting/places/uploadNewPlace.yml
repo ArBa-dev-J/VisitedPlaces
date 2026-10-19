@@ -10,13 +10,11 @@ http:
     type: multipart-form
     data:
       - name: image
-        type: file
-        value:
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (6).png
-          - C:\Users\Arminas\Pictures\Screenshots\Screenshot (2).png
+        type: text
+        value: ""
       - name: name
         type: text
-        value: kasss
+        value: Tetas
       - name: place_type
         type: text
         value: castle

@@ -4,67 +4,128 @@ import update from "../../../assets/update.png";
 import PlaceAskForDelete from "./PlaceAskForDelete";
 import UpdatePlaceForm from "../../forms/newPlace/UpdatePlaceForm";
 
-
 function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
+  const API_URL = import.meta.env.VITE_BACK;
 
-    const API_URL = import.meta.env.VITE_BACK;
+  const [show, setShow] = useState(null);
+  const [showDelete, setShowDelete] = useState();
+  const [showUpdateForm, setShowUpdateForm] = useState();
 
-    const [show, setShow] = useState(null);
-    const [showDelete, setShowDelete] = useState();
-    const [showUpdateForm, setShowUpdateForm] = useState();
+  const toShow = () => {
+    return show ? setShow(null) : setShow(true);
+  };
 
-    const toShow = () => {
-        return show ? setShow(null) : setShow(true);
-    }
-
-    const toShowDelete = () => {
-        return showDelete ? setShowDelete(false) : setShowDelete(true), setShowUpdateForm(false);
-    }
-
-    const toShowUpdateForm = () => {
-        return showUpdateForm ? setShowUpdateForm(false) : setShowUpdateForm(true), setShowDelete(false);
-    }
-
-
+  const toShowDelete = () => {
     return (
-        <>
-            <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
-
-                <div className="flex gap-10 relative left-15">
-                    <p className="text-[1.2rem] mt-2 mb-2 text-white">{place.place_name}</p>
-                    <div className="flex gap-3">
-                        <button onClick={() => toShowUpdateForm()} className="cursor-pointer"><img className="h-8" src={update} alt="update" /></button>
-                        <button onClick={() => toShowDelete()} className="cursor-pointer"><img className="h-5" src={x} alt="x" /></button>
-                    </div>
-                </div>
-
-
-                {showUpdateForm ? <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"> <UpdatePlaceForm place={place} key={place.id} toShowUpdateForm={toShowUpdateForm} fetchAllPlaces={fetchAllPlaces} /> </div> : null}
-                {showDelete ? <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"> <PlaceAskForDelete setFetchedPlaces={setFetchedPlaces} key={place.id} place={place} toShowDelete={toShowDelete} fetchAllPlaces={fetchAllPlaces} />  </div>: null}
-
-                <p className="text-white">{place.name}</p>
-
-                <p className="mt-2 text-white">This place is: {place.place_type}</p>
-
-                {place.is_free ? <p className="mt-2 text-white">This place is free</p> : <p className="mt-2 text-white">This place is not free</p>}
-
-                <p className="mt-2 text-white">This place's rating is: {place.rating}</p>
-
-                <p className="mt-2 text-white">This place address is: {place.address}</p>
-
-                {place.image_url ? <figure className="p-5">
-                    <img className="size-[100%] border rounded-[20px] border-white" src={`${API_URL}/${place.image_url}`} />
-                </figure> : <p className="text-red-500 p-5">Image does not exist</p>}
-
-                {place.description ? <button onClick={() => toShow()} className="mb-5 cursor-pointer p-1 rounded-[20px] hover:bg-gray-200 bg-white">Read Description</button> : <p className="mt-2 mb-2 text-red-500 ">There is no description</p>}
-
-                {show ? <div className="m-5  text-white text-center bg-sky-600 border rounded-[25px]">
-                    <p className="m-5">{place.description}</p>
-                </div> : null}
-
-            </div>
-        </>
+      showDelete ? setShowDelete(false) : setShowDelete(true),
+      setShowUpdateForm(false)
     );
+  };
+
+  const toShowUpdateForm = () => {
+    return (
+      showUpdateForm ? setShowUpdateForm(false) : setShowUpdateForm(true),
+      setShowDelete(false)
+    );
+  };
+
+  const images = place.images.map((image) => image.image_url);
+
+  return (
+    <>
+      <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
+        <div className="flex gap-10 relative left-15">
+          <p className="text-[1.2rem] mt-2 mb-2 text-white">
+            {place.place_name}
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => toShowUpdateForm()}
+              className="cursor-pointer"
+            >
+              <img className="h-8" src={update} alt="update" />
+            </button>
+            <button onClick={() => toShowDelete()} className="cursor-pointer">
+              <img className="h-5" src={x} alt="x" />
+            </button>
+          </div>
+        </div>
+
+        {showUpdateForm ? (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+            {" "}
+            <UpdatePlaceForm
+              place={place}
+              key={place.id}
+              toShowUpdateForm={toShowUpdateForm}
+              fetchAllPlaces={fetchAllPlaces}
+            />{" "}
+          </div>
+        ) : null}
+        {showDelete ? (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+            {" "}
+            <PlaceAskForDelete
+              setFetchedPlaces={setFetchedPlaces}
+              key={place.id}
+              place={place}
+              toShowDelete={toShowDelete}
+              fetchAllPlaces={fetchAllPlaces}
+            />{" "}
+          </div>
+        ) : null}
+
+        <p className="text-white">{place.name}</p>
+
+        <p className="mt-2 text-white">This place is: {place.place_type}</p>
+
+        {place.is_free ? (
+          <p className="mt-2 text-white">This place is free</p>
+        ) : (
+          <p className="mt-2 text-white">This place is not free</p>
+        )}
+
+        <p className="mt-2 text-white">
+          This place's rating is: {place.rating}
+        </p>
+
+        <p className="mt-2 text-white">
+          This place address is: {place.address}
+        </p>
+
+        {images.length > 0 ? (
+          images.map((image) => (
+            <figure className="p-5">
+              <img
+                className="size-[100%] border rounded-[20px] border-white"
+                src={`${API_URL}/${image}`}
+                alt={`${images}`}
+              />
+            </figure>
+          ))
+        ) : (
+          <p className="text-red-500 p-5">Image does not exist</p>
+        )}
+
+        {place.description ? (
+          <button
+            onClick={() => toShow()}
+            className="mb-5 cursor-pointer p-1 rounded-[20px] hover:bg-gray-200 bg-white"
+          >
+            Read Description
+          </button>
+        ) : (
+          <p className="mt-2 mb-2 text-red-500 ">There is no description</p>
+        )}
+
+        {show ? (
+          <div className="m-5  text-white text-center bg-sky-600 border rounded-[25px]">
+            <p className="m-5">{place.description}</p>
+          </div>
+        ) : null}
+      </div>
+    </>
+  );
 }
 
 export default PlacesMapping;
