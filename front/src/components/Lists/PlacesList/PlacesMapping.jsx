@@ -3,6 +3,7 @@ import x from "../../../assets/x.png";
 import update from "../../../assets/update.png";
 import PlaceAskForDelete from "./PlaceAskForDelete";
 import UpdatePlaceForm from "../../forms/newPlace/UpdatePlaceForm";
+import ReactPaginate from "react-paginate";
 
 function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
   const API_URL = import.meta.env.VITE_BACK;
@@ -10,6 +11,19 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
   const [show, setShow] = useState(null);
   const [showDelete, setShowDelete] = useState();
   const [showUpdateForm, setShowUpdateForm] = useState();
+
+  // for image pagination
+  const [currentPage, setCurrentPage] = useState(0);
+
+  //logic for pagination
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const pageSize = 1;
+
+  const offset = currentPage * pageSize;
 
   const toShow = () => {
     return show ? setShow(null) : setShow(true);
@@ -30,6 +44,8 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
   };
 
   const images = place.images.map((image) => image.image_url);
+
+  const paginatedItems = images.slice(offset, offset + pageSize);
 
   return (
     <>
@@ -94,13 +110,41 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
         </p>
 
         {images.length > 0 ? (
-          images.map((image) => (
+          paginatedItems.map((image) => (
             <figure className="p-5">
               <img
                 className="size-[100%] border rounded-[20px] border-white"
                 src={`${API_URL}/${image}`}
                 alt={`${images}`}
               />
+              <div className="pt-5">
+                <ReactPaginate.default
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
+                  breakClassName={"break-me"}
+                  pageCount={Math.ceil(images.length / pageSize)}
+                  marginPagesDisplayed={5}
+                  pageRangeDisplayed={2}
+                  onPageChange={handlePageChange}
+                  containerClassName={
+                    "flex justify-center gap-3 items-center font-poppins text-xs"
+                  }
+                  activeClassName={
+                    "bg-transparent border-b-4 border-gray-800 text-white rounded-lg font-medium py-2"
+                  }
+                  pageLinkClassName={
+                    "bg-transparent text-gray-800 border border-gray-800 rounded-lg font-medium px-3 py-2"
+                  }
+                  previousLinkClassName={
+                    "bg-gray-800 text-white lg:px-4 px-3 text-xs lg:text-base py-2 rounded-lg font-medium"
+                  }
+                  nextLinkClassName={
+                    "bg-gray-800 text-white lg:px-4 px-3 text-xs lg:text-base py-2 rounded-lg font-medium"
+                  }
+                  disabledClassName={"pointer-events-none opacity-50"}
+                />
+              </div>
             </figure>
           ))
         ) : (
