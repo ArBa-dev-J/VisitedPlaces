@@ -49,7 +49,7 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
 
   return (
     <>
-      <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px] w-[90%]">
+      <div className="flex flex-col items-center mx-auto mt-5 border border-white rounded-[25px]">
         <div className="flex gap-10 relative left-15">
           <p className="text-[1.2rem] mt-2 mb-2 text-white">
             {place.place_name}
@@ -111,7 +111,7 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
 
         {images.length > 0 ? (
           paginatedItems.map((image) => (
-            <figure className="p-5">
+            <figure className="p-5 lg:w-full md:w-[400px]">
               <img
                 className="size-[100%] border rounded-[20px] border-white"
                 src={`${API_URL}/${image}`}
