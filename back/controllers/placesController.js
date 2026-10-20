@@ -159,7 +159,7 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
     const { id } = req.params;
 
     const place = await findPlaceByIdM(id);
-console.log(place);
+    // console.log(place.images);
 
     if (!place) {
       return res.status(404).json({
@@ -168,11 +168,15 @@ console.log(place);
       });
     }
 
-    // await deleteUsersPatientM(id);
+    await deleteUsersPatientM(id);
 
-    // fs.unlink(place.image_url, (err) => {
-    //   if (err) console.error(err);
-    // });
+    if (place.images.length > 0) {
+      for (let i = 0; i < place.images.length; i++) {
+        fs.unlink(place.images[i].image_url, (err) => {
+          if (err) console.error(err);
+        });  
+      }
+    }
 
     res.status(200).json({
       status: "success",
