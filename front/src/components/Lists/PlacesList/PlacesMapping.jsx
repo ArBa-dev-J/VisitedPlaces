@@ -148,7 +148,7 @@ function PlacesMapping({ setFetchedPlaces, place, fetchAllPlaces }) {
             </figure>
           ))
         ) : (
-          <p className="text-red-500 p-5">Image does not exist</p>
+          <p className="text-red-500 p-5">Image or images do not exist</p>
         )}
 
         {place.description ? (
