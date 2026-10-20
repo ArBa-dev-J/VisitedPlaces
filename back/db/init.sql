@@ -38,7 +38,7 @@ CREATE TABLE
         place_id INTEGER,
         image_url TEXT,
         file_hash TEXT,
-        CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES public.places (id)
+        CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES public.places (id) ON DELETE CASCADE
     );
 
 COMMIT;

@@ -74,8 +74,23 @@ export const findPlaceNameExceptIdM = async (newPlace, placeId) => {
 
 export const findPlaceByIdM = async (id) => {
   const exists = await sql`
-    SELECT name, image_url, file_hash FROM places
-    WHERE id = ${Number(id.id) || Number(id)};
+    SELECT
+    places.*,
+    COALESCE(
+        JSON_AGG(
+            JSON_BUILD_OBJECT(
+                'image_id', images.image_id,
+                'image_url', images.image_url,
+                'file_hash', images.file_hash
+            )
+        ) FILTER (WHERE images.image_id IS NOT NULL),
+        '[]'
+    ) AS images
+    FROM places
+    LEFT JOIN images
+    ON places.id = images.place_id
+    WHERE id = ${Number(id.id) || Number(id)}
+    GROUP BY places.id;
     `;
 
   return exists[0];

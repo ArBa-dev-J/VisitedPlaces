@@ -92,7 +92,6 @@ export const newVisitedPlaceC = async (req, res, next) => {
     const addANewPlace = await newVisitedPlaceM(newPlace);
     const newImage = await addNewImageM(addANewPlace, newPlace);
 
-
     if (!addANewPlace)
       return res.status(424).json({
         status: "fail",
@@ -160,6 +159,7 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
     const { id } = req.params;
 
     const place = await findPlaceByIdM(id);
+console.log(place);
 
     if (!place) {
       return res.status(404).json({
@@ -168,11 +168,11 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
       });
     }
 
-    await deleteUsersPatientM(id);
+    // await deleteUsersPatientM(id);
 
-    fs.unlink(place.image_url, (err) => {
-      if (err) console.error(err);
-    });
+    // fs.unlink(place.image_url, (err) => {
+    //   if (err) console.error(err);
+    // });
 
     res.status(200).json({
       status: "success",
