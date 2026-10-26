@@ -203,10 +203,10 @@ export const updatePlacesDataC = async (req, res, next) => {
     const newPlace = {
       ...newPlaceData,
       name: req.capitalizedName,
-      filename: req.filename || "",
+      filename: req?.filename || "",
       fileHash: req?.hashedImage || "",
     };
-   
+    
     if (
       !newPlace.name ||
       !newPlace.place_type ||
@@ -215,16 +215,26 @@ export const updatePlacesDataC = async (req, res, next) => {
       !newPlace.is_free ||
       !newPlace.city_id
     )
-      return res.status(400).json({
-        status: "fail",
-        message: "not enough info",
-      });
+      if (req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          fs.unlink(req.files[i].path, (err) => {
+            if (err) console.error(err);
+          });
+        }
+      
+
+    return res.status(400).json({
+      status: "fail",
+      message: "not enough info",
+    })};
 
     // places all models here so that image deletion would work if any of theses there to fail
     const place = await findPlaceByIdM(placeId);
     const id = newPlace.city_id;
     const exists = await getCityByIdM(id);
+    console.log(exists);
     const imageFetchedHash = await findImageHashM(newPlace);
+
 
     // image conditional deletion
     const filePath = place?.image_url || req?.file?.path;
