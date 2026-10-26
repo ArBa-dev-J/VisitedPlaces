@@ -174,7 +174,7 @@ export const deleteSpecificPlaceC = async (req, res, next) => {
       for (let i = 0; i < place.images.length; i++) {
         fs.unlink(place.images[i].image_url, (err) => {
           if (err) console.error(err);
-        });  
+        });
       }
     }
 
@@ -198,15 +198,15 @@ export const updatePlacesDataC = async (req, res, next) => {
 
     const newPlaceData = req.body;
 
-    const newPlaceDataN = delete newPlaceData.name;
+    delete newPlaceData.name;
 
     const newPlace = {
       ...newPlaceData,
       name: req.capitalizedName,
-      filename: req?.file?.path || "",
+      filename: req.filename || "",
       fileHash: req?.hashedImage || "",
     };
-
+   
     if (
       !newPlace.name ||
       !newPlace.place_type ||

@@ -39,7 +39,7 @@ placesRoutes.get(
 placesRoutes.delete("/deletePlace/:id", deleteSpecificPlaceC);
 placesRoutes.patch(
   "/updatePlace/:id",
-  upload.single("image"),
+  upload.array("image"),
   fileFilterError,
   fileSize,
   imageHashing,
