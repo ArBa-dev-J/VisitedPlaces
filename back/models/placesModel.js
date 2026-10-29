@@ -48,13 +48,19 @@ export const findPlaceNameM = async (newPlace) => {
 
 // find image's hash
 
-export const findImageHashM = async (newPlace) => {
-  const exists = await sql`
-    SELECT file_hash FROM places
-    WHERE file_hash = ${newPlace.fileHash};
-    `;
+export const findImageHashM = async (newPlace, placeId) => {
+  const { fileHash } = newPlace;  
+  const exists = await Promise.all(
+    fileHash.map(
+      (fileHash) => sql`
+      SELECT file_hash, image_id FROM images
+      WHERE place_id = ${placeId.id} AND 
+      file_hash = ${fileHash}
+      `,
+    ),
+  );
 
-  return exists[0];
+  return exists;
 };
 
 // function for updates that excludes the current place's ID

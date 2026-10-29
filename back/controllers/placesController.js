@@ -232,8 +232,8 @@ export const updatePlacesDataC = async (req, res, next) => {
     const place = await findPlaceByIdM(placeId);
     const id = newPlace.city_id;
     const exists = await getCityByIdM(id);
-    console.log(exists);
-    const imageFetchedHash = await findImageHashM(newPlace);
+    const imageFetchedHash = await findImageHashM(newPlace, placeId);
+console.log(imageFetchedHash);
 
 
     // image conditional deletion
@@ -286,11 +286,11 @@ export const updatePlacesDataC = async (req, res, next) => {
     // sends an error if update fails
     // check if the place which is being updated exists
 
-    const updatedPlace = await updatePlacesDataM(
-      newPlace,
-      keepData(newPlace),
-      placeId,
-    );
+    // const updatedPlace = await updatePlacesDataM(
+    //   newPlace,
+    //   keepData(newPlace),
+    //   placeId,
+    // );
 
     if (!updatedPlace)
       return res.status(424).json({
