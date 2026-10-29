@@ -193,16 +193,16 @@ export const updatePlacesDataM = async (newPlace, keepData, placeId) => {
     file_hash: fileHashFromObj,
   };
 
-  // mini function to switch between json data
-  const jsonDataSwitch = (keepData, newPlaceFinal) => {
-    if (keepData) {
-      return keepData;
-    } else return newPlaceFinal;
-  };
+  // // mini function to switch between json data
+  // const jsonDataSwitch = (keepData, newPlaceFinal) => {
+  //   if (keepData) {
+  //     return keepData;
+  //   } else return newPlaceFinal;
+  // };
 
   const updatePlaceData = await sql`
       UPDATE places
-      SET ${sql(jsonDataSwitch(keepData, newPlaceFinal))}
+      SET ${sql(newPlaceFinal)}
       WHERE id = ${Number(placeId.id)}
       RETURNING *
      `;

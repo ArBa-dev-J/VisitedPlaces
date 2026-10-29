@@ -206,7 +206,7 @@ export const updatePlacesDataC = async (req, res, next) => {
       filename: req?.filename || "",
       fileHash: req?.hashedImage || "",
     };
-    
+
     if (
       !newPlace.name ||
       !newPlace.place_type ||
@@ -221,70 +221,64 @@ export const updatePlacesDataC = async (req, res, next) => {
             if (err) console.error(err);
           });
         }
-      
 
-    return res.status(400).json({
-      status: "fail",
-      message: "not enough info",
-    })};
+        return res.status(400).json({
+          status: "fail",
+          message: "not enough info",
+        });
+      }
 
-    // places all models here so that image deletion would work if any of theses there to fail
-    const place = await findPlaceByIdM(placeId);
     const id = newPlace.city_id;
-    const exists = await getCityByIdM(id);
+    const place = await findPlaceByIdM(placeId);
     const imageFetchedHash = await findImageHashM(newPlace, placeId);
-console.log(imageFetchedHash);
 
+    const exists = await getCityByIdM(id);
 
-    // image conditional deletion
-    const filePath = place?.image_url || req?.file?.path;
-
-    if (newPlace["image"] !== "") {
-      if (
-        (place && exists.length > 0 && place.file_hash) ||
-        newPlace.image === "delete"
-      ) {
-        if (filePath) {
-          fs.unlink(filePath, (err) => {
-            if (err) {
-              console.error(err);
-            }
+    if (exists.length === 0) {
+      if (req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          fs.unlink(req.files[i].path, (err) => {
+            if (err) console.error(err);
           });
         }
       }
-    }
 
-    // keep current image json data if image is not being changed or deleted
-    const keepData = (objData) => {
-      if (newPlace["image"] === "") {
-        const { image, filename, image_url, fileHash, ...rest } = objData;
-        const obj = {
-          ...rest,
-          image_url: place.image_url,
-          file_hash: place.file_hash,
-        };
-        return obj;
-      }
-    };
-
-    // sends an error if city doesnt exist
-
-    if (exists.length === 0)
       return res.status(404).json({
         status: "fail",
         message: "This city doesn't exist",
       });
+    }
+    // if (!place)
+    //   return res.status(404).json({
+    //     status: "fail",
+    //     message: "This place does not exist",
+    //   });
 
-    // sends an error if place doesnt exist
+    // // image conditional deletion
+    // const filePath = place?.image_url || req?.file?.path;
 
-    if (!place)
-      return res.status(404).json({
-        status: "fail",
-        message: "This place does not exist",
-      });
+    // if (place && exists.length > 0 && place.file_hash) {
+    //   if (filePath) {
+    //     fs.unlink(filePath, (err) => {
+    //       if (err) {
+    //         console.error(err);
+    //       }
+    //     });
+    //   }
+    // }
 
-    // sends an error if update fails
-    // check if the place which is being updated exists
+    // // keep current image json data if image is not being changed or deleted
+    // const keepData = (objData) => {
+    //   if (newPlace["image"] === "") {
+    //     const { image, filename, image_url, fileHash, ...rest } = objData;
+    //     const obj = {
+    //       ...rest,
+    //       image_url: place.image_url,
+    //       file_hash: place.file_hash,
+    //     };
+    //     return obj;
+    //   }
+    // };
 
     // const updatedPlace = await updatePlacesDataM(
     //   newPlace,
