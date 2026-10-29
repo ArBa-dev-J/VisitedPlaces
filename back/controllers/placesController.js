@@ -229,8 +229,6 @@ export const updatePlacesDataC = async (req, res, next) => {
       }
 
     const id = newPlace.city_id;
-    const place = await findPlaceByIdM(placeId);
-    const imageFetchedHash = await findImageHashM(newPlace, placeId);
 
     const exists = await getCityByIdM(id);
 
@@ -248,11 +246,25 @@ export const updatePlacesDataC = async (req, res, next) => {
         message: "This city doesn't exist",
       });
     }
-    // if (!place)
-    //   return res.status(404).json({
-    //     status: "fail",
-    //     message: "This place does not exist",
-    //   });
+
+    const place = await findPlaceByIdM(placeId);
+
+    if (!place) {
+      if (req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          fs.unlink(req.files[i].path, (err) => {
+            if (err) console.error(err);
+          });
+        }
+      }
+
+      return res.status(404).json({
+        status: "fail",
+        message: "This place does not exist",
+      });
+    }
+
+    // const imageFetchedHash = await findImageHashM(newPlace, placeId);
 
     // // image conditional deletion
     // const filePath = place?.image_url || req?.file?.path;
