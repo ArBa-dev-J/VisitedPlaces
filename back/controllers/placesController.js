@@ -10,7 +10,7 @@ import {
   findPlaceNameExceptIdM,
   addNewImageM,
   findImageHashM,
-  deleteImagesM
+  deleteImagesM,
 } from "../models/placesModel.js";
 import getImagesFromPlaces from "../utils/getImagesFromplace.js";
 
@@ -277,13 +277,6 @@ export const updatePlacesDataC = async (req, res, next) => {
     let imagesToDelete = [];
 
     if (existingImages.length > 0) {
-      if (req.files.length > 0) {
-        for (let i = 0; i < req.files.length; i++) {
-          fs.unlink(req.files[i].path, (err) => {
-            if (err) console.error(err);
-          });
-        }
-      }
       if (!req.files || req.files.length === 0) {
         // No new files uploaded: delete all existing images
         imagesToDelete = existingImages;
@@ -295,27 +288,17 @@ export const updatePlacesDataC = async (req, res, next) => {
       }
     }
 
-    
-    // if () {
-    // for (let i = 0; i < req.files.length; i++) {
-    //   fs.unlink(req.files[i].path, (err) => {
-    //     if (err) console.error(err);
-    //   });
-    // }
-    // }
+    if (imagesToDelete.length > 0) {
+      for (const image of imagesToDelete) {
+        await deleteImagesM(image.image_id);
 
-    // // keep current image json data if image is not being changed or deleted
-    // const keepData = (objData) => {
-    //   if (newPlace["image"] === "") {
-    //     const { image, filename, image_url, fileHash, ...rest } = objData;
-    //     const obj = {
-    //       ...rest,
-    //       image_url: place.image_url,
-    //       file_hash: place.file_hash,
-    //     };
-    //     return obj;
-    //   }
-    // };
+        await fs.unlink(image.image_url, (err) => {
+          if (err) console.error(err);
+        });
+      }
+    }
+
+    // await deleteImagesM(image);
 
     // const updatedPlace = await updatePlacesDataM(
     //   newPlace,
