@@ -11,6 +11,7 @@ import {
   addNewImageM,
   findImageHashM,
 } from "../models/placesModel.js";
+import getImagesFromPlaces from "../utils/getImagesFromplace.js";
 
 // post a new visited place
 
@@ -249,6 +250,7 @@ export const updatePlacesDataC = async (req, res, next) => {
 
     const place = await findPlaceByIdM(placeId);
 
+
     if (!place) {
       if (req.files.length > 0) {
         for (let i = 0; i < req.files.length; i++) {
@@ -264,19 +266,17 @@ export const updatePlacesDataC = async (req, res, next) => {
       });
     }
 
-    // const imageFetchedHash = await findImageHashM(newPlace, placeId);
+    // image conditional deletion
+    const existingImages = await getImagesFromPlaces(place);
+    const imageFetchedHash = await findImageHashM(newPlace, placeId);
 
-    // // image conditional deletion
-    // const filePath = place?.image_url || req?.file?.path;
 
-    // if (place && exists.length > 0 && place.file_hash) {
-    //   if (filePath) {
-    //     fs.unlink(filePath, (err) => {
-    //       if (err) {
-    //         console.error(err);
-    //       }
-    //     });
-    //   }
+    // if () {
+    // for (let i = 0; i < req.files.length; i++) {
+    //   fs.unlink(req.files[i].path, (err) => {
+    //     if (err) console.error(err);
+    //   });
+    // }
     // }
 
     // // keep current image json data if image is not being changed or deleted
