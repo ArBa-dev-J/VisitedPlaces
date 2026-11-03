@@ -18,6 +18,19 @@ export const addNewImageM = async (addNewPlace, newPlace) => {
   return imageUploads;
 };
 
+// delete images
+
+export const deleteImagesM = async (id) => {
+  const deletion = await Promise.all(
+    id.map(
+      (id) => sql`
+  DELETE FROM images 
+  WHERE   image_id = ${id}
+  `,
+    ),
+  );
+};
+
 // post a new visited place
 
 export const newVisitedPlaceM = async (newPlace) => {
@@ -49,7 +62,7 @@ export const findPlaceNameM = async (newPlace) => {
 // find image's hash
 
 export const findImageHashM = async (newPlace, placeId) => {
-  const { fileHash } = newPlace;  
+  const { fileHash } = newPlace;
   const exists = await Promise.all(
     fileHash.map(
       (fileHash) => sql`

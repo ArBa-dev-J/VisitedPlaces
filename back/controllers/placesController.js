@@ -10,6 +10,7 @@ import {
   findPlaceNameExceptIdM,
   addNewImageM,
   findImageHashM,
+  deleteImagesM
 } from "../models/placesModel.js";
 import getImagesFromPlaces from "../utils/getImagesFromplace.js";
 
