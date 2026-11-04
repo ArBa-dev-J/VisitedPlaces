@@ -273,15 +273,16 @@ export const updatePlacesDataC = async (req, res, next) => {
     // Flatten the nested database results
     const keepHashes = imageFetchedHash.flat().map((image) => image.file_hash);
 
+    // Hashes of all existing images
+    const existingHashes = existingImages.map((image) => image.file_hash);
+
     // Images to delete
     let imagesToDelete = [];
 
     if (existingImages.length > 0) {
       if (!req.files || req.files.length === 0) {
-        // No new files uploaded: delete all existing images
         imagesToDelete = existingImages;
       } else {
-        // Keep matching hashes, delete non-matching images
         imagesToDelete = existingImages.filter(
           (image) => !keepHashes.includes(image.file_hash),
         );
@@ -298,7 +299,15 @@ export const updatePlacesDataC = async (req, res, next) => {
       }
     }
 
-    // await deleteImagesM(image);
+    const newFiles = [];
+
+    for (const file of req.files || []) {
+      if (existingHashes.includes(file.file_hash)) {
+        await fs.unlink(file.path);
+      } else {
+        newFiles.push(file);
+      }
+    }
 
     // const updatedPlace = await updatePlacesDataM(
     //   newPlace,
