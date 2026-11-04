@@ -279,12 +279,13 @@ export const updatePlacesDataC = async (req, res, next) => {
     // Images to delete
     let imagesToDelete = [];
 
+
     if (existingImages.length > 0) {
-      if (!req.files || req.files.length === 0) {
+      if (req.files.length === 0) {
         imagesToDelete = existingImages;
       } else {
         imagesToDelete = existingImages.filter(
-          (image) => !keepHashes.includes(image.file_hash),
+          (image) => keepHashes.includes(image.file_hash),
         );
       }
     }
