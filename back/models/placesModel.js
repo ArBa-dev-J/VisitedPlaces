@@ -21,16 +21,17 @@ export const addNewImageM = async (addNewPlace, newPlace) => {
 // delete images
 
 export const deleteImagesM = async (id) => {
-  console.log(id);
+  const numArr = new Array();
+  numArr.push(id);
   
-  // const deletion = await Promise.all(
-  //   id.map(
-  //     (id) => sql`
-  // DELETE FROM images 
-  // WHERE   image_id = ${id}
-  // `,
-  //   ),
-  // );
+  const deletion = await Promise.all(
+    numArr.map(
+      (id) => sql`
+  DELETE FROM images 
+  WHERE image_id = ${id}
+  `,
+    ),
+  );
 };
 
 // post a new visited place
