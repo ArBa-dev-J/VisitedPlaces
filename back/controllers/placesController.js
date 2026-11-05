@@ -13,6 +13,8 @@ import {
   deleteImagesM,
 } from "../models/placesModel.js";
 import getImagesFromPlaces from "../utils/getImagesFromplace.js";
+import fromArrObjsToSinglObj from "../utils/fromArrObjsToSinglObj.js";
+import { log } from "console";
 
 // post a new visited place
 
@@ -279,13 +281,12 @@ export const updatePlacesDataC = async (req, res, next) => {
     // Images to delete
     let imagesToDelete = [];
 
-
     if (existingImages.length > 0) {
       if (req.files.length === 0) {
         imagesToDelete = existingImages;
       } else {
-        imagesToDelete = existingImages.filter(
-          (image) => keepHashes.includes(image.file_hash),
+        imagesToDelete = existingImages.filter((image) =>
+          keepHashes.includes(image.file_hash),
         );
       }
     }
@@ -300,21 +301,27 @@ export const updatePlacesDataC = async (req, res, next) => {
       }
     }
 
-    const newFiles = [];
+    let newFiles = {
+      filename: new Array(),
+      fileHash: new Array(),
+    };
 
-    for (const file of req.files || []) {
-      if (existingHashes.includes(file.file_hash)) {
-        await fs.unlink(file.path);
+    for (let i = 0; i < req.filename.length; i++) {
+      if (existingHashes.includes(req.hashedImage[i])) {
+        await fs.unlink(req.filename[i]);
       } else {
-        newFiles.push(file);
+        newFiles.filename.push(req.filename[i]);
+        newFiles.fileHash.push(req.hashedImage[i]);
       }
     }
+  
+   
 
-    // const updatedPlace = await updatePlacesDataM(
-    //   newPlace,
-    //   keepData(newPlace),
-    //   placeId,
-    // );
+    // const imageObj = fromArrObjsToSinglObj(newFiles);
+
+    const newImage = await addNewImageM(newFiles, newPlace);
+
+    const updatedPlace = await updatePlacesDataM(newPlace, placeId);
 
     if (!updatedPlace)
       return res.status(424).json({

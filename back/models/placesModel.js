@@ -196,7 +196,7 @@ export const deleteUsersPatientM = async (id) => {
 
 // new data patch for places
 
-export const updatePlacesDataM = async (newPlace, keepData, placeId) => {
+export const updatePlacesDataM = async (newPlace, placeId) => {
   const bool = newPlace.is_free;
   const path = newPlace.filename;
   const fileHashFromObj = newPlace.fileHash;
@@ -209,18 +209,11 @@ export const updatePlacesDataM = async (newPlace, keepData, placeId) => {
     file_hash: fileHashFromObj,
   };
 
-  // // mini function to switch between json data
-  // const jsonDataSwitch = (keepData, newPlaceFinal) => {
-  //   if (keepData) {
-  //     return keepData;
-  //   } else return newPlaceFinal;
-  // };
-
-  const updatePlaceData = await sql`
-      UPDATE places
-      SET ${sql(newPlaceFinal)}
-      WHERE id = ${Number(placeId.id)}
-      RETURNING *
-     `;
+  // const updatePlaceData = await sql`
+  //     UPDATE places
+  //     SET ${sql(newPlaceFinal)}
+  //     WHERE id = ${Number(placeId.id)}
+  //     RETURNING *
+  //    `;
   return updatePlaceData[0];
 };
