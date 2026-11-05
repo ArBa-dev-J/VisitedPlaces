@@ -2,15 +2,17 @@ import { sql } from "../dbConnection.js";
 
 // add new images
 export const addNewImageM = async (addNewPlace, newPlace) => {
-  const { id: id } = addNewPlace;
+  const { id } = addNewPlace;
 
-  const { filename, fileHash } = newPlace;
+  const { filename, fileHash } = newPlace || addNewPlace;
+  // console.log(id);
+
   const imageUploads = await Promise.all(
     filename.map(
       (file, index) =>
         sql`
         INSERT INTO IMAGES (place_id, image_url, file_hash)
-        VALUES (${id}, ${file}, ${fileHash[index]})
+        VALUES (${id.id}, ${file}, ${fileHash[index]})
         RETURNING *
       `,
     ),
@@ -23,7 +25,7 @@ export const addNewImageM = async (addNewPlace, newPlace) => {
 export const deleteImagesM = async (id) => {
   const numArr = new Array();
   numArr.push(id);
-  
+
   const deletion = await Promise.all(
     numArr.map(
       (id) => sql`
@@ -209,11 +211,11 @@ export const updatePlacesDataM = async (newPlace, placeId) => {
     file_hash: fileHashFromObj,
   };
 
-  // const updatePlaceData = await sql`
-  //     UPDATE places
-  //     SET ${sql(newPlaceFinal)}
-  //     WHERE id = ${Number(placeId.id)}
-  //     RETURNING *
-  //    `;
+  const updatePlaceData = await sql`
+      UPDATE places
+      SET ${sql(newPlaceFinal)}
+      WHERE id = ${Number(placeId.id)}
+      RETURNING *
+     `;
   return updatePlaceData[0];
 };

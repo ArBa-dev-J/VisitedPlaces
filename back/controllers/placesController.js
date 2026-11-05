@@ -13,8 +13,6 @@ import {
   deleteImagesM,
 } from "../models/placesModel.js";
 import getImagesFromPlaces from "../utils/getImagesFromplace.js";
-import fromArrObjsToSinglObj from "../utils/fromArrObjsToSinglObj.js";
-import { log } from "console";
 
 // post a new visited place
 
@@ -301,7 +299,9 @@ export const updatePlacesDataC = async (req, res, next) => {
       }
     }
 
-    let newFiles = {
+    // variable is named not newImage so that it would work with a addNewImageM module
+    let addNewPlace = {
+      id: placeId,
       filename: new Array(),
       fileHash: new Array(),
     };
@@ -310,16 +310,12 @@ export const updatePlacesDataC = async (req, res, next) => {
       if (existingHashes.includes(req.hashedImage[i])) {
         await fs.unlink(req.filename[i]);
       } else {
-        newFiles.filename.push(req.filename[i]);
-        newFiles.fileHash.push(req.hashedImage[i]);
+        addNewPlace.filename.push(req.filename[i]);
+        addNewPlace.fileHash.push(req.hashedImage[i]);
       }
     }
-  
-   
 
-    // const imageObj = fromArrObjsToSinglObj(newFiles);
-
-    const newImage = await addNewImageM(newFiles, newPlace);
+    const newImage = await addNewImageM(addNewPlace);
 
     const updatedPlace = await updatePlacesDataM(newPlace, placeId);
 
@@ -332,6 +328,7 @@ export const updatePlacesDataC = async (req, res, next) => {
     res.status(201).json({
       status: "success",
       data: updatedPlace,
+      imageData: newImage,
     });
   } catch (error) {
     res.status(500).json({
