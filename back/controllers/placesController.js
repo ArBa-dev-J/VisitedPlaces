@@ -315,7 +315,10 @@ export const updatePlacesDataC = async (req, res, next) => {
       }
     }
 
-    const newImage = await addNewImageM(addNewPlace);
+      let newImage;
+      if (addNewPlace.filename.length > 0) {
+        newImage = await addNewImageM(addNewPlace);
+      }
 
     const updatedPlace = await updatePlacesDataM(newPlace, placeId);
 

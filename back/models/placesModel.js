@@ -200,15 +200,11 @@ export const deleteUsersPatientM = async (id) => {
 
 export const updatePlacesDataM = async (newPlace, placeId) => {
   const bool = newPlace.is_free;
-  const path = newPlace.filename;
-  const fileHashFromObj = newPlace.fileHash;
-  const { image, filename, fileHash, ...rest } = newPlace;
+  const { ...rest } = newPlace;
 
   const newPlaceFinal = {
     ...rest,
     is_free: bool == "true",
-    image_url: path,
-    file_hash: fileHashFromObj,
   };
 
   const updatePlaceData = await sql`
