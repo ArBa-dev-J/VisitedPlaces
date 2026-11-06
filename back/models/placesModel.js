@@ -3,16 +3,14 @@ import { sql } from "../dbConnection.js";
 // add new images
 export const addNewImageM = async (addNewPlace, newPlace) => {
   const { id } = addNewPlace;
-
   const { filename, fileHash } = newPlace || addNewPlace;
   // console.log(id);
-
   const imageUploads = await Promise.all(
     filename.map(
       (file, index) =>
         sql`
         INSERT INTO IMAGES (place_id, image_url, file_hash)
-        VALUES (${id.id}, ${file}, ${fileHash[index]})
+        VALUES (${id.id || id}, ${file}, ${fileHash[index]})
         RETURNING *
       `,
     ),
