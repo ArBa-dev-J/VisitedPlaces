@@ -284,20 +284,31 @@ export const updatePlacesDataC = async (req, res, next) => {
         imagesToDelete = existingImages;
       } else {
         imagesToDelete = existingImages.filter((image) =>
-          keepHashes.includes(image.file_hash),
+          !keepHashes.includes(image.file_hash),
         );
       }
     }
+
+// console.log(imagesToDelete);
+
+    const imgPaths = new Array();
 
     if (imagesToDelete.length > 0) {
       for (const image of imagesToDelete) {
         await deleteImagesM(image.image_id);
 
-        await fs.unlink(image.image_url, (err) => {
-          if (err) console.error(err);
-        });
+        imgPaths.push(image.image_url);
       }
     }
+
+
+
+
+    imgPaths.map((path) => {
+      fs.unlink(path, (err) => {
+        if (err) console.error(err);
+      });
+    });
 
     // variable is named not newImage so that it would work with a addNewImageM module
     let addNewPlace = {
@@ -315,10 +326,10 @@ export const updatePlacesDataC = async (req, res, next) => {
       }
     }
 
-      let newImage;
-      if (addNewPlace.filename.length > 0) {
-        newImage = await addNewImageM(addNewPlace);
-      }
+    let newImage;
+    if (addNewPlace.filename.length > 0) {
+      newImage = await addNewImageM(addNewPlace);
+    }
 
     const updatedPlace = await updatePlacesDataM(newPlace, placeId);
 

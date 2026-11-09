@@ -198,7 +198,7 @@ export const deleteUsersPatientM = async (id) => {
 
 export const updatePlacesDataM = async (newPlace, placeId) => {
   const bool = newPlace.is_free;
-  const { filename, fileHash, ...rest } = newPlace;
+  const {image,  filename, fileHash, ...rest } = newPlace;
 
   const newPlaceFinal = {
     ...rest,
