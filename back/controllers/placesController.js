@@ -270,11 +270,11 @@ export const updatePlacesDataC = async (req, res, next) => {
     const existingImages = await getImagesFromPlaces(place);
     const imageFetchedHash = await findImageHashM(newPlace, placeId);
 
-    // Flatten the nested database results
-    const keepHashes = imageFetchedHash.flat().map((image) => image.file_hash);
+    //  puts exisiting places image hashes into the array
+    const existingHashes = existingImages.map((image) => image);
 
-    // Hashes of all existing images
-    const existingHashes = existingImages.map((image) => image.file_hash);
+    //  flattens and puts image file hashes which match updating images with current ones
+    const keepHashes = imageFetchedHash.flat().map((image) => image);
 
     // Images to delete
     let imagesToDelete = [];
@@ -282,14 +282,19 @@ export const updatePlacesDataC = async (req, res, next) => {
     if (existingImages.length > 0) {
       if (req.files.length === 0) {
         imagesToDelete = existingImages;
-      } else {
-        imagesToDelete = existingImages.filter((image) =>
-          !keepHashes.includes(image.file_hash),
+      } else if (req.files.length > 0) {
+        imagesToDelete = existingImages.filter(
+          (image) => !keepHashes.includes(image.file_hash),
         );
+      // } else {
+      //   imagesToDelete = existingImages.filter((image) =>
+      //     keepHashes.includes(image.file_hash),
+      //   );
       }
     }
+  
 
-// console.log(imagesToDelete);
+    //----------------------------------------------------------
 
     const imgPaths = new Array();
 
@@ -300,12 +305,12 @@ export const updatePlacesDataC = async (req, res, next) => {
         imgPaths.push(image.image_url);
       }
     }
-
-
-
+    // console.log(imgPaths);
 
     imgPaths.map((path) => {
       fs.unlink(path, (err) => {
+        console.log(1);
+        
         if (err) console.error(err);
       });
     });
@@ -319,7 +324,11 @@ export const updatePlacesDataC = async (req, res, next) => {
 
     for (let i = 0; i < req.filename.length; i++) {
       if (existingHashes.includes(req.hashedImage[i])) {
-        await fs.unlink(req.filename[i]);
+        console.log(2);
+        
+        await fs.unlink(req.filename[i], (err) => {        
+          if (err) console.error(err);
+        });
       } else {
         addNewPlace.filename.push(req.filename[i]);
         addNewPlace.fileHash.push(req.hashedImage[i]);
