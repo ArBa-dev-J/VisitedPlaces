@@ -50,7 +50,7 @@ function NewCityFormInput() {
   const pageSize = 1;
 
   const offset = currentPage * pageSize;
-  const paginatedItems = files.slice(offset, offset + pageSize);
+  const paginatedItems = files?.slice(offset, offset + pageSize);
 
   const {
     register,
@@ -74,8 +74,6 @@ function NewCityFormInput() {
     files.forEach((file) => {
       formData.append("image", file);
     });
-
-  
 
     try {
       setSuccess(null);
@@ -191,6 +189,11 @@ function NewCityFormInput() {
                 </div>
                 <button
                   type="button"
+                  onClick={() => {
+                    setFiles((prevFiles) =>
+                      prevFiles.filter((_, i) => i !== index),
+                    );
+                  }}
                   className="size-[2vh] absolute top-[13%] left-[84%] cursor-pointer"
                 >
                   <img src={x} alt="x" />
