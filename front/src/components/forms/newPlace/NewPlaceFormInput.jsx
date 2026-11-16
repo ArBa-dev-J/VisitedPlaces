@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect, useContext } from "react";
 import { CityContext } from "../../../utils/CityContext";
 import axios from "axios";
+import ReactPaginate from "react-paginate";
 import x from "../../../assets/x.png";
 
 function NewCityFormInput() {
@@ -37,6 +38,20 @@ function NewCityFormInput() {
   }, []);
   //----------------------------------------------------
 
+  // for image pagination
+  const [currentPage, setCurrentPage] = useState(0);
+
+  //logic for pagination
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const pageSize = 1;
+
+  const offset = currentPage * pageSize;
+  const paginatedItems = files.slice(offset, offset + pageSize);
+
   const {
     register,
     handleSubmit,
@@ -60,7 +75,7 @@ function NewCityFormInput() {
       formData.append("image", file);
     });
 
-    console.log(formData);
+  
 
     try {
       setSuccess(null);
@@ -90,7 +105,7 @@ function NewCityFormInput() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center mx-auto p-5 gap-1 bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px] "
+        className="flex flex-col items-center mx-auto p-5 gap-1  bg-sky-900 rounded-[20px] 2xl:w-[27%]  md:w-[500px] "
       >
         <label className="text-white">Add a new place name you visited</label>
         <input
@@ -137,15 +152,47 @@ function NewCityFormInput() {
         />
         {files?.length > 0 ? (
           <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px] gap-2">
-            {files.map((file, index) => (
-              <figure className="size-[15vh] relative">
+            {paginatedItems.map((file, index) => (
+              <figure className="p-5 2xl:w-full md:w-[400px] relative">
                 <img
                   key={`${file.name}-${index}`}
                   src={URL.createObjectURL(file)}
                   alt={file.name}
                   className="border rounded-[20px] border-white"
                 />
-                <button className="size-[2vh] absolute top-[6%] left-[75%] cursor-pointer">
+
+                <div className="pt-5">
+                  <ReactPaginate.default
+                    previousLabel={"Previous"}
+                    nextLabel={"Next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={Math.ceil(files.length / pageSize)}
+                    marginPagesDisplayed={5}
+                    pageRangeDisplayed={2}
+                    onPageChange={handlePageChange}
+                    containerClassName={
+                      "flex justify-center gap-3 items-center font-poppins text-xs"
+                    }
+                    activeClassName={
+                      "bg-transparent border-b-4 border-gray-800 text-white rounded-lg font-medium py-2"
+                    }
+                    pageLinkClassName={
+                      "bg-transparent text-gray-800 border border-gray-800 rounded-lg font-medium px-3 py-2"
+                    }
+                    previousLinkClassName={
+                      "bg-gray-800 text-white lg:px-4 px-3 text-xs lg:text-base py-2 rounded-lg font-medium"
+                    }
+                    nextLinkClassName={
+                      "bg-gray-800 text-white lg:px-4 px-3 text-xs lg:text-base py-2 rounded-lg font-medium"
+                    }
+                    disabledClassName={"pointer-events-none opacity-50"}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="size-[2vh] absolute top-[13%] left-[84%] cursor-pointer"
+                >
                   <img src={x} alt="x" />
                 </button>
               </figure>
