@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect, useContext } from "react";
 import { CityContext } from "../../../utils/CityContext";
 import axios from "axios";
+import x from "../../../assets/x.png";
 
 function NewCityFormInput() {
   const [files, setFiles] = useState([]);
@@ -137,12 +138,17 @@ function NewCityFormInput() {
         {files?.length > 0 ? (
           <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px] gap-2">
             {files.map((file, index) => (
-              <img
-                key={`${file.name}-${index}`}
-                src={URL.createObjectURL(file)}
-                alt={file.name}
-                className=" size-[30%] border rounded-[20px] border-white"
-              />
+              <figure className="size-[15vh] relative">
+                <img
+                  key={`${file.name}-${index}`}
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  className="border rounded-[20px] border-white"
+                />
+                <button className="size-[2vh] absolute top-[6%] left-[75%] cursor-pointer">
+                  <img src={x} alt="x" />
+                </button>
+              </figure>
             ))}
           </div>
         ) : null}
