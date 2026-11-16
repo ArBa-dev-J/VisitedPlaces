@@ -141,7 +141,7 @@ function NewCityFormInput() {
                 key={`${file.name}-${index}`}
                 src={URL.createObjectURL(file)}
                 alt={file.name}
-                className="w-[120px]"
+                className=" size-[30%] border rounded-[20px] border-white"
               />
             ))}
           </div>
