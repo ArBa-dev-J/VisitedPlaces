@@ -1,6 +1,7 @@
 import { log } from "console";
 import multer from "multer";
 import path from "path";
+import crypto from "crypto";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -8,7 +9,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const uniqueName =
-      Date.now() + path.extname(file.originalname).toLocaleLowerCase();
+     crypto.randomUUID() + path.extname(file.originalname).toLocaleLowerCase();
     cb(null, uniqueName);
   },
 });

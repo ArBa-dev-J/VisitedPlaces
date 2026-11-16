@@ -22,6 +22,9 @@ export const newVisitedPlaceC = async (req, res, next) => {
 
     delete newPlaceData.name;
 
+    console.log(req.files);
+    
+
     const newPlace = {
       ...newPlaceData,
       name: req.capitalizedName,
@@ -308,9 +311,7 @@ export const updatePlacesDataC = async (req, res, next) => {
     // console.log(imgPaths);
 
     imgPaths.map((path) => {
-      fs.unlink(path, (err) => {
-        console.log(1);
-        
+      fs.unlink(path, (err) => { 
         if (err) console.error(err);
       });
     });
@@ -322,17 +323,9 @@ export const updatePlacesDataC = async (req, res, next) => {
       fileHash: new Array(),
     };
 
-    for (let i = 0; i < req.filename.length; i++) {
-      if (existingHashes.includes(req.hashedImage[i])) {
-        console.log(2);
-        
-        await fs.unlink(req.filename[i], (err) => {        
-          if (err) console.error(err);
-        });
-      } else {
+    for (let i = 0; i < req.filename.length; i++) { 
         addNewPlace.filename.push(req.filename[i]);
         addNewPlace.fileHash.push(req.hashedImage[i]);
-      }
     }
 
     let newImage;
