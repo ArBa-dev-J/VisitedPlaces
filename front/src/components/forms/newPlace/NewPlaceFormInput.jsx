@@ -18,7 +18,6 @@ function NewCityFormInput() {
 
   const handleChange = (event) => {
     setFiles(Array.from(event.target.files));
-    setMessage("");
   };
 
   // get all cities directly from db
