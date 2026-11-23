@@ -9,12 +9,21 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
   const [serverDataError, setServerDataError] = useState([]);
   const [serverError, setServerError] = useState("");
   const [fetchError, setFetchError] = useState(null);
-
+  const [files, setFiles] = useState();
 
   const [success, setSuccess] = useState(null);
   const { cities, setCities } = useContext(CityContext);
 
-   const images = place.images.map((image) => image.image_url);
+  const images = place.images.map((image) => image.image_url);
+
+  const joinedImages = () => {
+
+    const paths = files?.map(a => a.name);
+
+    return [...images, ...paths|| []];
+  };
+
+
   // for image pagination
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -33,7 +42,10 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
   const pageSize = 1;
 
   const offset = currentPage * pageSize;
-  const paginatedItems = images?.slice(offset, offset + pageSize);
+  const paginatedItems = joinedImages()?.slice(offset, offset + pageSize);
+  console.log(paginatedItems);
+  
+// console.log(joinedImages());
 
   // get all cities directly from db
   const fetchCities = async () => {
@@ -47,7 +59,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
     }
   };
 
-  console.log(place);
+  // console.log(place);
 
   useEffect(() => {
     fetchCities();
@@ -93,23 +105,23 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
       formData.append("image", file);
     });
 
-    try {
-      setSuccess(null);
-      setServerDataError([]);
-      setServerError("");
-      const response = await axios.patch(
-        `${API_URL}/places/updatePlace/${place.id}`,
-        formData,
-      );
+    // try {
+    //   setSuccess(null);
+    //   setServerDataError([]);
+    //   setServerError("");
+    //   const response = await axios.patch(
+    //     `${API_URL}/places/updatePlace/${place.id}`,
+    //     formData,
+    //   );
 
-      setServerError(null);
-      fetchAllPlaces();
-      if (response) reset();
-      setSuccess(`${data.name} was successfully uploaded`);
-    } catch (error) {
-      setServerDataError(error?.response?.data?.error);
-      setServerError(error?.response?.data?.message);
-    }
+    //   setServerError(null);
+    //   fetchAllPlaces();
+    //   if (response) reset();
+    //   setSuccess(`${data.name} was successfully uploaded`);
+    // } catch (error) {
+    //   setServerDataError(error?.response?.data?.error);
+    //   setServerError(error?.response?.data?.message);
+    // }
   };
 
   // filter data errors by specific fields
@@ -177,10 +189,14 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
           />
           {images?.length > 0 ? (
             <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px] gap-2">
-              {paginatedItems.map((image) => (
+              {paginatedItems.map((image, index) => (  
                 <figure className="p-5 2xl:w-full md:w-[400px] relative">
                   <img
-                    src={`${API_URL}/${image}`}
+                    src={ 
+                      typeof image === "string"
+                        ? `${API_URL}/${image}`
+                        : URL.createObjectURL(image)
+                    }
                     alt={`${images}`}
                     className="border rounded-[20px] border-white"
                   />
