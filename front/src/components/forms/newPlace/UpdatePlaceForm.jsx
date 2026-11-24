@@ -17,12 +17,8 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
   const images = place.images.map((image) => image.image_url);
 
   const joinedImages = () => {
-
-    const paths = files?.map(a => a.name);
-
-    return [...images, ...paths|| []];
+    return [...images, ...(files || [])];
   };
-
 
   // for image pagination
   const [currentPage, setCurrentPage] = useState(0);
@@ -44,8 +40,8 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
   const offset = currentPage * pageSize;
   const paginatedItems = joinedImages()?.slice(offset, offset + pageSize);
   console.log(paginatedItems);
-  
-// console.log(joinedImages());
+
+  // console.log(joinedImages());
 
   // get all cities directly from db
   const fetchCities = async () => {
@@ -75,7 +71,7 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
   } = useForm();
 
   useEffect(() => {
-    (setValue("name", place.place_name),
+    (setValue("name", place.name),
       setValue("place_type", place.place_type),
       setValue("description", place.description),
       setValue("image", ""),
@@ -189,10 +185,15 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
           />
           {images?.length > 0 ? (
             <div className="flex flex-wrap bg-sky-600 p-5 rounded-[15px] gap-2">
-              {paginatedItems.map((image, index) => (  
+              {paginatedItems.map((image, index) => (
                 <figure className="p-5 2xl:w-full md:w-[400px] relative">
                   <img
-                    src={ 
+                    key={
+                      typeof image === "string"
+                        ? `${image}-${index}`
+                        : `${image.name}-${index}`
+                    }
+                    src={
                       typeof image === "string"
                         ? `${API_URL}/${image}`
                         : URL.createObjectURL(image)
@@ -207,7 +208,11 @@ function UpdatePlaceForm({ toShowUpdateForm, place, fetchAllPlaces }) {
                       nextLabel={"Next"}
                       breakLabel={"..."}
                       breakClassName={"break-me"}
-                      pageCount={Math.ceil(images.length / pageSize)}
+                      pageCount={Math.ceil(
+                        files?.length
+                          ? files.length + images.length / pageSize
+                          : images.length / pageSize,
+                      )}
                       marginPagesDisplayed={5}
                       pageRangeDisplayed={2}
                       onPageChange={handlePageChange}
